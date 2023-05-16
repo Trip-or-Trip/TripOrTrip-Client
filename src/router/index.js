@@ -1,12 +1,12 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 // views
 // import AppMain from "@/views/AppMain.vue";
 // import AppUser from "@/views/AppUser.vue";
 // import AppBoard from "@/views/AppBoard.vue";
 // import AppNotice from "@/views/AppNotice.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   // {
@@ -15,38 +15,38 @@ const routes = [
   //   component: AppMain
   // },
   {
-    path: "/board",
+    path: "/board/",
     name: "board",
     // component: AppBoard,
     component: () => import(/* webpackChunkName: "board" */ "../views/AppBoard"),
-    redirect: "/board/list",
+    // redirect: "/board",
     children: [
       {
-        path: "list",
+        path: "",
         name: "boardlist",
         // component: BoardList,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardList"),
       },
       {
-        path: "write",
+        path: "",
         name: "boardwrite",
         // component: BoardWrite,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardWrite"),
       },
       {
-        path: "view/:articleno",
+        path: ":articleno",
         name: "boardview",
         // component: BoardView,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardView"),
       },
       {
-        path: "modify",
+        path: "",
         name: "boardmodify",
         // component: BoardModify,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardModify"),
       },
       {
-        path: "delete",
+        path: "",
         name: "boarddelete",
         // component: BoardDelete,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardDelete"),
@@ -58,37 +58,40 @@ const routes = [
     name: "notice",
     // component: AppNotice,
     component: () => import(/* webpackChunkName: "notice" */ "../views/AppNotice"),
-    redirect: "/notice/list",
+    // redirect: "/notice/list",
     children: [
       {
-        path: "list",
+        path: "",
         name: "noticelist",
         // component: NoticeList,
         component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeList"),
       },
       {
-        path: "write",
+        path: "",
         name: "noticewrite",
         // component: NoticeWrite,
-        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
       },
       {
-        path: "view/:articleno",
+        path: ":articleno",
         name: "noticeview",
         // component: NoticeView,
         component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeView"),
       },
       {
-        path: "modify",
+        path: "",
         name: "noticemodify",
         // component: NoticeModify,
-        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
       },
       {
-        path: "delete",
+        path: "",
         name: "noticedelete",
         // component: NoticeDelete,
-        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeDelete"),
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeDelete"),
       },
     ],
   },
@@ -96,43 +99,43 @@ const routes = [
     path: "/plan",
     name: "plan",
     component: () => import(/* webpackChunkName: "plan" */ "../views/AppPlan"),
-    redirect: "/plan/list",
+    // redirect: "/plan/list",
     children: [
       {
-        path: "list",
+        path: "",
         name: "planlist",
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanList"),
       },
       {
-        path: "write",
+        path: "",
         name: "planwrite",
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanWrite"),
       },
       {
-        path: "view/:articleno",
+        path: ":articleno",
         name: "planview",
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanView"),
       },
       {
-        path: "modify",
+        path: "",
         name: "planmodify",
         // component: NoticeModify,
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanModify"),
       },
       {
-        path: "delete",
+        path: "",
         name: "plandelete",
         // component: NoticeDelete,
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanDelete"),
       },
     ],
   },
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

@@ -50,21 +50,20 @@ export default {
       // TODO : 글번호에 해당하는 글정보 등록.
       // alert("글작성 하러가자!!!!");
       let article = {
-        userid: this.userid,
-        subject: this.subject,
+        userId: this.userid,
+        title: this.subject,
         content: this.content,
       };
       http.post(`/notice`, article).then(({ data }) => {
         let msg = "글 작성 시 문제 발생!!!";
-        if (data === "success") msg = "글 작성 성공!!!";
+        if (data === "success") msg = "공지사항 등록 완료";
         alert(msg);
         this.moveList();
       });
     },
 
     moveList() {
-      console.log("글목록 보러가자!!!");
-      this.$router.push({ path: "list" });
+      this.$router.push({ path: "" });
     },
   },
 };

@@ -46,11 +46,11 @@ export default {
   methods: {
     moveModifyArticle() {
       console.log("글수정 하러가자!!!");
-      this.$router.push({ name: "noticemodify", params: { articleno: this.article.articleno } });
+      this.$router.push({ name: "noticemodify", params: { articleno: this.article.id } });
     },
     deleteArticle() {
       console.log("글삭제 하러가자!!!");
-      this.$router.push({ name: "noticedelete", params: { articleno: this.article.articleno } });
+      this.$router.push({ name: "noticedelete", params: { articleno: this.article.id } });
     },
     moveList() {
       console.log("글목록 보러가자!!!");

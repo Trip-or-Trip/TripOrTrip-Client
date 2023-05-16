@@ -1,8 +1,8 @@
 <template>
   <div class="regist">
-    <h1 class="underline">자유게시판 글 수정</h1>
+    <h1 class="underline">게시판 수정</h1>
     <div class="regist_form">
-      <label for="userid">작성자</label>
+      <label for="userId">작성자</label>
       <input type="text" id="userId" v-model="article.userId" ref="userId" /><br />
       <label for="title">제목</label>
       <input type="text" id="title" v-model="article.title" ref="title" /><br />
@@ -10,8 +10,8 @@
       <br />
       <textarea id="content" v-model="article.content" ref="content" cols="35" rows="5"></textarea
       ><br />
-      <button @click="checkValue">수정</button>
-      <button @click="moveList">목록</button>
+      <v-button @click="checkValue">수정</v-button>
+      <v-button @click="moveList">목록</v-button>
     </div>
   </div>
 </template>
@@ -33,11 +33,11 @@ export default {
       // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
+      !this.article.userId &&
+        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userId.focus());
       err &&
-        !this.article.subject &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
+        !this.article.title &&
+        ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
       err &&
         !this.article.content &&
         ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
@@ -47,7 +47,7 @@ export default {
       else this.modifyArticle();
     },
     modifyArticle() {
-      console.log(this.article.articleno + "번 글수정 하러가자!!!!");
+      console.log(this.article.id + "번 글수정 하러가자!!!!");
       // 비동기
       // TODO : 글번호에 해당하는 글정보 수정.
       http.put(`/board`, this.article).then(({ data }) => {
@@ -70,15 +70,6 @@ export default {
     http.get(`/board/${this.articleno}`).then(({ data }) => {
       this.article = data;
     });
-    // this.article = {
-    //   articleNo: this.articleno,
-    //   userId: "ssafy",
-    //   userName: "안효인",
-    //   subject: "안녕하세요",
-    //   content: "안녕하세요!!!!",
-    //   hit: 10,
-    //   registerTime: "2023-05-08 17:03:15",
-    // };
   },
 };
 </script>
