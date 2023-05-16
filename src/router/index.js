@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // views
-// import AppMain from "@/views/AppMain.vue";
+import AppMain from "@/views/AppMain";
+import AppUser from "@/views/AppUser";
 // import AppUser from "@/views/AppUser.vue";
 // import AppBoard from "@/views/AppBoard.vue";
 // import AppNotice from "@/views/AppNotice.vue";
@@ -9,11 +10,28 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'main',
-  //   component: AppMain
-  // },
+  {
+    path: '/',
+    name: 'main',
+    component: AppMain
+  },
+  {
+    path: '/user',
+    name: 'user',
+    component: AppUser,
+    children: [
+      {
+        path: 'signin',
+        name: 'signin',
+        component: () => import(/* webpackChunkName: "user" */ "@/components/user/SignIn"),
+      },
+      {
+        path: 'signup',
+        name: 'signup',
+        component: () => import(/* webpackChunkName: "user" */ "@/components/user/SignUp"),
+      },
+    ]
+  },
   {
     path: "/board",
     name: "board",
@@ -127,6 +145,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/tourist",
+    name: "tourist",
+    component: () => import(/* webpackChunkName: "tourist" */ "@/components/tourist/SearchTourist"),
+  }
 ]
 
 const router = new VueRouter({
