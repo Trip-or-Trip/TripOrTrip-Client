@@ -1,46 +1,54 @@
 <template>
-  <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <div id="app">
+    <the-header-nav></the-header-nav>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
+import TheHeaderNav from "@/components/TheHeaderNav";
+
 export default {
   name: "App",
-
-  data: () => ({
-    //
-  }),
+  components: {
+    TheHeaderNav,
+  },
 };
 </script>
+
+<style>
+@import "https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css";
+@import "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css";
+
+/* @font-face {
+  font-family: "NanumSquareRound";
+  src: url("@/assets/fonts/NanumSquareRoundR.ttf");
+} */
+
+#app {
+  font-family: "NanumSquareRound";
+}
+
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+}
+
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ffb6b9;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #ff9494;
+  color: white;
+  cursor: point;
+}
+</style>

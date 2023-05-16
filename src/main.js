@@ -12,6 +12,15 @@ import Vuetify from "vuetify";
 // import "vuetify/dist/vuetify.min.css";
 // import vuetify from './plugins/vuetify'
 
+// fontawesome
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+// library.add(faUserSecret)
+
+// Vue.component('font-awesome-icon', FontAwesomeIcon)
+// Vue.config.productionTip = false
+
 Vue.use(Vuetify);
 
 Vue.config.productionTip = false;
