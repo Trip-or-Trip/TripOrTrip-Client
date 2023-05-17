@@ -2,9 +2,9 @@
   <v-app>
     <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">공지사항</mark>
+        <mark class="sky">자유 게시판</mark>
       </h2>
-      <div v-if="this.user.id==`admin`" style="text-align: right">
+      <div v-if="this.isLoggedIn" style="text-align: right">
         <v-btn outlined @click="movePage">작성</v-btn>
       </div>
     </div>
