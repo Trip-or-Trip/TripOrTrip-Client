@@ -13,6 +13,9 @@ export default {
   components: {
     TheHeaderNav,
   },
+  created() {
+    console.log("App.vue");
+  },
 };
 </script>
 

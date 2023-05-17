@@ -8,22 +8,8 @@
     <div class="container justify-content-center" style="width: 80%">
       <div class="text-center col-lg-8 col-md-10 col-sm-12">
         <div class="d-flex my-3" style="width: 100%">
-          <input
-            id="search-keyword"
-            class="form-control me-2"
-            type="search"
-            placeholder="검색어"
-            aria-label="검색어"
-          />
-          <button
-            id="btn-search"
-            @click="search"
-            class="btn submit-btn"
-            type="button"
-            style="width: 10em"
-          >
-            검색
-          </button>
+          <input id="search-keyword" class="form-control me-2" type="search" placeholder="검색어" aria-label="검색어" />
+          <button id="btn-search" @click="search" class="btn submit-btn" type="button" style="width: 10em">검색</button>
         </div>
       </div>
       <div class="">
@@ -33,46 +19,21 @@
           <div id="map" class="shadow rounded mx-auto p-2" style="width: 90%; height: 35em"></div>
           <!-- kakao map end -->
         </section>
-        <div
-          class="position-absolute d-flex flex-row translate-middle-x z-3 buttons mb-2 mx-auto p-2"
-          style="right: 0px"
-        >
-          <button
-            class="z-3 btn delete-btn shadow p-2 me-2"
-            id="plan-delete-btn"
-            type="button"
-            style="width: 4em; height: 2.5em; display: none"
-          >
-            초기화
-          </button>
-          <button
-            class="place-add z-3 btn submit-btn shadow p-2"
-            id="plan-add-btn"
-            type="button"
-            style="display: none; width: 4em; height: 2.5em"
-            @click="addPlace"
-          >
-            추가
-          </button>
+        <div class="position-absolute d-flex flex-row translate-middle-x z-3 buttons mb-2 mx-auto p-2" style="right: 0px">
+          <button class="z-3 btn delete-btn shadow p-2 me-2" id="plan-delete-btn" type="button" style="width: 4em; height: 2.5em; display: none">초기화</button>
+          <button class="place-add z-3 btn submit-btn shadow p-2" id="plan-add-btn" type="button" style="display: none; width: 4em; height: 2.5em" @click="addPlace">추가</button>
         </div>
         <div class="divider mb-5"></div>
         <aside>
           <!-- 여행 계획 들어가는 영역 -->
-          <div
-            class="d-flex flex-column justify-content-center mx-auto p-2"
-            style="width: 100%; height: 35em"
-          >
+          <div class="d-flex flex-column justify-content-center mx-auto p-2" style="width: 100%; height: 35em">
             <h3 id="plan-title" class="text-center p-2"><strong>여행 계획</strong></h3>
             <form id="plan-form" onsubmit="return false;" role="search" method="POST">
               <input type="hidden" id="root" name="root" value="${root}" />
               <input type="hidden" name="action" value="save" />
               <div>
                 <div>
-                  <div
-                    id="plan-content"
-                    class="rounded bg-light shadow mb-2 mx-auto p-2 overflow-auto d-flex justify-content-center"
-                    style="width: 100%; height: 10em"
-                  ></div>
+                  <div id="plan-content" class="rounded bg-light shadow mb-2 mx-auto p-2 overflow-auto d-flex justify-content-center" style="width: 100%; height: 10em"></div>
                 </div>
                 <div class="divider mb-3"></div>
                 <div id="plan-detail" class="d-flex flex-column align-items-center rounded mx-auto">
@@ -87,10 +48,7 @@
                     style="width: 70%"
                   />
                   <br />
-                  <div
-                    class="plan-detail-date d-flex flex-row justify-content-between mb-3"
-                    style="width: 70%"
-                  >
+                  <div class="plan-detail-date d-flex flex-row justify-content-between mb-3" style="width: 70%">
                     <label for="start_datepicker"><strong>출발일</strong></label>
                     <input
                       v-model="sDate"
@@ -156,17 +114,14 @@ export default {
       circleOverlays: [],
       clickInfo: null,
       searchedImgs: Object,
-      areaUrl:
-        "https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1?MobileOS=WIN&MobileApp=triportrip&keyword=",
-      keyUrl:
-        "&serviceKey=qqmr9xPPIeNaINQ4yBU1GUJljRKSxzGUILRxGpdQBkEyF16vLpll%2BbPZ%2FeFeoXRQIuE1OJReyMcWmRxtbNElSQ%3D%3D",
+      areaUrl: "https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1?MobileOS=WIN&MobileApp=triportrip&keyword=",
+      keyUrl: "&serviceKey=qqmr9xPPIeNaINQ4yBU1GUJljRKSxzGUILRxGpdQBkEyF16vLpll%2BbPZ%2FeFeoXRQIuE1OJReyMcWmRxtbNElSQ%3D%3D",
     };
   },
   mounted() {
     const script = document.createElement("script");
     /* global kakao */
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
+    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
     script.onload = () => window.kakao.maps.load(this.loadMap);
     document.head.appendChild(script);
   },
@@ -244,10 +199,7 @@ export default {
         // });
       } else {
         var area = areas[0];
-        this.searchedImgs.set(
-          area.querySelector("galTitle").innerHTML.split(" ")[0],
-          area.querySelector("galWebImageUrl").innerHTML
-        );
+        this.searchedImgs.set(area.querySelector("galTitle").innerHTML.split(" ")[0], area.querySelector("galWebImageUrl").innerHTML);
       }
     },
 
@@ -302,10 +254,7 @@ export default {
       // marker들 뒤에서부터 읽어오면서 위도 경도 값이 같다면 그대로 두고 아닌 것들은 마커 다 삭제
       for (var i = this.markers.length - 1; i >= len; i--) {
         // console.log(i);
-        if (
-          this.markers[i].getPosition().getLat().toFixed(13) == latlngMa &&
-          this.markers[i].getPosition().getLng().toFixed(13) == latlngLa
-        ) {
+        if (this.markers[i].getPosition().getLat().toFixed(13) == latlngMa && this.markers[i].getPosition().getLng().toFixed(13) == latlngLa) {
           this.idxs.push(this.markers[i]);
         } else {
           this.markers[i].setMap(null);
@@ -379,8 +328,7 @@ export default {
       if (distance > 0) {
         // 클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다
         distanceOverlay = new kakao.maps.CustomOverlay({
-          content:
-            '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
+          content: '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
           position: position,
           yAnchor: 1,
           zIndex: 2,
@@ -463,9 +411,7 @@ export default {
       let msg = "";
       !this.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
       err && !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
-      err &&
-        !this.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      err && !this.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
       // 만약, 내용이 다 입력되어 있다면 registArticle 호출
@@ -480,7 +426,7 @@ export default {
       // TODO : 글번호에 해당하는 글정보 등록.
       // alert("글작성 하러가자!!!!");
       let article = {
-        userId: this.userid,
+        userid: this.userid,
         title: this.title,
         places: this.places,
       };
@@ -495,7 +441,7 @@ export default {
 
     moveList() {
       console.log("글목록 보러가자!!!");
-      this.$router.push({ path: "" });
+      this.$router.push({ path: "list" });
     },
   },
 };

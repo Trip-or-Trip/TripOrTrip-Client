@@ -9,14 +9,7 @@
       <div class="mb-3">
         <input type="hidden" v-model="userid" />
         <label for="title" class="form-label">제목 : </label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          name="title"
-          v-model="title"
-          placeholder="제목..."
-        />
+        <input type="text" class="form-control" id="title" name="title" v-model="title" placeholder="제목..." />
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">내용 : </label>
@@ -49,9 +42,7 @@ export default {
       let err = true;
       let msg = "";
       !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
-      err &&
-        !this.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      err && !this.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
       // 만약, 내용이 다 입력되어 있다면 registArticle 호출
@@ -68,7 +59,7 @@ export default {
       };
       http.post(`/notice/write`, article).then(({ data }) => {
         let msg = "글 작성 시 문제 발생!!!";
-        if (data === "success") msg = "공지사항 등록 완료";
+        if (data === "success") msg = "글 작성 성공!!!";
         alert(msg);
         this.moveList();
       });

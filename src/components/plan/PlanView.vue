@@ -8,15 +8,10 @@
       <div class="row">
         <div class="col-md-8">
           <div class="clearfix align-content-center">
-            <img
-              class="avatar me-2 float-md-start bg-light p-2"
-              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
-            />
+            <img class="avatar me-2 float-md-start bg-light p-2" src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
             <p>
               <span class="fw-bold">{{ article.article.userId }}</span> <br />
-              <span class="text-secondary fw-light">
-                {{ article.article.createdAt }} 조회 : {{ article.article.hit }}
-              </span>
+              <span class="text-secondary fw-light"> {{ article.article.createdAt }} 조회 : {{ article.article.hit }} </span>
             </p>
           </div>
         </div>
@@ -25,22 +20,11 @@
         <div class="container">
           <div class="row">
             <!-- kakao map 보여주기 -->
-            <div
-              id="map"
-              class="col-md-8 shadow rounded mx-auto p-2 mb-2"
-              style="height: 25em"
-            ></div>
+            <div id="map" class="col-md-8 shadow rounded mx-auto p-2 mb-2" style="height: 25em"></div>
 
-            <div
-              v-for="place in article.places"
-              :key="place.id"
-              class="border border-4 rounded me-1 p-2"
-              style="width: 20%; display: none"
-            >
+            <div v-for="place in article.places" :key="place.id" class="border border-4 rounded me-1 p-2" style="width: 20%; display: none">
               <div class="travel-info">
-                <strong id="old_place_name" class="old_place_name" style="display: none">{{
-                  place.name
-                }}</strong>
+                <strong id="old_place_name" class="old_place_name" style="display: none">{{ place.name }}</strong>
                 <p id="old_address" class="old_address" style="display: none">
                   {{ place.address }}
                 </p>
@@ -54,80 +38,35 @@
               <div class="row">
                 <div class="col-md-6">
                   <label for="register-id">등록자</label>
-                  <input
-                    id="register-id"
-                    type="text"
-                    readonly="readonly"
-                    v-bind:value="article.article.userId"
-                    class="form-control"
-                  />
+                  <input id="register-id" type="text" readonly="readonly" v-bind:value="article.article.userId" class="form-control" />
                 </div>
                 <div class="col-md-6">
                   <label for="register-date">등록일</label>
-                  <input
-                    id="register-date"
-                    type="text"
-                    readonly="readonly"
-                    v-bind:value="article.article.createdAt"
-                    class="form-control"
-                  />
+                  <input id="register-date" type="text" readonly="readonly" v-bind:value="article.article.createdAt" class="form-control" />
                 </div>
               </div>
               <label for="plan-title">계획 이름</label>
-              <input
-                id="plan-title"
-                type="text"
-                readonly="readonly"
-                v-bind:value="article.article.title"
-                class="form-control"
-              />
+              <input id="plan-title" type="text" readonly="readonly" v-bind:value="article.article.title" class="form-control" />
               <div class="row">
                 <div class="col-md-6">
                   <label for="plan-start-date">출발일</label>
-                  <input
-                    id="plan-start-date"
-                    type="text"
-                    readonly="readonly"
-                    v-bind:value="article.article.startDate"
-                    class="form-control"
-                  />
+                  <input id="plan-start-date" type="text" readonly="readonly" v-bind:value="article.article.startDate" class="form-control" />
                 </div>
                 <div class="col-md-6">
                   <label for="plan-end-date">도착일</label>
-                  <input
-                    id="plan-end-date"
-                    type="text"
-                    readonly="readonly"
-                    v-bind:value="article.article.endDate"
-                    class="form-control"
-                  />
+                  <input id="plan-end-date" type="text" readonly="readonly" v-bind:value="article.article.endDate" class="form-control" />
                 </div>
               </div>
               <label for="plan-description">계획 상세</label>
-              <input
-                id="plan-description"
-                type="text"
-                readonly="readonly"
-                v-bind:value="article.article.description"
-                class="form-control overflow-auto"
-                style="height: 10em"
-              />
+              <input id="plan-description" type="text" readonly="readonly" v-bind:value="article.article.description" class="form-control overflow-auto" style="height: 10em" />
             </div>
           </div>
         </div>
         <div class="divider mb-4"></div>
         <h2 align="center">추천 경로</h2>
-        <div
-          id="planmap"
-          class="col-md-8 shadow rounded mx-auto p-2 mb-2"
-          style="height: 25em"
-        ></div>
+        <div id="planmap" class="col-md-8 shadow rounded mx-auto p-2 mb-2" style="height: 25em"></div>
         <div class="d-flex center flex-row">
-          <div
-            class="d-flex center flex-row"
-            v-for="(fastPlace, index) in article.fastPlaces"
-            v-bind:key="fastPlace.id"
-          >
+          <div class="d-flex center flex-row" v-for="(fastPlace, index) in article.fastPlaces" v-bind:key="fastPlace.id">
             <div class="border border-4 rounded me-1 p-2">
               <div class="travel-info">
                 <strong id="fast_place_name" class="fast_place_name">{{ fastPlace.name }}</strong>
@@ -139,17 +78,8 @@
                 </div>
               </div>
             </div>
-            <div
-              v-show="index != article.fastPlaces.length - 1"
-              class="d-flex align-items-center"
-              style="width: 50%"
-            >
-              <img
-                :src="require('@/assets/img/arrows.png')"
-                @error="require('@/assets/img/noimage.png')"
-                style="width: 100%"
-                class="me-2"
-              />
+            <div v-show="index != article.fastPlaces.length - 1" class="d-flex align-items-center" style="width: 50%">
+              <img :src="require('@/assets/img/arrows.png')" @error="require('@/assets/img/noimage.png')" style="width: 100%" class="me-2" />
             </div>
           </div>
         </div>
@@ -182,10 +112,7 @@
           </div> -->
           <div v-for="(fastPlace, index) in article.fastPlaces" v-bind:key="fastPlace.id">
             <div v-if="index % 2 == 0" class="mb-2 container row" style="margin: 100 auto">
-              <div
-                class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded"
-                style="width: 50%; margin: 0 auto"
-              >
+              <div class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded" style="width: 50%; margin: 0 auto">
                 <img
                   v-if="fastPlace.imageUrl == '/' || fastPlace.imageUrl == 'undefined'"
                   :src="require('@/assets/img/noimage.png')"
@@ -199,13 +126,7 @@
                   style="width: 50%"
                   class="me-2"
                 />
-                <img
-                  v-else
-                  :src="fastPlace.imageUrl"
-                  :alt="fastPlace.name"
-                  style="width: 50%"
-                  class="me-2"
-                />
+                <img v-else :src="fastPlace.imageUrl" :alt="fastPlace.name" style="width: 50%" class="me-2" />
                 <div class="travel-info">
                   <h2 class="place_name">{{ fastPlace.name }}</h2>
                   <p class="address">{{ fastPlace.address }}</p>
@@ -217,10 +138,7 @@
             </div>
 
             <div v-else class="mb-2 row">
-              <div
-                class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded"
-                style="width: 50%; margin: 0 auto"
-              >
+              <div class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded" style="width: 50%; margin: 0 auto">
                 <img
                   v-if="fastPlace.imageUrl == '/' || fastPlace.imageUrl == 'undefined'"
                   :src="require('@/assets/img/noimage.png')"
@@ -234,13 +152,7 @@
                   style="width: 50%"
                   class="me-2"
                 />
-                <img
-                  v-else
-                  :src="fastPlace.imageUrl"
-                  :alt="fastPlace.name"
-                  style="width: 50%"
-                  class="me-2"
-                />
+                <img v-else :src="fastPlace.imageUrl" :alt="fastPlace.name" style="width: 50%" class="me-2" />
                 <div class="travel-info">
                   <h2 class="place_name">{{ fastPlace.name }}</h2>
                   <p class="address">{{ fastPlace.address }}</p>
@@ -302,8 +214,7 @@ export default {
     const script = document.createElement("script");
 
     /* global kakao */
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
+    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
     script.onload = () => window.kakao.maps.load(this.loadMap);
     document.head.appendChild(script);
   },
@@ -602,8 +513,7 @@ export default {
       if (distance > 0) {
         // 클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다
         distanceOverlay = new kakao.maps.CustomOverlay({
-          content:
-            '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
+          content: '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
           position: position,
           yAnchor: 1,
           zIndex: 2,

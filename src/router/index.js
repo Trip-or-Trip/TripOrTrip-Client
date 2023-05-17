@@ -153,6 +153,18 @@ const routes = [
     name: "tourist",
     component: () => import(/* webpackChunkName: "tourist" */ "@/components/tourist/SearchTourist"),
   },
+  {
+    path: "/hotplace",
+    name: "hotplace",
+    component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
+    children: [
+      {
+        path: "search",
+        name: "search",
+        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceSearch"),
+      }
+    ]
+  },
 ];
 
 const router = new VueRouter({
