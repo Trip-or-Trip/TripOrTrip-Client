@@ -21,7 +21,7 @@ export default {
     console.log(this.articleno + "번글 삭제 요청");
     http.delete(`/notice/${this.articleno}`).then(({ data }) => {
       let msg = "글 삭제 시 문제 발생!!!";
-      if (data === "success") msg = "공지사항을 삭제하였습니다.";
+      if (data === "success") msg = "글 삭제 성공!!!";
       alert(msg);
       this.moveList();
     });
@@ -29,7 +29,7 @@ export default {
 
   methods: {
     moveList() {
-      this.$router.push({ path: "" });
+      this.$router.push({ path: "list" });
     },
   },
 };

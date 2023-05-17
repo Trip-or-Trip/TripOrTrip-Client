@@ -67,9 +67,18 @@ export default {
     // 비동기
     // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
-    http.get(`/plan/${this.articleno}`).then(({ data }) => {
+    http.get(`/board/${this.articleno}`).then(({ data }) => {
       this.article = data;
     });
+    // this.article = {
+    //   articleNo: this.articleno,
+    //   userId: "ssafy",
+    //   userName: "안효인",
+    //   subject: "안녕하세요",
+    //   content: "안녕하세요!!!!",
+    //   hit: 10,
+    //   registerTime: "2023-05-08 17:03:15",
+    // };
   },
 };
 </script>

@@ -12,6 +12,9 @@ import Vuetify from "vuetify";
 // import "vuetify/dist/vuetify.min.css";
 // import vuetify from './plugins/vuetify'
 
+// vue-cookie
+import VueCookie from 'vue-cookies'
+
 // fontawesome
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -22,7 +25,7 @@ import Vuetify from "vuetify";
 // Vue.config.productionTip = false
 
 Vue.use(Vuetify);
-
+Vue.use(VueCookie)
 Vue.config.productionTip = false;
 
 new Vue({

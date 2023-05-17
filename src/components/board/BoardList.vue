@@ -1,11 +1,11 @@
 <template>
-  <v-app>
+  <div>
     <h1 class="underline">게시글 목록</h1>
     <div style="text-align: right">
-      <v-btn outlined @click="movePage">작성</v-btn>
+      <button @click="movePage">작성</button>
     </div>
     <div v-if="articles.length">
-      <v-table id="article-list">
+      <table id="article-list">
         <colgroup>
           <col style="width: 5%" />
           <col style="width: 65%" />
@@ -29,10 +29,10 @@
             :article="article"
           ></board-list-item>
         </tbody>
-      </v-table>
+      </table>
     </div>
     <div class="text-center" v-else>게시글이 없습니다.</div>
-  </v-app>
+  </div>
 </template>
 
 <script>

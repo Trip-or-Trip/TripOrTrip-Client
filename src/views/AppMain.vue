@@ -9,7 +9,7 @@
               <!-- <b>Trip or Trip!</b> -->
             </h1>
             <p style="font-size: 1.5rem">
-              <b v-if="!userinfo">로그인 후 이용 가능합니다</b>
+              <b v-if="!isLoggedIn">로그인 후 이용 가능합니다</b>
             </p>
           </div>
         </div>
@@ -29,7 +29,7 @@
                   검색 지역을 군/구 단위로 선택해 관광지를 검색합니다.<br />
                   우리 동네에는 어떤 볼 것이 있을까요?
                 </p>
-                <a href="${root}/tourist/region"> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <router-link to="/tourist"><span>Learn More</span><i class="bi bi-arrow-right"></i></router-link>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -62,7 +62,7 @@
                   다른 사람에게 소개하고 싶은 나만의 장소가 있나요?<br />
                   핫플레이스를 공유하고, 새로운 핫플레이스를 추천받으세요!
                 </p>
-                <a href="${root}/hotplace/list"> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <router-link to="/hotplace"><span>Learn More</span><i class="bi bi-arrow-right"></i></router-link>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -105,9 +105,23 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
+
 export default {
   name: "AppMain",
   components: {},
+  data() {
+    return {
+      token: "",
+    };
+  },
+  created() {
+    this.token = window.$cookies.get("TripOrTrip");
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    ...mapState(["user"]),
+  },
 };
 </script>
 

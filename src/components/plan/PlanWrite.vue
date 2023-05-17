@@ -34,7 +34,9 @@ export default {
       let err = true;
       let msg = "";
       !this.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
-      err && !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
+      err &&
+        !this.title &&
+        ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
       err &&
         !this.content &&
         ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
@@ -48,11 +50,11 @@ export default {
       // TODO : 글번호에 해당하는 글정보 등록.
       // alert("글작성 하러가자!!!!");
       let article = {
-        userId: this.userid,
+        userid: this.userid,
         title: this.title,
         content: this.content,
       };
-      http.post(`/plan`, article).then(({ data }) => {
+      http.post(`/board`, article).then(({ data }) => {
         let msg = "글 작성 시 문제 발생!!!";
         if (data === "success") msg = "글 작성 성공!!!";
         alert(msg);
@@ -62,7 +64,7 @@ export default {
 
     moveList() {
       console.log("글목록 보러가자!!!");
-      this.$router.push({ path: "" });
+      this.$router.push({ path: "list" });
     },
   },
 };

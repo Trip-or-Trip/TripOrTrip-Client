@@ -16,18 +16,18 @@
               <router-link to="/" class="nav-link active"> 여행 계획 보기 </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/" class="nav-link active"> 핫플레이스 보기 </router-link>
+              <router-link to="/hotplace" class="nav-link active"> 핫플레이스 보기 </router-link>
             </li>
           </ul>
 
           <div class="navbar-nav mb-2 mb-lg-0">
             <div>
-              <!-- <a class="nav-link active" id="signin-user" data-bs-toggle="modal" data-bs-target="#signupModal"> -->
-              <router-link to="/user/signin" class="nav-link active" id="view-user"> 로그인 </router-link>
+              <router-link v-if="isLoggedIn" to="/user/view" class="nav-link active" id="view-user"> 회원정보 보기 </router-link>
+              <router-link v-else to="/user/signin" class="nav-link active" id="signin-user"> 로그인 </router-link>
             </div>
             <div>
-              <!-- <a class="nav-link active" id="signup-user" data-bs-toggle="modal" data-bs-target="#signupModal"> -->
-              <router-link to="/user/signup" class="nav-link active" id="view-user"> 회원가입 </router-link>
+              <a v-if="isLoggedIn" @click="logout" class="nav-link active" id="signout-user"> 로그아웃 </a>
+              <router-link v-else to="/user/signup" class="nav-link active" id="signup-user"> 회원가입 </router-link>
             </div>
           </div>
         </div>
@@ -37,9 +37,18 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
+
 export default {
   name: "TheHeaderNav",
-
+  data() {
+    return {};
+  },
+  created() {},
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    ...mapState(["user"]),
+  },
   mounted() {
     document.querySelector("#navbarContent").addEventListener("show.bs.collapse", function () {
       console.log("show.bs.collapse");
@@ -56,6 +65,13 @@ export default {
     document.querySelector("#navbarContent").addEventListener("hidden.bs.collapse", function () {
       console.log("hidden.bs.collapse");
     });
+  },
+  methods: {
+    logout() {
+      this.$store.commit("logout");
+      window.$cookies.remove("TripOrTrip");
+      location.reload();
+    },
   },
 };
 </script>
