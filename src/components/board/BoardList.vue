@@ -14,7 +14,13 @@
         <form class="d-flex" id="form-search" action="">
           <input type="hidden" name="" value="" />
           <input type="hidden" name="pgno" value="1" />
-          <select v-model="key" name="key" id="key" class="form-select form-select-sm ms-5 me-1 w-50" aria-label="검색조건">
+          <select
+            v-model="key"
+            name="key"
+            id="key"
+            class="form-select form-select-sm ms-5 me-1 w-50"
+            aria-label="검색조건"
+          >
             <option selected disabled>검색조건</option>
             <option value="id">글번호</option>
             <option value="title">제목</option>
@@ -22,7 +28,14 @@
             <option value="content">내용</option>
           </select>
           <div class="input-group input-group-sm">
-            <input v-model="word" type="text" name="word" id="word" class="form-control" placeholder="검색어..." />
+            <input
+              v-model="word"
+              type="text"
+              name="word"
+              id="word"
+              class="form-control"
+              placeholder="검색어..."
+            />
             <v-btn outlined @click="searchKeyword">검색</v-btn>
           </div>
         </form>
@@ -38,7 +51,11 @@
           </tr>
         </thead>
         <tbody>
-          <board-list-item v-for="article in articles" :key="article.id" :article="article"></board-list-item>
+          <board-list-item
+            v-for="article in articles"
+            :key="article.id"
+            :article="article"
+          ></board-list-item>
         </tbody>
       </table>
     </div>
@@ -82,7 +99,7 @@ export default {
         key: this.key,
         word: this.word,
       };
-      http.post(`/board`, boardParameterDto).then(({ data }) => {
+      http.post(`/board/list`, boardParameterDto).then(({ data }) => {
         this.articles = data;
       });
     },

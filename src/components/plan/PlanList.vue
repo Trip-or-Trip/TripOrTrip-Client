@@ -94,7 +94,7 @@ export default {
         key: this.key,
         word: this.word,
       };
-      http.post(`/plan`, boardParameterDto).then(({ data }) => {
+      http.post(`/plan/list`, boardParameterDto).then(({ data }) => {
         this.articles = data;
       });
     },
