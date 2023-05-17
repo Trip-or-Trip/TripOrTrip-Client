@@ -79,11 +79,11 @@ export default {
 
       console.log(this.getToken);
       http
-        .post(`/board/write`, {
+        .post(`/board/write`, article, {
           headers: {
+            Origin: "http://localhost:9999",
             Authorization: "Bearer " + this.getToken, // the token is a variable which holds the token
           },
-          article,
         })
         .then(({ data }) => {
           let msg = "글 작성 중 문제가 발생하였습니다.";
