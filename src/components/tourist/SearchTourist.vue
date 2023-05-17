@@ -2,19 +2,34 @@
   <div class="tourist">
     <div class="container">
       <!-- 관광지 검색 하는 영역 start -->
-      <form id="search-form" class="d-flex my-3" onsubmit="return false;" role="search" method="POST">
+      <form
+        id="search-form"
+        class="d-flex my-3"
+        onsubmit="return false;"
+        role="search"
+        method="POST"
+      >
         <input type="hidden" name="root" id="root" value="${root}" />
 
         <!-- 지역 리스트 -->
-        <select id="search-area" v-model="selectedSido" @change="findGuGun" class="form-select me-2">
+        <select
+          id="search-area"
+          v-model="selectedSido"
+          @change="findGuGun"
+          class="form-select me-2"
+        >
           <option value="0" disabled>검색 지역 선택</option>
-          <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">{{ sido.sidoName }}</option>
+          <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">
+            {{ sido.sidoName }}
+          </option>
         </select>
 
         <!-- 구/군 리스트 -->
         <select id="search-gugun-id" v-model="selectedGugun" class="form-select me-2">
           <option v-if="guguns == null" value="0">구/군</option>
-          <option v-for="gugun in guguns" :key="gugun.gugunCode" :value="gugun.gugunCode">{{ gugun.gugunName }}</option>
+          <option v-for="gugun in guguns" :key="gugun.gugunCode" :value="gugun.gugunCode">
+            {{ gugun.gugunName }}
+          </option>
         </select>
 
         <!-- 관광지 유형 리스트 -->
@@ -29,7 +44,15 @@
           <option value="38">쇼핑</option>
           <option value="39">음식점</option>
         </select>
-        <button id="btn-search" class="btn submit-btn" type="button" @click="search" style="width: 10em">검색</button>
+        <button
+          id="btn-search"
+          class="btn submit-btn"
+          type="button"
+          @click="search"
+          style="width: 10em"
+        >
+          검색
+        </button>
       </form>
       <!-- kakao map start -->
       <div id="map" class="mt-3" style="width: 100%; height: 550px"></div>
@@ -71,7 +94,8 @@ export default {
     const script = document.createElement("script");
 
     /* global kakao */
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
+    script.src =
+      "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
     script.onload = () => window.kakao.maps.load(this.loadMap);
     document.head.appendChild(script);
   },
@@ -357,4 +381,3 @@ export default {
   color: white;
 }
 </style>
->

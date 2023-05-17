@@ -1,16 +1,24 @@
 <template>
-  <div class="regist">
-    <h1 class="underline">게시글 작성</h1>
-    <div class="regist_form">
-      <label for="userid">작성자</label>
-      <input type="text" id="userid" v-model="userid" ref="userid" /><br />
-      <label for="title">제목</label>
-      <input type="text" id="title" v-model="title" ref="title" /><br />
-      <label for="content">내용</label>
-      <br />
-      <textarea id="content" v-model="content" ref="content" cols="35" rows="5"></textarea><br />
-      <button @click="checkValue">등록</button>
-      <button @click="moveList">목록</button>
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+        <mark class="sky">글쓰기</mark>
+      </h2>
+    </div>
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <div class="mb-3">
+        <input type="hidden" v-model="userid" />
+        <label for="title" class="form-label">제목 : </label>
+        <input type="text" class="form-control" id="title" name="title" v-model="title" placeholder="제목..." />
+      </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">내용 : </label>
+        <textarea v-model="content" rows="10"></textarea>
+      </div>
+      <div class="col-auto text-center">
+        <v-btn @click="checkValue">등록</v-btn>
+        <v-btn @click="moveList">목록</v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -21,8 +29,8 @@ export default {
   name: "BoardWrite",
   data() {
     return {
-      userid: null,
-      subject: null,
+      userid: "ssafy",
+      title: null,
       content: null,
     };
   },
@@ -33,13 +41,8 @@ export default {
       // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
       let err = true;
       let msg = "";
-      !this.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
-      err &&
-        !this.title &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
-      err &&
-        !this.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
+      err && !this.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
       // 만약, 내용이 다 입력되어 있다면 registArticle 호출
@@ -54,17 +57,16 @@ export default {
         title: this.title,
         content: this.content,
       };
-      http.post(`/board`, article).then(({ data }) => {
-        let msg = "글 작성 시 문제 발생!!!";
-        if (data === "success") msg = "글 작성 성공!!!";
+      http.post(`/board/write`, article).then(({ data }) => {
+        let msg = "글 작성 중 문제가 발생하였습니다.";
+        if (data === "success") msg = "글 작성 완료하였습니다.";
         alert(msg);
         this.moveList();
       });
     },
 
     moveList() {
-      console.log("글목록 보러가자!!!");
-      this.$router.push({ path: "list" });
+      this.$router.push({ name: "boardlist" });
     },
   },
 };

@@ -46,7 +46,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardList"),
       },
       {
-        path: "",
+        path: "write",
         name: "boardwrite",
         // component: BoardWrite,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardWrite"),
@@ -117,7 +117,7 @@ const routes = [
     path: "/plan",
     name: "plan",
     component: () => import(/* webpackChunkName: "plan" */ "../views/AppPlan"),
-    // redirect: "/plan/list",
+    // redirect: "/plan",
     children: [
       {
         path: "",
@@ -125,7 +125,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanList"),
       },
       {
-        path: "",
+        path: "write",
         name: "planwrite",
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanWrite"),
       },
