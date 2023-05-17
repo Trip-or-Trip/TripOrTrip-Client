@@ -166,9 +166,13 @@
           <div class="d-flex justify-content-end">
             <!-- 본인일때만 글수정, 글 삭제 버튼 보이도록 함 -->
             <div style="padding-top: 15px">
-              <v-btn @click="moveModifyArticle">수정</v-btn>
-              <v-btn @click="deleteArticle">삭제</v-btn>
-              <v-btn @click="moveList">목록</v-btn>
+              <v-btn @click="moveList">글목록</v-btn>
+              <v-btn  v-if="user.id == `admin` " @click="moveModifyArticle" >
+                글수정
+              </v-btn>
+              <v-btn  v-if="user.id == `admin` " @click="deleteArticle">
+                글삭제
+              </v-btn>
             </div>
           </div>
         </div>
@@ -178,6 +182,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 export default {
   name: "PlanView",
@@ -209,6 +214,10 @@ export default {
     http.get(`/plan/${this.articleno}`).then(({ data }) => {
       this.article = data;
     });
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
   },
   mounted() {
     const script = document.createElement("script");
