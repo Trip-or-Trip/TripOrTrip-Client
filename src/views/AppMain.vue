@@ -127,6 +127,7 @@ export default {
 
 <style scoped>
 #main-container {
+  position: relative;
   width: 100%;
   height: 63vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("@/assets/img/background.jpg");
@@ -135,6 +136,7 @@ export default {
   opacity: 90%;
   display: flex;
   justify-content: center;
+  z-index: -999;
 }
 
 #info-message {

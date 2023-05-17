@@ -36,9 +36,9 @@
 
           <div class="navbar-nav mb-2 mb-lg-0">
             <div>
-              <router-link v-if="isLoggedIn" to="/user/view" class="nav-link active" id="view-user">
+              <a v-if="isLoggedIn" @click="infoModalView = true" class="nav-link active" id="view-user">
                 회원정보 보기
-              </router-link>
+              </a>
               <router-link v-else to="/user/signin" class="nav-link active" id="signin-user">
                 로그인
               </router-link>
@@ -55,16 +55,24 @@
         </div>
       </div>
     </nav>
+    
+    <user-info v-if="infoModalView" @close-modal="infoModalView = false"></user-info>
   </header>
 </template>
 
 <script>
+import UserInfo from "@/components/user/UserInfo";
 import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "TheHeaderNav",
+  components: {
+    UserInfo,
+  },
   data() {
-    return {};
+    return {
+      infoModalView: false,
+    }
   },
   created() {},
   computed: {

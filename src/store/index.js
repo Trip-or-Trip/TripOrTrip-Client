@@ -32,6 +32,12 @@ export default new Vuex.Store({
         return true;
       else
         return false;
+    },
+    email: state => {
+      if (Object.keys(state.user).length > 0)
+      return state.user.emailId + "@" + state.user.emailDomain;
+    else
+      return '';
     }
   },
   mutations: {
