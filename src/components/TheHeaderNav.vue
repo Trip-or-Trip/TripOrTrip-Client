@@ -2,8 +2,16 @@
   <header>
     <nav id="navbar" class="navbar navbar-expand-lg bg-nav shadow py-3">
       <div class="container-fluid mx-5">
-        <a class="navbar-brand fw-bold fs-4 mr-5" href="/">Trip or Trip!</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <router-link class="navbar-brand fw-bold fs-4 mr-5" to="/">Trip or Trip!</router-link>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -13,21 +21,35 @@
               <router-link to="/tourist" class="nav-link active"> 지역별 관광지 검색 </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/" class="nav-link active"> 여행 계획 보기 </router-link>
+              <router-link to="/plan" class="nav-link active"> 여행 계획 보기 </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/hotplace" class="nav-link active"> 핫플레이스 보기 </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/board" class="nav-link active"> 자유게시판 </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/notice" class="nav-link active"> 공지사항 </router-link>
             </li>
           </ul>
 
           <div class="navbar-nav mb-2 mb-lg-0">
             <div>
-              <router-link v-if="isLoggedIn" to="/user/view" class="nav-link active" id="view-user"> 회원정보 보기 </router-link>
-              <router-link v-else to="/user/signin" class="nav-link active" id="signin-user"> 로그인 </router-link>
+              <router-link v-if="isLoggedIn" to="/user/view" class="nav-link active" id="view-user">
+                회원정보 보기
+              </router-link>
+              <router-link v-else to="/user/signin" class="nav-link active" id="signin-user">
+                로그인
+              </router-link>
             </div>
             <div>
-              <a v-if="isLoggedIn" @click="logout" class="nav-link active" id="signout-user"> 로그아웃 </a>
-              <router-link v-else to="/user/signup" class="nav-link active" id="signup-user"> 회원가입 </router-link>
+              <a v-if="isLoggedIn" @click="logout" class="nav-link active" id="signout-user">
+                로그아웃
+              </a>
+              <router-link v-else to="/user/signup" class="nav-link active" id="signup-user">
+                회원가입
+              </router-link>
             </div>
           </div>
         </div>

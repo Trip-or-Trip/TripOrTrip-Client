@@ -60,6 +60,7 @@
       </table>
     </div>
     <div class="text-center" v-else>게시글이 없습니다.</div>
+  </v-app>
 </template>
 
 <script>
@@ -81,7 +82,7 @@ export default {
   created() {
     // 비동기
     // TODO : 글목록 얻기.
-    http.get(`/board`).then(({ data }) => {
+    http.get(`/board/list`).then(({ data }) => {
       console.log(data);
       this.articles = data;
     });

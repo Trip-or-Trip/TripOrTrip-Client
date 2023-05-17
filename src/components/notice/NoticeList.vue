@@ -80,7 +80,7 @@ export default {
   created() {
     // 비동기
     // TODO : 글목록 얻기.
-    http.get(`/notice`).then(({ data }) => {
+    http.get(`/notice/list`).then(({ data }) => {
       console.log(data);
       this.articles = data;
     });
