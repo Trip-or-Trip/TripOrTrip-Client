@@ -30,10 +30,10 @@
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
           <v-btn @click="moveList">글목록</v-btn>
-          <v-btn v-if="user.id == `{{article.userId}}`" @click="moveModifyArticle" >
+          <v-btn v-if="user.id == article.userId" @click="moveModifyArticle" >
             글수정
           </v-btn>
-          <v-btn v-if="user.id == `{{article.userId}}`" @click="deleteArticle">
+          <v-btn v-if="user.id == article.userId" @click="deleteArticle">
             글삭제
           </v-btn>
         </div>
