@@ -1,7 +1,11 @@
 <template>
-  <div class="regist">
-    <h1 class="underline">여행계획 상세보기</h1>
-    <div class="col-lg-8 col-md-10 col-sm-12">
+  <v-app>
+    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+        <mark class="sky">여행계획 상세보기</mark>
+      </h2>
+    </div>
+    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
       <div class="row my-2">
         <h2 class="text-secondary px-5">{{ article.article.title }}</h2>
       </div>
@@ -178,7 +182,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
