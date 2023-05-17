@@ -1,7 +1,11 @@
 <template>
-  <div class="regist">
-    <h1 class="underline">여행계획 상세보기</h1>
-    <div class="col-lg-8 col-md-10 col-sm-12">
+  <v-app>
+    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+        <mark class="sky">여행계획 상세보기</mark>
+      </h2>
+    </div>
+    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
       <div class="row my-2">
         <h2 class="text-secondary px-5">{{ article.article.title }}</h2>
       </div>
@@ -167,10 +171,10 @@
             <!-- 본인일때만 글수정, 글 삭제 버튼 보이도록 함 -->
             <div style="padding-top: 15px">
               <v-btn @click="moveList">글목록</v-btn>
-              <v-btn  v-if="user.id == `admin` " @click="moveModifyArticle" >
+              <v-btn  v-if="user.id == article.article.userId"  @click="moveModifyArticle" >
                 글수정
               </v-btn>
-              <v-btn  v-if="user.id == `admin` " @click="deleteArticle">
+              <v-btn v-if="user.id == article.article.userId" @click="deleteArticle">
                 글삭제
               </v-btn>
             </div>
@@ -178,7 +182,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -572,7 +576,7 @@ export default {
       // this.$router.push({ name: "planmodify", params: { articleno: this.article.id } });
     },
     deleteArticle() {
-      this.$router.push({ name: "plandelete", params: { articleno: this.article.id } });
+      this.$router.push({ name: "plandelete", params: { articleno: this.article.article.id } });
     },
     moveList() {
       this.$router.push({ name: "planlist" });

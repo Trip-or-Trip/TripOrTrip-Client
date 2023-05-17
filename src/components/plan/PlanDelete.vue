@@ -19,7 +19,7 @@ export default {
     // TODO : 글번호에 해당하는 글을 삭제.
     this.articleno = this.$route.params.articleno;
     console.log(this.articleno + "번글 삭제 요청");
-    http.delete(`/board/${this.articleno}`).then(({ data }) => {
+    http.delete(`/plan/${this.articleno}`).then(({ data }) => {
       let msg = "게시글 삭제 중 문제 발생!!!";
       if (data === "success") msg = "게시글 삭제 성공하였습니다.";
       alert(msg);
@@ -29,7 +29,7 @@ export default {
 
   methods: {
     moveList() {
-      this.$router.push({ path: "list" });
+      this.$router.push({ name: "planlist" });
     },
   },
 };
