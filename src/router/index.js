@@ -125,7 +125,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanList"),
       },
       {
-        path: "",
+        path: "write",
         name: "planwrite",
         component: () => import(/* webpackChunkName: "plan" */ "../components/plan/PlanWrite"),
       },
