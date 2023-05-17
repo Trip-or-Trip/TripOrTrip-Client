@@ -29,7 +29,7 @@ export default {
 
   methods: {
     moveList() {
-      this.$router.push({ path: "list" });
+      this.$router.push({ name: "noticelist" });
     },
   },
 };
