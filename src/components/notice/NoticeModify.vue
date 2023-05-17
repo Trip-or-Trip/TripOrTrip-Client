@@ -1,17 +1,25 @@
 <template>
-  <div class="regist">
-    <h1 class="underline">공지사항 수정</h1>
-    <div class="regist_form">
-      <label for="userId">작성자</label>
-      <input type="text" id="userId" v-model="article.userId" ref="userId" /><br />
-      <label for="title">제목</label>
-      <input type="text" id="title" v-model="article.title" ref="title" /><br />
-      <label for="content">내용</label>
-      <br />
-      <textarea id="content" v-model="article.content" ref="content" cols="35" rows="5"></textarea
-      ><br />
-      <button @click="checkValue">수정</button>
-      <button @click="moveList">목록</button>
+  <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+            <mark class="sky">공지사항 수정</mark>
+          </h2>
+        </div>
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <div class="mb-3">
+            <label for="subject" class="form-label">제목 : </label>
+            <input v-model="article.title" />
+            <input type="hidden" v-model="article.id" />
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">내용 : </label>
+            <textarea v-model="article.content" rows="10"></textarea>
+          </div>
+          <div class="col-auto text-center">
+            
+            <v-btn @click="moveList">목록</v-btn>
+            <v-btn @click="checkValue">수정</v-btn>
+          </div>
     </div>
   </div>
 </template>

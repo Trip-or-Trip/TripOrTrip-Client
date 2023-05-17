@@ -5,7 +5,8 @@
         <div id="main-container">
           <div id="info-message">
             <h1 id="title-header" class="mb-5">
-              <span>T</span><span>r</span><span>i</span><span>p</span> <span>o</span><span>r</span> <span>T</span><span>r</span><span>i</span><span>p</span><span>!</span>
+              <span>T</span><span>r</span><span>i</span><span>p</span> <span>o</span><span>r</span>
+              <span>T</span><span>r</span><span>i</span><span>p</span><span>!</span>
               <!-- <b>Trip or Trip!</b> -->
             </h1>
             <p style="font-size: 1.5rem">
@@ -29,7 +30,9 @@
                   검색 지역을 군/구 단위로 선택해 관광지를 검색합니다.<br />
                   우리 동네에는 어떤 볼 것이 있을까요?
                 </p>
-                <a href="${root}/tourist/region"> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <a href="${root}/tourist/region">
+                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
+                </a>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -45,7 +48,9 @@
                   여행에 방문할 새로운 관광지를 추가하고 여행 경로를 확인합니다.<br />
                   나만의 Trip or Trip!을 함께 떠나볼까요?
                 </p>
-                <a href="${root}/plan/mvplanlist?pgno=1&key=&word="> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <router-link to="/plan">
+                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
+                </router-link>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -62,7 +67,9 @@
                   다른 사람에게 소개하고 싶은 나만의 장소가 있나요?<br />
                   핫플레이스를 공유하고, 새로운 핫플레이스를 추천받으세요!
                 </p>
-                <a href="${root}/hotplace/list"> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <a href="${root}/hotplace/list">
+                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
+                </a>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -79,7 +86,9 @@
                   Trip or Trip 사용자들과 자유로운 소통을 원하시나요?<br />
                   사람들과 다양한 이야기를 나누어 보세요!
                 </p>
-                <a href="${root}/board/list?pgno=1&key=&word="> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <a href="${root}/board/list?pgno=1&key=&word=">
+                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
+                </a>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -93,7 +102,9 @@
               <div class="mt-3 mb-2">
                 <h4 class="title">공지사항</h4>
                 <p class="description">Trip or Trip의 공지사항을 확인해보세요!</p>
-                <a href="${root}/notice/list?pgno=1&key=&word="> <span>Learn More</span><i class="bi bi-arrow-right"></i> </a>
+                <a href="${root}/notice/list?pgno=1&key=&word=">
+                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
+                </a>
               </div>
             </div>
             <!-- 서비스 기능 end -->
@@ -115,7 +126,8 @@ export default {
 #main-container {
   width: 100%;
   height: 63vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("@/assets/img/background.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("@/assets/img/background.jpg");
   /* background-image: url('./assets/img/background.jpg'); */
   background-size: cover;
   opacity: 90%;
