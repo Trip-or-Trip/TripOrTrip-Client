@@ -4,7 +4,7 @@
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">공지사항</mark>
       </h2>
-      <div style="text-align: right">
+      <div v-if="this.user.id==`admin`" style="text-align: right">
         <v-btn outlined @click="movePage">작성</v-btn>
       </div>
     </div>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 import NoticeListItem from "@/components/notice/NoticeListItem";
 
@@ -85,9 +86,19 @@ export default {
       this.articles = data;
     });
   },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
   methods: {
     movePage() {
-      this.$router.push({ name: "noticewrite" });
+      if (this.isLoggedIn && this.user.id === "admin") {
+        this.$router.push({ name: "noticewrite" });
+      } else {
+        alert("관리자만 이용 가능합니다.");
+        return;
+      }
+      
     },
     searchKeyword() {
       let boardParameterDto = {

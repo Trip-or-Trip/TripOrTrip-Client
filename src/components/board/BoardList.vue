@@ -4,7 +4,7 @@
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">게시판</mark>
       </h2>
-      <div style="text-align: right">
+      <div v-if="this.isLoggedIn" style="text-align: right">
         <v-btn outlined @click="movePage">작성</v-btn>
       </div>
     </div>
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 import BoardListItem from "@/components/board/BoardListItem";
 
@@ -86,6 +87,10 @@ export default {
       console.log(data);
       this.articles = data;
     });
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
   },
   methods: {
     movePage() {
