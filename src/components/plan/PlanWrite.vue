@@ -141,7 +141,7 @@ export default {
         places: this.places,
       };
       console.log(article);
-      http.post(`/plan`, article).then(({ data }) => {
+      http.post(`/plan/write`, article).then(({ data }) => {
         let msg = "글 작성 시 문제 발생!!!";
         if (data === "success") msg = "글 작성 성공!!!";
         alert(msg);
@@ -428,8 +428,9 @@ export default {
       let article = {
         userid: this.userid,
         title: this.title,
-        content: this.content,
+        places: this.places,
       };
+      console.log(this.content);
       http.post(`/plan/write`, article).then(({ data }) => {
         let msg = "글 작성 시 문제 발생!!!";
         if (data === "success") msg = "글 작성 성공!!!";

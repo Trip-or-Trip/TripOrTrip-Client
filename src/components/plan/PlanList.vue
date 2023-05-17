@@ -70,7 +70,7 @@ export default {
     // 비동기
     // TODO : 글목록 얻기.
     http
-      .get(`/plan`)
+      .get(`/plan/list`)
       .then(({ data }) => {
         this.articles = data;
       })
