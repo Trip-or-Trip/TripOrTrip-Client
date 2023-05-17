@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 import BoardListItem from "@/components/board/BoardListItem";
 
@@ -115,6 +116,10 @@ export default {
       console.log(data);
       this.articles = data;
     });
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
   },
   methods: {
     movePage() {

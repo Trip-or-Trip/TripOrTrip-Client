@@ -30,14 +30,12 @@
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
           <v-btn @click="moveList">글목록</v-btn>
-          <c:if test="${userinfo.id eq article.userId || userinfo.id eq 'admin' }">
-            <v-btn @click="moveModifyArticle" >
-              글수정
-            </v-btn>
-            <v-btn @click="deleteArticle">
-              글삭제
-            </v-btn>
-          </c:if>
+          <v-btn  v-if="user.id == `admin` " @click="moveModifyArticle" >
+            글수정
+          </v-btn>
+          <v-btn  v-if="user.id == `admin` " @click="deleteArticle">
+            글삭제
+          </v-btn>
         </div>
       </div>
       <!-- 댓글 영역 start -->
@@ -66,6 +64,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 export default {
   name: "NoticeView",
@@ -84,14 +83,18 @@ export default {
       this.article = data;
     });
   },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
   methods: {
     moveModifyArticle() {
       console.log("글수정 하러가자!!!");
-      this.$router.push({ name: "noticemodify", params: { articleno: this.article.articleno } });
+      this.$router.push({ name: "noticemodify", params: { articleno: this.articleno } });
     },
     deleteArticle() {
       console.log("글삭제 하러가자!!!");
-      this.$router.push({ name: "noticedelete", params: { articleno: this.article.articleno } });
+      this.$router.push({ name: "noticedelete", params: { articleno: this.articleno } });
     },
     moveList() {
       console.log("글목록 보러가자!!!");
