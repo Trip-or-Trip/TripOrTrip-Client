@@ -39,24 +39,24 @@
         </div>
       </div>
       <!-- 댓글 영역 start -->
-<!--      <div class="col-lg-8 col-md-10 col-sm-12" > -->
+     <div class="col-lg-8 col-md-10 col-sm-12" >
         <!-- 댓글 입력 영역 start --> 
-<!--        <div class="row"> -->
-<!--          <div class="col-md-11"> -->
-<!--            <input type="text" id="content" name="content" placeholder="댓글을 입력해주세요" style="width:100%; height:100%;"> -->
-<!--             -->
-<!--          </div> -->
-<!--          <div class="col-md-1"> -->
-<!--            <v-btn>작성</v-btn> -->
-<!--          </div> -->
-<!--        </div> -->
+       <div class="row">
+         <div class="col-md-11">
+           <input type="text" id="content" name="content" placeholder="댓글을 입력해주세요" style="width:100%; height:100%;">
+           
+         </div>
+         <div class="col-md-1">
+           <v-btn>작성</v-btn>
+         </div>
+       </div>
         <!-- 댓글 입력 영역 end --> 
         <!-- 댓글 출력 영역 start --> 
-<!--        <div class="row"> -->
-<!--         -->
-<!--        </div> -->
+       <div class="row">
+       
+       </div>
         <!-- 댓글 출력 영역 end --> 
-<!--      </div> -->
+     </div>
       <!-- 댓글 영역 end -->
     </div>
 </v-app>
