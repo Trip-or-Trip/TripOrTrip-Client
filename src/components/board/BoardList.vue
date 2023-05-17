@@ -1,16 +1,42 @@
 <template>
   <v-app>
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
-      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">게시판</mark>
-      </h2>
-      <div style="text-align: right">
-        <v-btn outlined @click="movePage">작성</v-btn>
+  <div id="board-list">
+    <div class="title-container mt-4">
+      <div style="width: 80%; display: inline-block;">
+        <h2 class="my-3 py-3 shadow-sm bg-light text-center">
+          <mark class="sky">게시판</mark>
+        </h2>
       </div>
     </div>
-
-    <div v-if="articles.length" class="row align-self-center mb-2" style="width: 80%">
-      <div class="col-md-5 offset-7">
+    <div style="text-align: right;">
+      <v-btn class="text-none mb-5" id="write-btn" color="medium-emphasis" min-width="92" rounded variant="outlined" @click="movePage">글 작성</v-btn>
+    </div>
+    
+    <div v-if="articles.length">
+      <div class="row align-self-center mb-2">
+        <div class="col-md-6 offset-6">
+          <form class="d-flex">
+            <div class="col-4">
+              <v-select v-model="key" name="key" id="key" density="compact">
+                <option selected disabled>검색조건</option>
+                <option value="id">글번호</option>
+                <option value="title">제목</option>
+                <option value="user_id">작성자</option>
+                <option value="content">내용</option>
+              </v-select>
+            </div>
+            <div class="col-6">
+              <input v-model="word" type="text" name="word" id="word" class="form-control" placeholder="검색어..."/>
+            </div>
+            <div class="col-2">
+              <v-btn class="text-none" id="write-btn" color="medium-emphasis" min-width="92" rounded variant="outlined" @click="searchKeyword">검색</v-btn>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      
+      <!-- <div class="col-md-5 offset-7">
         <form class="d-flex" id="form-search" action="">
           <input type="hidden" name="" value="" />
           <input type="hidden" name="pgno" value="1" />
@@ -36,10 +62,10 @@
               class="form-control"
               placeholder="검색어..."
             />
-            <v-btn outlined @click="searchKeyword">검색</v-btn>
+            <button type="button" class="btn submit-btn" @click="searchKeyword">검색</button>
           </div>
         </form>
-      </div>
+      </div> -->
       <table class="table table-hover">
         <thead>
           <tr class="text-center">
@@ -59,7 +85,10 @@
         </tbody>
       </table>
     </div>
-    <div class="text-center" v-else>게시글이 없습니다.</div>
+    <div v-else class="title-container">
+      <h5>게시글이 없습니다.</h5>
+    </div>
+  </div>
   </v-app>
 </template>
 
@@ -107,4 +136,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+  border: 0px solid white;
+}
+
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
+}
+</style>
+
+<style scoped>
+.title-container {
+  text-align: center;
+}
+
+#write-btn {
+  margin-right: 7rem;
+}
+</style>
