@@ -171,10 +171,10 @@
             <!-- 본인일때만 글수정, 글 삭제 버튼 보이도록 함 -->
             <div style="padding-top: 15px">
               <v-btn @click="moveList">글목록</v-btn>
-              <v-btn  v-if="user.id == `admin` " @click="moveModifyArticle" >
+              <v-btn  v-if="user.id == article.article.userId"  @click="moveModifyArticle" >
                 글수정
               </v-btn>
-              <v-btn  v-if="user.id == `admin` " @click="deleteArticle">
+              <v-btn v-if="user.id == article.article.userId" @click="deleteArticle">
                 글삭제
               </v-btn>
             </div>
@@ -576,7 +576,7 @@ export default {
       // this.$router.push({ name: "planmodify", params: { articleno: this.article.id } });
     },
     deleteArticle() {
-      this.$router.push({ name: "plandelete", params: { articleno: this.article.id } });
+      this.$router.push({ name: "plandelete", params: { articleno: this.article.article.id } });
     },
     moveList() {
       this.$router.push({ name: "planlist" });
