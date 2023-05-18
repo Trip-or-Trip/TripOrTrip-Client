@@ -8,14 +8,7 @@
     <div class="col-lg-8 col-md-10 col-sm-12">
       <div class="mb-3">
         <label for="title" class="form-label">제목 : </label>
-        <input
-          type="text"
-          class="form-control"
-          id="title"
-          name="title"
-          v-model="title"
-          placeholder="제목..."
-        />
+        <input type="text" class="form-control" id="title" name="title" v-model="title" placeholder="제목..." />
       </div>
       <div class="mb-3">
         <label for="content" class="form-label">내용 : </label>
@@ -53,9 +46,7 @@ export default {
       let err = true;
       let msg = "";
       !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
-      err &&
-        !this.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+      err && !this.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
       // 만약, 내용이 다 입력되어 있다면 registArticle 호출
@@ -82,7 +73,7 @@ export default {
         .post(`/board/write`, article, {
           headers: {
             Origin: "http://localhost:9999",
-            Authorization: "Bearer " + this.getToken, // the token is a variable which holds the token
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
           },
         })
         .then(({ data }) => {

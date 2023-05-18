@@ -1,173 +1,154 @@
 <template>
-  <div v-if="open" id="hotplace-search">
-    <div class="form-container">
-      <form>
-        <div class="row justify-content-center form-group-row">
-          <div class="col-7 mt-3">
-            <input type="text" v-model="keyword" id="search-keyword" class="form-control" placeholder="장소명" />
+  <div id="hotplace-search">
+    <div class="overlay" @click="$emit('close-modal')"></div>
+    <div class="modal-card">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header mb-3">
+            <h5 class="modal-title">장소 검색</h5>
+            <button type="button" @click="$emit('close-modal')" class="btn-close"></button>
           </div>
-          <div class="col-2 mt-3">
-            <button type="button" @click="searchTitle" id="keyword-search-btn" class="btn submit-btn" style="width: 100%">검색</button>
-          </div>
-          <div class="col-2 mt-3">
-            <button type="button" id="title-submit-btn" class="btn submit-btn" style="width: 100%">선택</button>
+          <div class="modal-body">
+            <div>
+              <div class="form-container">
+                <form>
+                  <div class="row justify-content-center form-group-row">
+                    <div class="col-7 mt-3">
+                      <input type="text" v-model="keyword" id="search-keyword" class="form-control" placeholder="장소명" />
+                    </div>
+                    <div class="col-2 mt-3">
+                      <button type="button" @click="searchTitle" id="keyword-search-btn" class="btn submit-btn" style="width: 100%">검색</button>
+                    </div>
+                    <div class="col-2 mt-3">
+                      <button type="button" id="title-submit-btn" class="btn submit-btn" style="width: 100%">선택</button>
+                    </div>
+                  </div>
+                  <div id="result-container" class="mt-3"></div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-        <div id="result-container" class="mt-3"></div>
-      </form>
+        <div class="search-container">
+          <div v-if="places.length" id="search-content">
+            <div @click="selectedOne($event)" v-for="(place, index) in places" :key="index" class="place-container d-flex justify-content-center form-group-row">
+              <div class="col-5">
+                <div>{{ place.place_name }}</div>
+              </div>
+              <div class="col-7">
+                <div>{{ place.address_name }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-function copyStyles(sourceDoc, targetDoc) {
-  Array.from(sourceDoc.styleSheets).forEach((styleSheet) => {
-    if (styleSheet.cssRules) {
-      const newStyleEl = sourceDoc.createElement("style");
-
-      Array.from(styleSheet.cssRules).forEach((cssRule) => {
-        newStyleEl.appendChild(sourceDoc.createTextNode(cssRule.cssText));
-      });
-
-      targetDoc.head.appendChild(newStyleEl);
-    } else if (styleSheet.href) {
-      const newLinkEl = sourceDoc.createElement("link");
-
-      newLinkEl.rel = "stylesheet";
-      newLinkEl.href = styleSheet.href;
-      targetDoc.head.appendChild(newLinkEl);
-    }
-  });
-}
-
 export default {
   name: "HotplaceSearch",
   components: {},
-  model: {
-    prop: "open",
-    event: "close",
-  },
-  props: {
-    open: {
-      type: Boolean,
-      default: false,
-    },
-  },
+  props: {},
   data() {
     return {
-      windowRef: null,
-      data: "",
+      keyword: "",
       places: [],
     };
   },
-  watch: {
-    open(newOpen) {
-      if (newOpen) this.openPopup();
-      else this.closePopup();
-    },
-  },
   created() {},
+  mounted() {
+    if (!window.kakao || !window.kakao.maps) {
+      this.loadScript();
+    } else {
+      console.log(window.kakao.maps);
+    }
+  },
   methods: {
-    openPopup() {
-      let popupWidth = 1000;
-      let popupHeight = 700;
-      let popupX = window.screen.width / 2 - popupWidth / 2;
-      let popupY = window.screen.height / 2 - popupHeight / 2;
+    loadScript() {
+      const script = document.createElement("script");
 
-      this.windowRef = window.open("", "", "width=" + popupWidth + ", height=" + popupHeight + ", left=" + popupX + ", top=" + popupY + ", scrollbars=yes");
-      this.windowRef.document.body.appendChild(this.$el);
+      /* global kakao */ // eslint-disable-line no-unused-vars
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
+      script.onload = () => window.kakao.maps.load();
 
-      this.windowRef.console.log(this.$el);
-      copyStyles(window.document, this.windowRef.document);
-      this.windowRef.addEventListener("beforeunload", this.closePopup);
-    },
-    closePopup() {
-      if (this.windowRef) {
-        this.windowRef.close();
-        this.windowRef.removeEventListener("beforeunload", this.closePopup);
-        this.windowRef = null;
-        this.$emit("close", false); // 부모창의 binding된 open에게 값을 넘김
-      }
+      document.head.appendChild(script);
     },
     searchTitle() {
       if (!this.keyword) {
-        this.windowRef.alert("장소를 입력해 주세요.");
+        alert("장소를 입력해 주세요.");
       } else {
-        this.windowRef.console.log(this.keyword);
+        console.log(this.keyword);
         this.places = [];
 
-        let ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
-        this.windowRef.console.log("출력");
+        let ps = new window.kakao.maps.services.Places(); // 장소 검색 객체 생성
 
-        // let callback = (result, status) => {
-        //   this.windowRef.console.log(status);
-        //   if (status === kakao.maps.services.Status.OK) {
-        //     this.windowRef.console.log(result);
-        //     this.places = result;
-        //     // this.displaySearchResult(result);
-        //   } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        //     this.windowRef.alert("검색 결과가 없습니다. 다시 시도해 주세요.");
-        //   } else {
-        //     this.windowRef.alert("서버에 문제가 있습니다. 다시 시도해 주세요.");
-        //   }
-        // };
+        let callback = (result, status) => {
+          console.log(status);
+          if (status === window.kakao.maps.services.Status.OK) {
+            this.places = result;
+          } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+            alert("검색 결과가 없습니다. 다시 시도해 주세요.");
+          } else {
+            alert("서버에 문제가 있습니다. 다시 시도해 주세요.");
+          }
+        };
 
-        ps.keywordSearch(this.keyword, this.searchCallback);
-        this.windowRef.console.log("검색 종료");
+        ps.keywordSearch(this.keyword, callback);
+        console.log("검색 종료");
       }
     },
-    searchCallback(result, status) {
-      this.windowRef.console.log(status);
-      if (status === kakao.maps.services.Status.OK) {
-        this.windowRef.console.log(result);
-        this.places = result;
-        // this.displaySearchResult(result);
-      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        this.windowRef.alert("검색 결과가 없습니다. 다시 시도해 주세요.");
-      } else {
-        this.windowRef.alert("서버에 문제가 있습니다. 다시 시도해 주세요.");
-      }
+    selectedOne(event) {
+      console.log(event.target);
     },
-  },
-
-  mounted() {
-    const script = document.createElement("script");
-
-    /* global kakao */
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services&autoload=false";
-    // script.onload = () => window.kakao.maps.load(this.loadMap);
-    this.windowRef.document.head.appendChild(script);
-
-    if (this.open) {
-      this.openPopup();
-    }
-  },
-  beforeDestroy() {
-    if (this.windowRef) {
-      this.closePopup();
-    }
   },
 };
 </script>
 
 <style>
-body {
-  text-align: center;
+#hotplace-search,
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
-
-.form-container {
-  display: inline-block;
-  width: 700px;
-  margin-top: 2rem;
-  border-radius: 0.5rem;
-  border: 1px solid lightgray;
+.overlay {
+  opacity: 0.5;
+  background-color: black;
 }
-
+.modal-card {
+  position: relative;
+  width: 80%;
+  max-width: 70rem;
+  height: 42rem;
+  margin: auto;
+  margin-top: 10rem;
+  padding: 20px;
+  background-color: white;
+  min-height: 500px;
+  z-index: 10;
+  opacity: 1;
+  overflow-y: auto;
+}
+.modal-dialog {
+  height: 38rem;
+}
+.modal-content {
+  height: 8rem;
+}
 .place-container {
   display: inline-block;
   width: 100%;
   padding: 1.5rem 1rem;
   text-align: center;
   border: 1px solid white;
+}
+.search-container {
+  display: inline-block;
+  width: 100%;
+  height: 470px;
 }
 </style>

@@ -2,22 +2,11 @@
   <div class="tourist">
     <div class="container">
       <!-- 관광지 검색 하는 영역 start -->
-      <form
-        id="search-form"
-        class="d-flex my-3"
-        onsubmit="return false;"
-        role="search"
-        method="POST"
-      >
+      <form id="search-form" class="d-flex my-3" onsubmit="return false;" role="search" method="POST">
         <input type="hidden" name="root" id="root" value="${root}" />
 
         <!-- 지역 리스트 -->
-        <select
-          id="search-area"
-          v-model="selectedSido"
-          @change="findGuGun"
-          class="form-select me-2"
-        >
+        <select id="search-area" v-model="selectedSido" @change="findGuGun" class="form-select me-2">
           <option value="0" disabled>검색 지역 선택</option>
           <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">
             {{ sido.sidoName }}
@@ -44,15 +33,7 @@
           <option value="38">쇼핑</option>
           <option value="39">음식점</option>
         </select>
-        <button
-          id="btn-search"
-          class="btn submit-btn"
-          type="button"
-          @click="search"
-          style="width: 10em"
-        >
-          검색
-        </button>
+        <button id="btn-search" class="btn submit-btn" type="button" @click="search" style="width: 10em">검색</button>
       </form>
       <!-- kakao map start -->
       <div id="map" class="mt-3" style="width: 100%; height: 550px"></div>
@@ -78,7 +59,6 @@ export default {
       markers: [],
     };
   },
-
   created() {
     http
       .get(`/tourist`)
@@ -89,32 +69,33 @@ export default {
         console.log(response);
       });
   },
-
+  updated() {},
   mounted() {
-    const script = document.createElement("script");
-
-    /* global kakao */
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
-    script.onload = () => window.kakao.maps.load(this.loadMap);
-    document.head.appendChild(script);
+    if (window.kakao && window.kakao.maps) {
+      // window.kakao.maps.load(this.loadMap);
+      this.loadMap();
+    } else {
+      this.loadScript();
+    }
   },
-
-  updated() {
-    console.log("업데이트");
-  },
-
   methods: {
+    loadScript() {
+      const script = document.createElement("script");
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
+      /* global kakao */ // eslint-disable-line no-unused-vars
+      script.onload = () => window.kakao.maps.load(this.loadMap);
+
+      document.head.appendChild(script);
+    },
     loadMap() {
       const mapContainer = document.querySelector("#map");
       const mapOption = {
-        center: new kakao.maps.LatLng(37.500613, 127.036431), // 지도의 중심좌표
+        center: new window.kakao.maps.LatLng(37.500613, 127.036431), // 지도의 중심좌표
         level: 5, // 지도의 확대 레벨
       };
 
-      this.map = new kakao.maps.Map(mapContainer, mapOption);
+      this.map = new window.kakao.maps.Map(mapContainer, mapOption);
     },
-
     findGuGun() {
       http
         .get(`/tourist/${this.selectedSido}`)
@@ -150,7 +131,7 @@ export default {
       for (let i = 0; i < data.length; i++) {
         var markerInfo = {
           title: data[i].title,
-          latlng: new kakao.maps.LatLng(data[i].latitude, data[i].longitude),
+          latlng: new window.kakao.maps.LatLng(data[i].latitude, data[i].longitude),
           image: data[i].first_image,
           addr: data[i].addr1,
           zipcode: data[i].zipcode,
@@ -165,11 +146,11 @@ export default {
       var imageSrc = require("@/assets/img/location.png"); // 마커 이미지의 이미지 주소
 
       for (let i = 0; i < positions.length; i++) {
-        var imageSize = new kakao.maps.Size(30, 35); // 마커 이미지의 이미지 크기
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지 생성
+        var imageSize = new window.kakao.maps.Size(30, 35); // 마커 이미지의 이미지 크기
+        var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지 생성
 
         // 마커 생성
-        let marker = new kakao.maps.Marker({
+        let marker = new window.kakao.maps.Marker({
           map: this.map, // 마커를 표시할 지도
           position: positions[i].latlng, // 마커를 표시할 위치
           title: positions[i].title, // a마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시
@@ -183,7 +164,7 @@ export default {
         this.markers.push(marker);
 
         // 마커에 클릭 이벤트 등록
-        kakao.maps.event.addListener(marker, "click", () => {
+        window.kakao.maps.event.addListener(marker, "click", () => {
           this.makeMapUrl(positions[i]);
         });
       }
@@ -194,12 +175,12 @@ export default {
     makeMapUrl(marker) {
       console.log(marker);
       console.log("makeMapUrl 호출");
-      let ps = new kakao.maps.services.Places(); // 장소 검색 객체 생성
+      let ps = new window.kakao.maps.services.Places(); // 장소 검색 객체 생성
 
       let callback = (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
+        if (status === window.kakao.maps.services.Status.OK) {
           this.displayCustomOverlay(result[0].place_url, marker);
-        } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
           this.displayCustomOverlay("", marker);
         } else {
           alert("서버에 문제가 있습니다. 다시 시도해 주세요.");
@@ -237,7 +218,7 @@ export default {
         content += `<a href="${mapUrl}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-geo-alt me-1"></i>지도검색</a>`;
       }
 
-      content += `<a href="https://map.kakao.com/link/to/${marker.title},${marker.latlng.Ma},${marker.latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>   						
+      content += `<a href="https://map.kakao.com/link/to/${marker.title},${marker.latlng.Ma},${marker.latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>
               </div>
             </div>
           </div>
@@ -245,7 +226,7 @@ export default {
       </div>
       `;
 
-      this.overlay = new kakao.maps.CustomOverlay({
+      this.overlay = new window.kakao.maps.CustomOverlay({
         content: content,
         map: this.map,
         position: marker.latlng,

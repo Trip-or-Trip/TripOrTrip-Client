@@ -16,17 +16,21 @@ export default {
   created() {
     console.log("App.vue");
   },
+  mounted() {
+    const script = document.createElement("script");
+
+    /* global kakao */ // eslint-disable-line no-unused-vars
+    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
+    script.onload = () => window.kakao.maps.load();
+
+    document.head.appendChild(script);
+  },
 };
 </script>
 
 <style>
 @import "https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css";
 @import "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css";
-
-/* @font-face {
-  font-family: "NanumSquareRound";
-  src: url("@/assets/fonts/NanumSquareRoundR.ttf");
-} */
 
 #app {
   font-family: "NanumSquareRound";

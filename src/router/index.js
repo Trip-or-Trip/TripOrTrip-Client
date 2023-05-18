@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 // views
 import AppMain from "@/views/AppMain";
 import AppUser from "@/views/AppUser";
+import AppHotplace from "@/views/AppHotplace";
 // import AppUser from "@/views/AppUser.vue";
 // import AppBoard from "@/views/AppBoard.vue";
 // import AppNotice from "@/views/AppNotice.vue";
@@ -156,13 +157,23 @@ const routes = [
   {
     path: "/hotplace",
     name: "hotplace",
-    component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
+    component: AppHotplace,
     children: [
+      // {
+      //   path: "search",
+      //   name: "hotplacesearch",
+      //   component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceSearch"),
+      // },
       {
-        path: "search",
-        name: "search",
-        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceSearch"),
-      }
+        path: "",
+        name: "HotplaceList",
+        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
+      },
+      {
+        path: "create",
+        name: "hotplacecreate",
+        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
+      },
     ]
   },
 ];

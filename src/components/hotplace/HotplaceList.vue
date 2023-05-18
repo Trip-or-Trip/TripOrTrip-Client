@@ -5,7 +5,8 @@
         <div class="px-5">
           <h3 class="mb-4" style="float: left">핫플레이스 목록</h3>
           <div style="float: right">
-            <button @click="createModalView = true" class="btn submit-btn mt-2 px-3 py-1">핫플 추가하기</button>
+            <!-- <button @click="createModalView = true" class="btn submit-btn mt-2 px-3 py-1">핫플 추가하기</button> -->
+            <router-link to="/hotplace/create" class="mt-2 px-3 py-1">핫플 추가하기</router-link>
           </div>
         </div>
       </div>
@@ -68,24 +69,24 @@
       </div>
     </main>
 
-    <hotplace-create v-if="createModalView" @close-modal="createModalView = false"></hotplace-create>
+    <!-- <hotplace-create v-if="createModalView" @close-modal="createModalView = false"></hotplace-create> -->
   </div>
 </template>
 
 <script>
-import HotplaceCreate from "@/components/hotplace/HotplaceCreate";
+// import HotplaceCreate from "@/components/hotplace/HotplaceCreate";
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 
 export default {
   name: "HotplaceList",
   components: {
-    HotplaceCreate,
+    // HotplaceCreate,
   },
   data() {
     return {
       hotplaces: [],
-      createModalView: false,
+      // createModalView: false,
     };
   },
   computed: {
@@ -93,7 +94,6 @@ export default {
     ...mapState(["user"]),
   },
   created() {
-    console.log("핫플 출력");
     http.get(`/hotplace/list`).then(({ data }) => {
       console.log(data);
       this.hotplaces = data;
