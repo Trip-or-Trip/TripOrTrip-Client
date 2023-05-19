@@ -5,7 +5,6 @@
         <div class="px-5">
           <h3 class="mb-4" style="float: left">핫플레이스 목록</h3>
           <div style="float: right">
-            <!-- <button @click="createModalView = true" class="btn submit-btn mt-2 px-3 py-1">핫플 추가하기</button> -->
             <router-link :to="{ name: 'hotplacecreate' }" v-if="user" class="btn submit-btn mt-2 px-3 py-1">핫플 추가하기</router-link>
           </div>
         </div>
@@ -15,7 +14,7 @@
 
       <!-- 비동기로 핫플레이스 가져오기 -->
       <div id="hotplace-container" class="px-3 mx-5">
-        <masonry :cols="3" :gutter="10" class="card-style">
+        <masonry :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }" :gutter="10" class="card-style">
           <hotplace-list-item v-for="hotplace in hotplaces" :key="hotplace.num" :hotplace="hotplace"></hotplace-list-item>
         </masonry>
       </div>
@@ -36,7 +35,6 @@ export default {
   data() {
     return {
       hotplaces: [],
-      // createModalView: false,
     };
   },
   computed: {

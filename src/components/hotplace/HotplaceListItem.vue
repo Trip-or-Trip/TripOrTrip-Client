@@ -26,19 +26,19 @@
       <div class="card-body">
         <div class="mt-2 cart-text">
           <div class="mb-2">
-            <i class="hotplace-icon bi bi-chat-square-heart me-3"></i>
-            <i class="hotplace-icon bi bi-geo me-3" title="지도 보기"></i>
-            <a href="${hotplace.mapUrl}" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
-            <a href="https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}" target="_blank" style="color: black"
+            <!-- <i class="hotplace-icon bi bi-chat-square-heart me-3"></i> -->
+            <i v-if="hotplace.like" class="hotplace-icon like-icon bi bi-heart-fill me-3"></i>
+            <i v-else class="hotplace-icon bi bi-heart me-3"></i>
+            <a :href="`${hotplace.mapUrl}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
+            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"
               ><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i
             ></a>
           </div>
           <div>
-            <div v-if="tag1 || tag2" class="mb-2">
-              <span v-if="tag1" class="me-2">#{{ hotplace.tag1 }}</span>
-              <span v-if="tag2" class="me-2">#{{ hotplace.tag2 }}</span>
+            <div v-if="hotplace.tag1 || hotplace.tag2" class="mb-2">
+              <span v-if="hotplace.tag1" class="me-2">#{{ hotplace.tag1 }}</span>
+              <span v-if="hotplace.tag2" class="me-2">#{{ hotplace.tag2 }}</span>
             </div>
-            <p class="mb-2">{{ hotplace.title }}</p>
             <p class="mb-3">{{ hotplace.desc }}</p>
             <p style="font-size: 0.9rem">{{ hotplace.joinDate }}</p>
           </div>
@@ -58,17 +58,13 @@ export default {
   },
   components: {},
   data() {
-    return {
-      image: "",
-    };
+    return {};
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),
     ...mapState(["user"]),
   },
-  created() {
-    this.image = "C:\\trip\\upload\\hotplace\\" + this.hotplace.image;
-  },
+  created() {},
   methods: {},
 };
 </script>
@@ -85,5 +81,8 @@ export default {
 
 .hotplace-card {
   height: 100%;
+}
+.like-icon {
+  color: crimson;
 }
 </style>
