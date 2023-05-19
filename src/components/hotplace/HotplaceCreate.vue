@@ -116,9 +116,10 @@ export default {
             "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
           },
         })
-        .then(() => {
-          alert("핫플레이스 등록 성공");
-          this.$router.push("/hotplace/list");
+        .then(({ data }) => {
+          console.log(data);
+          // alert("핫플레이스 등록 성공");
+          // this.$router.push({ name: "HotplaceList" });
         })
         .catch(() => {
           alert("등록 중 문제가 생겼습니다. 다시 시도해 주세요.");

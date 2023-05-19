@@ -15,6 +15,9 @@ import Vuetify from "vuetify";
 // vue-cookie
 import VueCookie from 'vue-cookies'
 
+// vue-masnory-css
+import VueMasonry from 'vue-masonry-css'
+
 // fontawesome
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -26,6 +29,7 @@ import VueCookie from 'vue-cookies'
 
 Vue.use(Vuetify);
 Vue.use(VueCookie)
+Vue.use(VueMasonry);
 Vue.config.productionTip = false;
 
 new Vue({
