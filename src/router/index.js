@@ -31,6 +31,11 @@ const routes = [
         name: "signup",
         component: () => import(/* webpackChunkName: "user" */ "@/components/user/SignUp"),
       },
+      {
+        path: "password",
+        name: "findpassword",
+        component: () => import(/* webpackChunkName: "user" */ "@/components/user/FindPassword"),
+      }
     ],
   },
   {

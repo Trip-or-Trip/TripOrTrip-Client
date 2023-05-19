@@ -19,24 +19,26 @@
                     <div class="col-2 mt-3">
                       <button type="button" @click="searchTitle" id="keyword-search-btn" class="btn submit-btn" style="width: 100%">검색</button>
                     </div>
-                    <div class="col-2 mt-3">
+                    <!-- <div class="col-2 mt-3">
                       <button type="button" id="title-submit-btn" class="btn submit-btn" style="width: 100%">선택</button>
+                    </div> -->
+                  </div>
+                  <div id="result-container" class="mt-3">
+                    <div v-show="places.length" id="search-content">
+                      <div @click="selectedOne" v-for="(place, index) in places" :key="index" class="place-container d-flex justify-content-center form-group-row">
+                        <div class="col-4">
+                          <div>{{ place.place_name }}</div>
+                        </div>
+                        <div class="col-6">
+                          <div>{{ place.address_name }}</div>
+                        </div>
+                        <div class="col-2">
+                          <button type="button" @click.prevent="selectedOne(place, $event)" class="btn select-btn">선택</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div id="result-container" class="mt-3"></div>
                 </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="search-container">
-          <div v-if="places.length" id="search-content">
-            <div @click="selectedOne($event)" v-for="(place, index) in places" :key="index" class="place-container d-flex justify-content-center form-group-row">
-              <div class="col-5">
-                <div>{{ place.place_name }}</div>
-              </div>
-              <div class="col-7">
-                <div>{{ place.address_name }}</div>
               </div>
             </div>
           </div>
@@ -88,6 +90,7 @@ export default {
           console.log(status);
           if (status === window.kakao.maps.services.Status.OK) {
             this.places = result;
+            // this.addClickEvent();
           } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
             alert("검색 결과가 없습니다. 다시 시도해 주세요.");
           } else {
@@ -99,8 +102,16 @@ export default {
         console.log("검색 종료");
       }
     },
-    selectedOne(event) {
-      console.log(event.target);
+    // addClickEvent() {
+    //   for (let i = 0; i < this.places.length; i++) {}
+    // },
+
+    // eslint-disable-next-line no-unused-vars
+    selectedOne(place, event) {
+      // console.log(place);
+      // console.log(event);
+      this.$emit("searchResult", place);
+      this.$emit("close-modal");
     },
   },
 };
@@ -146,9 +157,15 @@ export default {
   text-align: center;
   border: 1px solid white;
 }
-.search-container {
+.result-container {
   display: inline-block;
   width: 100%;
   height: 470px;
+}
+.select-btn {
+  background-color: #e0e6ec;
+}
+.select-btn:hover {
+  background-color: #d2d9e0;
 }
 </style>

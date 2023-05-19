@@ -16,7 +16,7 @@
       <!-- 비동기로 핫플레이스 가져오기 -->
       <div id="hotplace-container" class="px-3 mx-5">
         <!-- 핫플 카드 start -->
-        <div class="row" data-masonry='{"percentPosition": true}'>
+        <!-- <div class="row" data-masonry='{"percentPosition": true}'>
           <div v-for="(hotplace, index) in hotplaces" :key="index" class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-12 mb-5 px-3">
             <div class="card hotplace-card px-3 py-2 mx-2">
               <div class="card-title mt-3 mb-3">
@@ -44,7 +44,7 @@
               <div class="card-body">
                 <div class="mt-2 cart-text">
                   <div class="mb-2">
-                    <!-- <i class="hotplace-icon bi bi-chat-square-heart me-3"></i> -->
+                    <i class="hotplace-icon bi bi-chat-square-heart me-3"></i>
                     <i class="hotplace-icon bi bi-geo me-3" title="지도 보기"></i>
                     <a href="${hotplace.mapUrl}" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
                     <a href="https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}" target="_blank" style="color: black"
@@ -64,7 +64,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- 핫플 카드 end -->
       </div>
     </main>
@@ -94,10 +94,19 @@ export default {
     ...mapState(["user"]),
   },
   created() {
-    http.get(`/hotplace/list`).then(({ data }) => {
-      console.log(data);
-      this.hotplaces = data;
-    });
+    let user;
+    if (!this.user.id) user = "";
+    else user = this.user.id;
+    http
+      .post(`/hotplace/list`, user)
+      .then(({ data }) => {
+        console.log(data);
+        this.hotplaces = data;
+        console.log(this.hotplaces);
+      })
+      .catch((response) => {
+        console.log(response);
+      });
   },
 };
 </script>
