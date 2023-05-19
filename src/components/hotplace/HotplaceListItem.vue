@@ -27,8 +27,12 @@
         <div class="mt-2 cart-text">
           <div class="mb-2">
             <!-- <i class="hotplace-icon bi bi-chat-square-heart me-3"></i> -->
-            <i v-if="hotplace.like" class="hotplace-icon like-icon bi bi-heart-fill me-3"></i>
-            <i v-else class="hotplace-icon bi bi-heart me-3"></i>
+            <span v-show="isLike" @click="clickLikeIcon">
+              <i class="hotplace-icon like-icon bi bi-heart-fill me-3"></i>
+            </span>
+            <span v-show="!isLike" @click="clickLikeIcon">
+              <i class="hotplace-icon bi bi-heart me-3"></i>
+            </span>
             <a :href="`${hotplace.mapUrl}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
             <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"
               ><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i
@@ -50,6 +54,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import http from "@/util/http-common";
 
 export default {
   name: "HotplaceListItem",
@@ -58,14 +63,42 @@ export default {
   },
   components: {},
   data() {
-    return {};
+    return {
+      isLike: false,
+    };
   },
   computed: {
-    ...mapGetters(["isLoggedIn"]),
+    ...mapGetters(["isLoggedIn", "getToken"]),
     ...mapState(["user"]),
   },
-  created() {},
-  methods: {},
+  created() {
+    if (this.hotplace.like) this.isLike = true;
+  },
+  methods: {
+    // eslint-disable-next-line no-unused-vars
+    clickLikeIcon() {
+      if (!this.user) return;
+
+      http
+        .put(
+          "/hotplace",
+          {
+            userId: this.user.id,
+            num: this.hotplace.num,
+          },
+          {
+            headers: {
+              "X-ACCESS-TOKEN": "Bearer " + this.getToken,
+            },
+          }
+        )
+        .then(({ data }) => {
+          if (data == "success") {
+            this.isLike = !this.isLike;
+          }
+        });
+    },
+  },
 };
 </script>
 
