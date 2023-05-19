@@ -35,7 +35,7 @@ const routes = [
         path: "password",
         name: "findpassword",
         component: () => import(/* webpackChunkName: "user" */ "@/components/user/FindPassword"),
-      }
+      },
     ],
   },
   {
@@ -172,14 +172,21 @@ const routes = [
       {
         path: "",
         name: "HotplaceList",
-        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
+        component: () =>
+          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
       },
       {
         path: "create",
         name: "hotplacecreate",
-        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
+        component: () =>
+          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
       },
-    ]
+    ],
+  },
+  {
+    path: "/mypage",
+    name: "mypage",
+    component: () => import(/* webpackChunkName: "tourist" */ "@/views/AppMypage"),
   },
 ];
 
