@@ -2,7 +2,7 @@
   <div id="hotplace-create">
     <div id="content-container" class="row shadow d-flex justify-content-center">
       <div id="img-container" class="row col-6 me-3">
-        <div v-if="!image" class="align-self-center text-center">이미지가 표시됩니다.</div>
+        <div v-if="!image" class="align-self-center text-center mt-5"><h5>이미지가 표시됩니다.</h5></div>
         <img v-else class="p-5" :src="image" />
       </div>
       <div id="form-container" class="align-self-center col-5 ms-3">

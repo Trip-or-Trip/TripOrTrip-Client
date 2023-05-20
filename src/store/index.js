@@ -8,24 +8,17 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
-    count: 0,
     token: '',
     user: {
     },
     log: []
   },
   getters: {
-    getCountValue: state => {
-      return state.count
-    },
     getToken: state => {
       return state.token
     },
     getUser: state => {
       return state.user
-    },
-    getLog: state => {
-      return state.log
     },
     isLoggedIn: state => {
       if (Object.keys(state.user).length > 0)

@@ -41,6 +41,7 @@ const routes = [
   {
     path: "/mypage",
     name: "mypage",
+    redirect: { name: 'userdetail' },
     component: () => import(/* webpackChunkName: "mypage" */ "../views/AppMypage"),
     children: [
       {
@@ -214,11 +215,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceUpdate"),
       },
     ],
-  },
-  {
-    path: "/mypage",
-    name: "mypage",
-    component: () => import(/* webpackChunkName: "tourist" */ "@/views/AppMypage"),
   },
 ];
 

@@ -32,7 +32,7 @@
             </div>
             <div>
               <a v-if="isLoggedIn" @click="logout" class="nav-link active" id="signout-user"> 로그아웃 </a>
-              <router-link v-else :to="{ name: 'signout' }" class="nav-link active" id="signup-user"> 회원가입 </router-link>
+              <router-link v-else :to="{ name: 'signup' }" class="nav-link active" id="signup-user"> 회원가입 </router-link>
             </div>
           </div>
         </b-collapse>
@@ -61,23 +61,6 @@ export default {
   computed: {
     ...mapGetters(["isLoggedIn"]),
     ...mapState(["user"]),
-  },
-  mounted() {
-    document.querySelector("#navbarContent").addEventListener("show.bs.collapse", function () {
-      console.log("show.bs.collapse");
-    });
-    // 콘텐츠가 펼친 후에 호출
-    document.querySelector("#navbarContent").addEventListener("shown.bs.collapse", function () {
-      console.log("shown.bs.collapse");
-    });
-    // 콘텐츠가 접기 전에 호출
-    document.querySelector("#navbarContent").addEventListener("hide.bs.collapse", function () {
-      console.log("hide.bs.collapse");
-    });
-    // 콘텐츠가 접고 난 후에 호출
-    document.querySelector("#navbarContent").addEventListener("hidden.bs.collapse", function () {
-      console.log("hidden.bs.collapse");
-    });
   },
   methods: {
     logout() {

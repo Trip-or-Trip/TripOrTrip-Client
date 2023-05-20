@@ -1,10 +1,10 @@
 <template>
   <div id="mypage">
     <div class="row">
-      <div id="left-container" class="col-3">
+      <div id="left-container" class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-11">
         <mypage-category></mypage-category>
       </div>
-      <div id="right-container" class="col-9">
+      <div id="right-container" class="col-xxl-8 col-xl-8 col-lg-8 col-md-7 col-sm-11">
         <router-view></router-view>
       </div>
     </div>
@@ -30,11 +30,13 @@ export default {
 </script>
 
 <style scoped>
-/* #left-container {
-  height: 80vh;
-} */
+#left-container {
+  margin: 0;
+  padding: 0;
+  margin-left: 3rem;
+}
 #right-container {
-  border: 1px solid blue;
-  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 </style>
