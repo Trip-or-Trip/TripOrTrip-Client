@@ -9,11 +9,10 @@
           </div>
           <div class="col-3 justify-content-end">
             <div v-if="user.id == hotplace.userId" class="dropdown">
-              <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">menu</button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item ${hotplace.num}" onclick="viewUpdateModal(this)">핫플레이스 수정</a></li>
-                <li><a class="dropdown-item" href="${root}/hotplace/delete/${hotplace.num}">핫플레이스 삭제</a></li>
-              </ul>
+              <b-dropdown size="sm" text="menu" variant="outline-dark" class="m-2">
+                <b-dropdown-item-button><router-link :to="{ name: 'hotplaceupdate', params: { num: hotplace.num } }" :hotplace="hotplace">핫플레이스 수정</router-link></b-dropdown-item-button>
+                <b-dropdown-item-button @click="hotplaceDelete">핫플레이스 삭제</b-dropdown-item-button>
+              </b-dropdown>
             </div>
           </div>
         </div>
@@ -65,6 +64,7 @@ export default {
   data() {
     return {
       isLike: false,
+      dropdownShow: false,
     };
   },
   computed: {
@@ -98,6 +98,20 @@ export default {
           }
         });
     },
+    hotplaceDelete() {
+      http
+        .delete(`/hotplace/${this.hotplace.num}`, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken,
+          },
+        })
+        .then(() => {
+          location.reload();
+        })
+        .catch(() => {
+          alert("삭제 중 문제가 발생했습니다.");
+        });
+    },
   },
 };
 </script>
@@ -111,11 +125,27 @@ export default {
 .hotplace-icon {
   font-size: 25px;
 }
-
 .hotplace-card {
   height: 100%;
 }
 .like-icon {
   color: crimson;
+}
+b-dropdown {
+  background-color: red;
+}
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+}
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
+}
+a {
+  text-decoration: none;
+  color: black;
 }
 </style>

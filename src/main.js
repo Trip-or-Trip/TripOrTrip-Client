@@ -4,7 +4,9 @@ import router from "./router";
 import store from "./store";
 
 // bootstrap
+import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // vuetify
@@ -13,10 +15,10 @@ import Vuetify from "vuetify";
 // import vuetify from './plugins/vuetify'
 
 // vue-cookie
-import VueCookie from 'vue-cookies'
+import VueCookie from "vue-cookies";
 
 // vue-masnory-css
-import VueMasonry from 'vue-masonry-css'
+import VueMasonry from "vue-masonry-css";
 
 // fontawesome
 // import { library } from '@fortawesome/fontawesome-svg-core';
@@ -28,7 +30,8 @@ import VueMasonry from 'vue-masonry-css'
 // Vue.config.productionTip = false
 
 Vue.use(Vuetify);
-Vue.use(VueCookie)
+Vue.use(BootstrapVue);
+Vue.use(VueCookie);
 Vue.use(VueMasonry);
 Vue.config.productionTip = false;
 

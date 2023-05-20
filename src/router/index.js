@@ -94,8 +94,7 @@ const routes = [
         path: "",
         name: "noticewrite",
         // component: NoticeWrite,
-        component: () =>
-          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
+        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
       },
       {
         path: ":articleno",
@@ -107,15 +106,13 @@ const routes = [
         path: "",
         name: "noticemodify",
         // component: NoticeModify,
-        component: () =>
-          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
+        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
       },
       {
         path: "",
         name: "noticedelete",
         // component: NoticeDelete,
-        component: () =>
-          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeDelete"),
+        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeDelete"),
       },
     ],
   },
@@ -164,22 +161,20 @@ const routes = [
     name: "hotplace",
     component: AppHotplace,
     children: [
-      // {
-      //   path: "search",
-      //   name: "hotplacesearch",
-      //   component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceSearch"),
-      // },
       {
         path: "",
         name: "HotplaceList",
-        component: () =>
-          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
+        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
       },
       {
         path: "create",
         name: "hotplacecreate",
-        component: () =>
-          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
+        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
+      },
+      {
+        path: ":num",
+        name: "hotplaceupdate",
+        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceUpdate"),
       },
     ],
   },
