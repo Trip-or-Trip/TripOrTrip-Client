@@ -42,7 +42,38 @@ const routes = [
     path: "/mypage",
     name: "mypage",
     component: () => import(/* webpackChunkName: "mypage" */ "../views/AppMypage"),
-    children: [],
+    children: [
+      {
+        path: "",
+        name: "userdetail",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageUser"),
+      },
+      {
+        path: "",
+        name: "mypageboard",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageBoard"),
+      },
+      {
+        path: "",
+        name: "mypageplan",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypagePlan"),
+      },
+      {
+        path: "",
+        name: "mypagehotplace",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageHotplace"),
+      },
+      {
+        path: "",
+        name: "mypagecomment",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageComment"),
+      },
+      {
+        path: "",
+        name: "mypagelike",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageLike"),
+      },
+    ],
   },
   {
     path: "/board/",

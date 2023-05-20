@@ -1,12 +1,12 @@
 <template>
-  <div id="mypage-plan">
-    <h2>작성 계획</h2>
+  <div id="mypage-comment">
+    <h2>작성 댓글</h2>
   </div>
 </template>
 
 <script>
 export default {
-  name: "MypagePlan",
+  name: "MypageComment",
   components: {},
   data() {
     return {

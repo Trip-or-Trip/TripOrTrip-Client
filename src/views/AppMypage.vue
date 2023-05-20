@@ -1,8 +1,12 @@
 <template>
   <div id="mypage">
     <div class="row">
-      <div id="left-container" class="col-3"></div>
-      <div id="right-container" class="col-9"></div>
+      <div id="left-container" class="col-3">
+        <mypage-category></mypage-category>
+      </div>
+      <div id="right-container" class="col-9">
+        <router-view></router-view>
+      </div>
     </div>
     <!-- <b-container class="bv-example-row mt-3">
       <b-row>
@@ -18,18 +22,19 @@
 </template>
 
 <script>
+import MypageCategory from "@/components/mypage/MypageCategory";
 export default {
+  components: { MypageCategory },
   name: "AppMypage",
 };
 </script>
 
 <style scoped>
-#left-container {
-  background-color: red;
-  height: 100vh;
-}
+/* #left-container {
+  height: 80vh;
+} */
 #right-container {
-  background-color: blue;
-  height: 100vh;
+  border: 1px solid blue;
+  height: 100%;
 }
 </style>

@@ -1,10 +1,12 @@
 <template>
-  <div></div>
+  <div id="mypage-hotplace">
+    <h2>작성 핫플</h2>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "",
+  name: "MypageHotplace",
   components: {},
   data() {
     return {

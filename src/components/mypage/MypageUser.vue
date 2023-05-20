@@ -1,10 +1,12 @@
 <template>
-  <div></div>
+  <div id="user-detail">
+    <h2>유저 디테일</h2>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "",
+  name: "MypageUser",
   components: {},
   data() {
     return {
