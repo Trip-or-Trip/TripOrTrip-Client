@@ -93,7 +93,9 @@ export default {
           }
         )
         .then(({ data }) => {
+          console.log(data);
           if (data == "success") {
+            console.log(data);
             this.isLike = !this.isLike;
           }
         });
@@ -147,10 +149,5 @@ b-dropdown {
 a {
   text-decoration: none;
   color: black;
-}
-#upload-img-icon {
-  position: absolute;
-  top: 0px;
-  left: 0px;
 }
 </style>
