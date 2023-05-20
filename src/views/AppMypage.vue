@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <b-container class="bv-example-row mt-3">
+  <div id="mypage">
+    <div class="row">
+      <div id="left-container" class="col-3"></div>
+      <div id="right-container" class="col-9"></div>
+    </div>
+    <!-- <b-container class="bv-example-row mt-3">
       <b-row>
         <b-col>
           <router-view name="mypagecategory"></router-view>
@@ -9,7 +13,7 @@
           <router-view name="mypagedetail"></router-view>
         </b-col>
       </b-row>
-    </b-container>
+    </b-container> -->
   </div>
 </template>
 
@@ -19,4 +23,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#left-container {
+  background-color: red;
+  height: 100vh;
+}
+#right-container {
+  background-color: blue;
+  height: 100vh;
+}
+</style>

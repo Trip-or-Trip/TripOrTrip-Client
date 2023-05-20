@@ -3,19 +3,9 @@
     <nav id="navbar" class="navbar navbar-expand-lg bg-nav shadow py-3">
       <div class="container-fluid mx-5">
         <router-link class="navbar-brand fw-bold fs-4 mr-5" to="/">Trip or Trip!</router-link>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <div class="collapse navbar-collapse" id="navbarContent">
+        <b-collapse id="nav-collapse" is-nav>
           <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="service-list">
             <li class="nav-item">
               <router-link to="/tourist" class="nav-link active"> 지역별 관광지 검색 </router-link>
@@ -36,26 +26,19 @@
 
           <div class="navbar-nav mb-2 mb-lg-0">
             <div>
-              <a v-if="isLoggedIn" @click="infoModalView = true" class="nav-link active" id="view-user">
-                회원정보 보기
-              </a>
-              <router-link v-else to="/user/signin" class="nav-link active" id="signin-user">
-                로그인
-              </router-link>
+              <!-- <a v-if="isLoggedIn" @click="infoModalView = true" class="nav-link active" id="view-user"> 회원정보 보기 </a> -->
+              <router-link v-if="isLoggedIn" :to="{ name: 'mypage' }" class="nav-link active" id="view-user"> 마이페이지 </router-link>
+              <router-link v-else :to="{ name: 'signin' }" class="nav-link active" id="signin-user"> 로그인 </router-link>
             </div>
             <div>
-              <a v-if="isLoggedIn" @click="logout" class="nav-link active" id="signout-user">
-                로그아웃
-              </a>
-              <router-link v-else to="/user/signup" class="nav-link active" id="signup-user">
-                회원가입
-              </router-link>
+              <a v-if="isLoggedIn" @click="logout" class="nav-link active" id="signout-user"> 로그아웃 </a>
+              <router-link v-else :to="{ name: 'signout' }" class="nav-link active" id="signup-user"> 회원가입 </router-link>
             </div>
           </div>
-        </div>
+        </b-collapse>
       </div>
     </nav>
-    
+
     <user-info v-if="infoModalView" @close-modal="infoModalView = false"></user-info>
   </header>
 </template>
@@ -72,7 +55,7 @@ export default {
   data() {
     return {
       infoModalView: false,
-    }
+    };
   },
   created() {},
   computed: {

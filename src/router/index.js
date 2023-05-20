@@ -39,6 +39,12 @@ const routes = [
     ],
   },
   {
+    path: "/mypage",
+    name: "mypage",
+    component: () => import(/* webpackChunkName: "mypage" */ "../views/AppMypage"),
+    children: [],
+  },
+  {
     path: "/board/",
     name: "board",
     // component: AppBoard,
