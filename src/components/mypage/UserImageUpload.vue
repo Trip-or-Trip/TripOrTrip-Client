@@ -11,7 +11,7 @@
           <div class="modal-body">
             <div class="row justify-content-center form-group-row">
               <div class="col-7 mt-3">
-                <input type="file" @change="upload" accept="image/*" class="form-control my-3" />
+                <input type="file" @change="upload" accept="image/*" id="profile-img" class="form-control my-3" />
               </div>
               <div class="col-3 mt-3">
                 <button type="button" @click="selectProfile" class="btn submit-btn my-3" style="width: 100%">선택</button>
@@ -31,12 +31,19 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
+import http from "@/util/http-common";
+
 export default {
   name: "UserImageUpload",
   data() {
     return {
       image: "",
     };
+  },
+  computed: {
+    ...mapGetters(["getToken"]),
+    ...mapState(["user"]),
   },
   methods: {
     upload(e) {
@@ -49,6 +56,28 @@ export default {
         alert("사진을 선택해 주세요.");
         return;
       }
+      const file = document.querySelector("#profile-img");
+
+      const formData = new FormData();
+      formData.append("userId", this.user.id);
+      formData.append("image", file.files[0]);
+
+      http
+        .post(`/mypage/profile`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
+          console.log(data);
+          this.$store.dispatch("getUserFromServer");
+          this.$emit("close-modal");
+        })
+        .catch(() => {
+          alert("등록 중 문제가 생겼습니다. 다시 시도해 주세요.");
+          location.reload();
+        });
     },
   },
 };

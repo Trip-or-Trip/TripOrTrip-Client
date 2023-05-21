@@ -5,6 +5,7 @@
         <div class="user-img-container d-flex justify-content-center">
           <div id="user-img-content">
             <b-avatar v-if="!user.image" :src="require('@/assets/img/user.png')" size="13rem"></b-avatar>
+            <b-avatar v-else :src="`/upload/profile/${user.image}`" size="13rem"></b-avatar>
             <i @click="uploadModalView = true" id="upload-img-icon" class="bi bi-camera-fill"></i>
           </div>
         </div>
@@ -93,11 +94,7 @@ export default {
     ...mapState(["user"]),
   },
   created() {},
-  methods: {
-    setImage(image) {
-      if (image) this.image = image;
-    },
-  },
+  methods: {},
 };
 </script>
 
