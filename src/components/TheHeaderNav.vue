@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header id="navbar-container">
     <nav id="navbar" class="navbar navbar-expand-lg bg-nav shadow py-3">
       <div class="container-fluid mx-5">
         <router-link class="navbar-brand fw-bold fs-4 mr-5" to="/">Trip or Trip!</router-link>
