@@ -1,40 +1,68 @@
 <template>
   <div class="tourist">
-    <div class="container">
+    <div class="container mt-5">
       <!-- 관광지 검색 하는 영역 start -->
-      <form id="search-form" class="d-flex my-3" onsubmit="return false;" role="search" method="POST">
-        <input type="hidden" name="root" id="root" value="${root}" />
+      <form id="search-form" class="my-3" onsubmit="return false;" role="search" method="POST">
+        <div class="row d-flex justify-content-center">
+          <div class="col-4">
+            <!-- 지역 리스트 -->
+            <!-- <select id="search-area" v-model="selectedSido" @change="findGuGun" class="form-select me-2"> -->
+            <select id="search-area" v-model="selectedSido" @change="[findGuGun(), search()]" class="form-select me-2">
+              <option value="0" disabled>검색 지역 선택</option>
+              <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">
+                {{ sido.sidoName }}
+              </option>
+            </select>
+          </div>
 
-        <!-- 지역 리스트 -->
-        <select id="search-area" v-model="selectedSido" @change="findGuGun" class="form-select me-2">
-          <option value="0" disabled>검색 지역 선택</option>
-          <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">
-            {{ sido.sidoName }}
-          </option>
-        </select>
+          <div class="col-4">
+            <!-- 구/군 리스트 -->
+            <select id="search-gugun-id" v-model="selectedGugun" @change="search" class="form-select me-2">
+              <option v-if="guguns == null" value="0">구/군</option>
+              <option v-for="gugun in guguns" :key="gugun.gugunCode" :value="gugun.gugunCode">
+                {{ gugun.gugunName }}
+              </option>
+            </select>
+          </div>
 
-        <!-- 구/군 리스트 -->
-        <select id="search-gugun-id" v-model="selectedGugun" class="form-select me-2">
-          <option v-if="guguns == null" value="0">구/군</option>
-          <option v-for="gugun in guguns" :key="gugun.gugunCode" :value="gugun.gugunCode">
-            {{ gugun.gugunName }}
-          </option>
-        </select>
+          <!-- <div class="col-2">
+            <button id="btn-search" class="btn submit-btn" type="button" @click="search" style="width: 100%">검색</button>
+          </div> -->
+        </div>
 
-        <!-- 관광지 유형 리스트 -->
-        <select id="search-content-id" v-model="selectedContent" class="form-select me-2">
-          <option value="0" selected>관광지 유형</option>
-          <option value="12">관광지</option>
-          <option value="14">문화시설</option>
-          <option value="15">축제공연행사</option>
-          <option value="25">여행코스</option>
-          <option value="28">레포츠</option>
-          <option value="32">숙박</option>
-          <option value="38">쇼핑</option>
-          <option value="39">음식점</option>
-        </select>
-        <button id="btn-search" class="btn submit-btn" type="button" @click="search" style="width: 10em">검색</button>
+        <div class="content-type mt-3 text-center">
+          <!-- 관광지 유형 리스트 -->
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="12" id="type-1" />
+            <label class="form-check-label" for="type-1">관광지</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="14" id="type-2" />
+            <label class="form-check-label" for="type-2">문화시설</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="15" id="type-3" />
+            <label class="form-check-label" for="type-3">축제공연행사</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="28" id="type-5" />
+            <label class="form-check-label" for="type-5">레포츠</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="32" id="type-6" />
+            <label class="form-check-label" for="type-6">숙박</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="38" id="type-7" />
+            <label class="form-check-label" for="type-7">쇼핑</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="39" id="type-8" />
+            <label class="form-check-label" for="type-8">음식점</label>
+          </div>
+        </div>
       </form>
+
       <!-- kakao map start -->
       <div id="map" class="mt-3" style="width: 100%; height: 550px"></div>
       <!-- kakao map end -->
@@ -54,7 +82,7 @@ export default {
       guguns: null,
       selectedSido: 0,
       selectedGugun: 0,
-      selectedContent: 0,
+      selectedContents: [],
       overlay: {},
       markers: [],
     };
@@ -102,7 +130,6 @@ export default {
         .then(({ data }) => {
           this.guguns = data;
           this.selectedGugun = data[0].gugunCode;
-          console.log(this.guguns);
         })
         .catch((response) => {
           console.log(response);
@@ -110,17 +137,19 @@ export default {
     },
 
     search() {
-      if (this.selectedSido == 0) alert("검색 지역을 선택하세요");
-      else if (this.selectedGugun == 0) alert("구/군을 선택하세요.");
-      else if (this.selectedContent == 0) alert("관광지 유형을 선택하세요.");
-      else {
-        http
-          .get(`/tourist/${this.selectedSido}/${this.selectedGugun}/${this.selectedContent}`)
-          .then(({ data }) => this.makeMarker(data))
-          .catch((response) => {
-            console.log(response);
-          });
+      if (this.selectedSido == 0 || this.selectedGugun == 0 || this.selectedContents.length == 0) return;
+      let contents = "";
+      for (let i = 0; i < this.selectedContents.length - 1; i++) {
+        contents += this.selectedContents[i] + ",";
       }
+      contents += this.selectedContents[this.selectedContents.length - 1];
+
+      http
+        .get(`/tourist/${this.selectedSido}/${this.selectedGugun}/${contents}`)
+        .then(({ data }) => this.makeMarker(data))
+        .catch((response) => {
+          console.log(response);
+        });
     },
 
     makeMarker(data) {
