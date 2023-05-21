@@ -1,6 +1,6 @@
 <template>
-  <v-app>
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+  <div class="m-5">
+    <div class="px-5 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">공지사항</mark>
       </h2>
@@ -60,7 +60,7 @@
       </table>
     </div>
     <div class="text-center" v-else>게시글이 없습니다.</div>
-  </v-app>
+  </div>
 </template>
 
 <script>

@@ -1,8 +1,8 @@
 <template>
-  <v-app>
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+  <div class="m-5">
+    <div class="px-5 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">공지 상세</mark>
+        <mark class="sky">공지사항</mark>
       </h2>
     </div>
     <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
@@ -24,7 +24,7 @@
             </p>
           </div>
         </div>
-        <div class="col-md-4 align-self-center text-end">댓글 : 0</div>
+        <!-- <div class="col-md-4 align-self-center text-end">댓글 : 0</div> -->
         <div class="divider mb-3"></div>
         <div class="text-secondary">{{article.content}}</div>
         <div class="divider mt-3 mb-3"></div>
@@ -38,28 +38,8 @@
           </v-btn>
         </div>
       </div>
-      <!-- 댓글 영역 start -->
-     <div class="col-lg-8 col-md-10 col-sm-12" >
-        <!-- 댓글 입력 영역 start --> 
-       <div class="row">
-         <div class="col-md-11">
-           <input type="text" id="content" name="content" placeholder="댓글을 입력해주세요" style="width:100%; height:100%;">
-           
-         </div>
-         <div class="col-md-1">
-           <v-btn>작성</v-btn>
-         </div>
-       </div>
-        <!-- 댓글 입력 영역 end --> 
-        <!-- 댓글 출력 영역 start --> 
-       <div class="row">
-       
-       </div>
-        <!-- 댓글 출력 영역 end --> 
-     </div>
-      <!-- 댓글 영역 end -->
     </div>
-</v-app>
+</div>
 
 </template>
 

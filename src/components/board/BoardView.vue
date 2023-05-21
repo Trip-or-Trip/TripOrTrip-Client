@@ -1,6 +1,6 @@
 <template>
-  <div v-if="isLoggedIn">
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+  <div class="m-5">
+    <div class="px-5 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">게시글 상세</mark>
       </h2>
@@ -102,29 +102,24 @@ export default {
       .then(({ data }) => {
         console.log(data);
         this.article = data;
+        http.post(`/board/comment/${this.articleno}`, this.articleno,  {
+            headers: {
+              "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+            },})
+        .then(({ data }) => {
+          console.log(data);
+          this.comments = data;
+        });
       })
       .catch(() => {
         // console.log("error 발생");
         // console.log(response);
         alert("로그인 후 이용 가능합니다.");
         this.$router.push("/user/signin");
+        return;
       });
 
-    http
-      .post(`/board/comment/${this.articleno}`, this.articleno,  {
-          headers: {
-            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-          },})
-      .then(({ data }) => {
-        console.log(data);
-        this.comments = data;
-      })
-      .catch(() => {
-        // console.log("error 발생");
-        // console.log(response);
-        alert("로그인 후 이용 가능합니다.");
-        this.$router.push("/user/signin");
-      });
+    
   },
   methods: {
     moveModifyArticle() {
