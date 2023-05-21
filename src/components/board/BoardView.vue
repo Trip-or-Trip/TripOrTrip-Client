@@ -1,5 +1,5 @@
 <template>
-  <v-app v-if="isLoggedIn">
+  <div v-if="isLoggedIn">
     <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">게시글 상세</mark>
@@ -19,14 +19,14 @@
             </p>
           </div>
         </div>
-        <div class="col-md-4 align-self-center text-end">댓글 : 0</div>
+        <div class="col-md-4 align-self-center text-end">댓글 : {{this.comments.length}}</div>
         <div class="divider mb-3"></div>
         <div class="text-secondary">{{ article.content }}</div>
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
-          <v-btn @click="moveList">글목록</v-btn>
-          <v-btn v-if="user.id == article.userId" @click="moveModifyArticle"> 글수정 </v-btn>
-          <v-btn v-if="user.id == article.userId" @click="deleteArticle"> 글삭제 </v-btn>
+          <b-button @click="moveList">글목록</b-button>
+          <b-button v-if="user.id == article.userId" @click="moveModifyArticle"> 글수정 </b-button>
+          <b-button v-if="user.id == article.userId" @click="deleteArticle"> 글삭제 </b-button>
         </div>
       </div>
       <!-- 댓글 영역 start -->
@@ -34,10 +34,10 @@
         <!-- 댓글 입력 영역 start -->
         <div class="row">
           <div class="col-md-11">
-            <input type="text" id="content" name="content" placeholder="댓글을 입력해주세요" style="width: 100%; height: 100%" />
+            <input type="text" v-model="content" placeholder="댓글을 입력해주세요" style="width: 100%; height: 100%" />
           </div>
           <div class="col-md-1">
-            <v-btn>작성</v-btn>
+            <b-button @click="writeComment">작성</b-button>
           </div>
         </div>
         <!-- 댓글 입력 영역 end -->
@@ -46,9 +46,10 @@
           <table class="table table-hover">
             <thead>
               <tr class="text-center">
-                <th scope="col">내용</th>
                 <th scope="col">작성자</th>
+                <th scope="col">내용</th>
                 <th scope="col">작성일</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -60,7 +61,7 @@
       </div>
       <!-- 댓글 영역 end -->
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -77,6 +78,8 @@ export default {
     return {
       articleno: Number,
       article: Object,
+      comment: null,
+      content: null,
       comments: [],
     };
   },
@@ -133,6 +136,40 @@ export default {
     moveList() {
       this.$router.push({ name: "boardlist" });
     },
+    writeComment() {
+      console.log(this.content);
+
+      if(this.content == null){
+        alert("댓글을 입력해주세요!");
+        return;
+      }else{
+        if (this.isLoggedIn) {
+          this.comment = {
+            userId: this.user.id,
+            content: this.content,
+            boardId: this.articleno,
+          };
+        } else {
+          alert("로그인 후 이용 가능합니다.");
+          return;
+        }
+      }
+      http.post(`/board/writecomment/${this.article.id}`, this.comment, {
+        headers: {
+          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+        },
+      }).then(({ data }) => {
+        let msg = "댓글 작성 중 문제 발생!!!";
+        if (data === "success") {
+          msg = "댓글 작성 성공!!!";
+          alert(msg);
+          location.reload(this);
+        }else{
+          alert(msg);  
+        }
+      });
+    },
+   
   },
 };
 </script>
