@@ -1,9 +1,13 @@
 <template>
   <tr>
-    <td style="text-align: center">{{ comment.userId }}</td>
+    <td style="text-align: center">
+      <router-link :to="{ name: 'boardview', params: { articleno: comment.boardId } }">
+        {{ comment.boardId }}
+      </router-link>
+    </td>
     <td style="text-align: center">{{ comment.content }}</td>
     <td style="text-align: center">{{ comment.createdAt }}</td>
-    <td v-if="user.id == comment.userId" style="text-align: center" >
+    <td style="text-align: center" >
       <button class="btn btn-danger" @click="deleteComment"> 삭제 </button>
     </td>
     <td style="display:none" > {{comment.id}}</td>
