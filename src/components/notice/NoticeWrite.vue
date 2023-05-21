@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 export default {
   name: "NoticeWrite",
@@ -33,6 +34,10 @@ export default {
       title: null,
       content: null,
     };
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
   },
   methods: {
     // 입력값 체크하기 - 체크가 성공하면 registArticle 호출
@@ -57,7 +62,12 @@ export default {
         title: this.title,
         content: this.content,
       };
-      http.post(`/notice/write`, article).then(({ data }) => {
+      http.post(`/notice/write`, article, {
+          headers: {
+            Origin: "http://localhost:9999",
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        }).then(({ data }) => {
         let msg = "글 작성 시 문제 발생!!!";
         if (data === "success") msg = "글 작성 성공!!!";
         alert(msg);
