@@ -169,22 +169,7 @@ export default {
         }
       });
     },
-    deleteComment() {
-       http.delete(`/board/deletecomment/${this.article.id}`, this.comment, {
-        headers: {
-          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-        },
-      }).then(({ data }) => {
-        let msg = "댓글 작성 중 문제 발생!!!";
-        if (data === "success") {
-          msg = "댓글 작성 성공!!!";
-          alert(msg);
-          location.reload(this);
-        }else{
-          alert(msg);  
-        }
-      });
-    },
+   
   },
 };
 </script>
