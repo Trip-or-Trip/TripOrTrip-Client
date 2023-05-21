@@ -1,5 +1,5 @@
 <template>
-  <v-app v-if="isLoggedIn">
+  <div v-if="isLoggedIn">
     <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">게시글 상세</mark>
@@ -24,9 +24,9 @@
         <div class="text-secondary">{{ article.content }}</div>
         <div class="divider mt-3 mb-3"></div>
         <div class="d-flex justify-content-end">
-          <v-btn @click="moveList">글목록</v-btn>
-          <v-btn v-if="user.id == article.userId" @click="moveModifyArticle"> 글수정 </v-btn>
-          <v-btn v-if="user.id == article.userId" @click="deleteArticle"> 글삭제 </v-btn>
+          <b-button @click="moveList">글목록</b-button>
+          <b-button v-if="user.id == article.userId" @click="moveModifyArticle"> 글수정 </b-button>
+          <b-button v-if="user.id == article.userId" @click="deleteArticle"> 글삭제 </b-button>
         </div>
       </div>
       <!-- 댓글 영역 start -->
@@ -37,7 +37,7 @@
             <input type="text" id="content" name="content" placeholder="댓글을 입력해주세요" style="width: 100%; height: 100%" />
           </div>
           <div class="col-md-1">
-            <v-btn>작성</v-btn>
+            <b-button>작성</b-button>
           </div>
         </div>
         <!-- 댓글 입력 영역 end -->
@@ -60,7 +60,7 @@
       </div>
       <!-- 댓글 영역 end -->
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 export default {
   name: "BoardDelete",
@@ -14,12 +15,19 @@ export default {
       articleno: Number,
     };
   },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
   created() {
     // 비동기
     // TODO : 글번호에 해당하는 글을 삭제.
     this.articleno = this.$route.params.articleno;
-    console.log(this.articleno + "번글 삭제 요청");
-    http.delete(`/board/${this.articleno}`).then(({ data }) => {
+    http.delete(`/board/${this.articleno}`, {
+        headers: {
+          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+        },
+      }).then(({ data }) => {
       let msg = "게시글 삭제 중 문제 발생!!!";
       if (data === "success") msg = "게시글 삭제 성공하였습니다.";
       alert(msg);
@@ -29,7 +37,7 @@ export default {
 
   methods: {
     moveList() {
-      this.$router.push({ path: "list" });
+      this.$router.push({ name: "boardlist" });
     },
   },
 };

@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 export default {
   name: "BoardModify",
@@ -33,6 +34,12 @@ export default {
       article: Object,
     };
   },
+  
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
+
   methods: {
     // 입력값 체크하기 - 체크가 성공하면 modifyArticle 호출
     checkValue() {
@@ -52,7 +59,11 @@ export default {
       console.log(this.article.articleno + "번 글수정 하러가자!!!!");
       // 비동기
       // TODO : 글번호에 해당하는 글정보 수정.
-      http.put(`/board`, this.article).then(({ data }) => {
+      http.put(`/board`, this.article, {
+        headers: {
+          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+        },
+      }).then(({ data }) => {
         let msg = "글 수정 시 문제 발생!!!";
         if (data === "success") msg = "글 수정 성공!!!";
         alert(msg);
@@ -61,7 +72,6 @@ export default {
     },
 
     moveList() {
-      console.log("글목록 보러가자!!!");
       this.$router.push({ name: "boardlist" });
     },
   },
@@ -69,18 +79,14 @@ export default {
     // 비동기
     // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
-    http.get(`/board/${this.articleno}`).then(({ data }) => {
-      this.article = data;
+    http.post(`/board/${this.articleno}`, this.articleno, {
+        headers: {
+          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+        },
+      })
+      .then(({ data }) => {
+        this.article = data;
     });
-    // this.article = {
-    //   articleNo: this.articleno,
-    //   userId: "ssafy",
-    //   userName: "안효인",
-    //   subject: "안녕하세요",
-    //   content: "안녕하세요!!!!",
-    //   hit: 10,
-    //   registerTime: "2023-05-08 17:03:15",
-    // };
   },
 };
 </script>
