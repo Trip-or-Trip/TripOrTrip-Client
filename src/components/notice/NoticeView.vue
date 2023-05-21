@@ -79,7 +79,12 @@ export default {
     // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
     console.log(this.articleno);
-    http.get(`/notice/${this.articleno}`).then(({ data }) => {
+    http.post(`/notice/${this.articleno}`, this.articleno, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
       this.article = data;
     });
   },

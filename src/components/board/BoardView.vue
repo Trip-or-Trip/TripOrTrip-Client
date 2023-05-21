@@ -42,7 +42,20 @@
         </div>
         <!-- 댓글 입력 영역 end -->
         <!-- 댓글 출력 영역 start -->
-        <div class="row"></div>
+        <div v-if="comments.length" class="row">
+          <table class="table table-hover">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">내용</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+              </tr>
+            </thead>
+            <tbody>
+              <comment-list-item v-for="comment in comments" :key="comment.id" :comment="comment"></comment-list-item>
+            </tbody>
+          </table>
+        </div>
         <!-- 댓글 출력 영역 end -->
       </div>
       <!-- 댓글 영역 end -->
@@ -53,23 +66,38 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
+import CommentListItem from "@/components/board/CommentListItem";
+
 export default {
   name: "BoardView",
+  components: {
+    CommentListItem,
+  },
   data() {
     return {
       articleno: Number,
       article: Object,
+      comments: [],
     };
   },
+  
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
+
   created() {
     // 비동기
     // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
     console.log(this.articleno);
     http
-      .get(`/board/${this.articleno}`)
+      .post(`/board/${this.articleno}`, this.articleno, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },})
       .then(({ data }) => {
-        console.log("data");
+        console.log(data);
         this.article = data;
       })
       .catch(() => {
@@ -78,10 +106,22 @@ export default {
         alert("로그인 후 이용 가능합니다.");
         this.$router.push("/user/signin");
       });
-  },
-  computed: {
-    ...mapGetters(["isLoggedIn", "getToken"]),
-    ...mapState(["user"]),
+
+    http
+      .post(`/board/comment/${this.articleno}`, this.articleno,  {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },})
+      .then(({ data }) => {
+        console.log(data);
+        this.comments = data;
+      })
+      .catch(() => {
+        // console.log("error 발생");
+        // console.log(response);
+        alert("로그인 후 이용 가능합니다.");
+        this.$router.push("/user/signin");
+      });
   },
   methods: {
     moveModifyArticle() {
