@@ -21,7 +21,7 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
-import HotplaceListItem from "@/components/hotplace/HotplaceListItem";
+import HotplaceListItem from "@/components/mypage/HotplaceListItem";
 
 export default {
   name: "MypageLike",
