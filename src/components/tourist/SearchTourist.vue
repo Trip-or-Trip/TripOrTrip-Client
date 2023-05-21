@@ -251,6 +251,7 @@ export default {
     },
 
     makeMarker(data) {
+      if (this.overlay) this.overlay.setMap(null);
       for (let i = 0; i < this.markers.length; i++) {
         this.markers[i].setMap(null);
       }
