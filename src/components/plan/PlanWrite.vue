@@ -17,6 +17,24 @@
           />
           <b-button @click="search" variant="info" style="width: 5em"> 검색 </b-button>
         </div>
+        <div class="left-container">
+          <div v-for="(result, index) in results" :key="index" @click="clickResult(result)">
+            <div class="d-flex mb-1">
+              <div class="icon flex-shrink-0 mx-2 mt-3">
+                <i class="result-icon bi bi-search"></i>
+              </div>
+              <div class="mt-3 mb-1 me-2">
+                <div class="title" style="font-size: 1.1rem">{{ result.place_name }}</div>
+                <div class="description" style="font-size: 1rem">
+                  {{ result.category_group_name }}
+                </div>
+                <p class="description" style="font-size: 0.9rem">
+                  {{ result.address_name }} &nbsp;
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-6">
         <section class="position-relative">
@@ -51,71 +69,80 @@
           <!-- 여행 계획 들어가는 영역 -->
           <div class="d-flex flex-column mx-auto p-2" style="width: 100%; height: 35em">
             <h3 id="plan-title" class="text-center p-2"><strong>여행 계획</strong></h3>
-            <form id="plan-form" onsubmit="return false;" role="search" method="POST">
-              <input type="hidden" id="root" name="root" value="${root}" />
-              <input type="hidden" name="action" value="save" />
-              <div>
-                <div>
-                  <div
-                    id="plan-content"
-                    class="rounded bg-light shadow mb-2 mx-auto p-2 overflow-auto d-flex justify-content-center"
-                    style="width: 100%; height: 10em"
-                  ></div>
-                </div>
-                <div class="divider mb-3"></div>
-                <div id="plan-detail" class="d-flex flex-column align-items-center rounded mx-auto">
-                  <label for="name"><strong>계획 이름</strong></label>
-                  <input
-                    v-model="title"
-                    type="text"
-                    name="title"
-                    id="title"
-                    placeholder="계획 이름"
-                    class="plan-detail-content align-middle ms-2 mt-2 rounded shadow border-light-subtle"
-                    style="width: 70%"
-                  />
-                  <br />
-                  <div
-                    class="plan-detail-date d-flex flex-row justify-content-between mb-3"
-                    style="width: 70%"
-                  >
-                    <label for="start_datepicker"><strong>출발일</strong></label>
-                    <input
-                      v-model="sDate"
-                      type="date"
-                      name="startDate"
-                      id="start_datepicker"
-                      placeholder="년도-월-일"
-                      style="width: 8em; height: 1.8em"
-                      class="plan-detail-content plan-detail-start ms-2 me-2 align-middle rounded shadow border-light-subtle"
-                    />
-                    <label for="end_datepicker"><strong>도착일</strong></label>
-                    <input
-                      v-model="eDate"
-                      type="date"
-                      name="endDate"
-                      id="end_datepicker"
-                      placeholder="년도-월-일"
-                      style="width: 8em; height: 1.8em"
-                      class="plan-detail-content plan-detail-end ms-2 me-2 align-middle rounded shadow border-light-subtle"
-                    />
+            <div>
+              <div
+                id="plan-content"
+                class="rounded bg-light shadow mb-2 mx-auto p-2 overflow-auto d-flex justify-content-center"
+                style="width: 100%; height: 10em"
+              >
+                <div v-for="(place, index) in places" :key="index" class="border rounded">
+                  <b-row align-h="end">
+                    <b-button
+                      class="col-3"
+                      icon="dash-square-fill"
+                      variant="danger"
+                      @click="deletePlace(place.placeId)"
+                    ></b-button>
+                  </b-row>
+                  <div class="text-center p-2">
+                    <div class="place-title">{{ place.name }}</div>
+                    <div>{{ place.address }}</div>
                   </div>
-                  <label for="description"><strong>상세 계획</strong></label>
-                  <textarea
-                    v-model="description"
-                    name="description"
-                    id="description"
-                    placeholder="상세 계획을 적어보자!"
-                    class="plan-detail-content align-middle ms-2 mt-2 rounded shadow border-light-subtle"
-                    style="width: 70%; height: 10em"
-                  ></textarea>
-                  <br />
-                  <b-button variant="primary" @click="savePlan" style="width: 5em">
-                    <strong>저장</strong>
-                  </b-button>
                 </div>
               </div>
-            </form>
+              <div class="divider mb-3"></div>
+              <div id="plan-detail" class="d-flex flex-column align-items-center rounded mx-auto">
+                <label for="name"><strong>계획 이름</strong></label>
+                <input
+                  v-model="title"
+                  type="text"
+                  name="title"
+                  id="title"
+                  placeholder="계획 이름"
+                  class="plan-detail-content align-middle ms-2 mt-2 rounded shadow border-light-subtle"
+                  style="width: 70%"
+                />
+                <br />
+                <div
+                  class="plan-detail-date d-flex flex-row justify-content-between mb-3"
+                  style="width: 70%"
+                >
+                  <label for="start_datepicker"><strong>출발일</strong></label>
+                  <input
+                    v-model="sDate"
+                    type="date"
+                    name="startDate"
+                    id="start_datepicker"
+                    placeholder="년도-월-일"
+                    style="width: 8em; height: 1.8em"
+                    class="plan-detail-content plan-detail-start ms-2 me-2 align-middle rounded shadow border-light-subtle"
+                  />
+                  <label for="end_datepicker"><strong>도착일</strong></label>
+                  <input
+                    v-model="eDate"
+                    type="date"
+                    name="endDate"
+                    id="end_datepicker"
+                    placeholder="년도-월-일"
+                    style="width: 8em; height: 1.8em"
+                    class="plan-detail-content plan-detail-end ms-2 me-2 align-middle rounded shadow border-light-subtle"
+                  />
+                </div>
+                <label for="description"><strong>상세 계획</strong></label>
+                <textarea
+                  v-model="description"
+                  name="description"
+                  id="description"
+                  placeholder="상세 계획을 적어보자!"
+                  class="plan-detail-content align-middle ms-2 mt-2 rounded shadow border-light-subtle"
+                  style="width: 70%; height: 10em"
+                ></textarea>
+                <br />
+                <b-button variant="primary" @click="savePlan" style="width: 5em">
+                  <strong>저장</strong>
+                </b-button>
+              </div>
+            </div>
           </div>
         </aside>
       </div>
@@ -148,6 +175,7 @@ export default {
         "https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1?MobileOS=WIN&MobileApp=triportrip&keyword=",
       keyUrl:
         "&serviceKey=qqmr9xPPIeNaINQ4yBU1GUJljRKSxzGUILRxGpdQBkEyF16vLpll%2BbPZ%2FeFeoXRQIuE1OJReyMcWmRxtbNElSQ%3D%3D",
+      results: [],
     };
   },
 
@@ -164,6 +192,11 @@ export default {
     }
   },
   methods: {
+    clickResult(place) {
+      var bounds = new kakao.maps.LatLngBounds();
+      bounds.extend(new kakao.maps.LatLng(place.y, place.x));
+      this.map.setBounds(bounds);
+    },
     loadScript() {
       const script = document.createElement("script");
       script.src =
@@ -258,6 +291,8 @@ export default {
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         this.map.setBounds(bounds);
+        this.results = datas;
+        console.log(datas);
       }
     },
 
@@ -280,33 +315,15 @@ export default {
 
     addPlace() {
       document.querySelectorAll(".overlay").forEach((e) => e.remove());
-
       let placeName = this.clickInfo.place_name;
       let placeAddr = this.clickInfo.address_name;
       let placeId = this.clickInfo.id;
       let placeLat = this.clickInfo.y;
       let placeLng = this.clickInfo.x;
-      let placeTel = this.clickInfo.phone;
+      // let placeTel = this.clickInfo.phone;
       //  let placeImageUrl = "./assets/img/noimage.png";
-      let placeImageUrl = this.searchedImgs.get(placeName.split(" ")[0]);
+      // let placeImageUrl = this.searchedImgs.get(placeName.split(" ")[0]);
 
-      let makeDiv = `<div id='${placeId}' class='trip-plan-card rounded border-opacity-50 border border-5 border-primary-subtle me-1' sytle="background-color: gray; width: 100%; height: 100px;">
-                              <div class='text-center p-2'>
-                                  <div class="place-title">${placeName}</div>
-                                  <div>${placeAddr}</div>
-                                  <div class="lat" style="display: none;">${placeLat}</div>
-                                  <div class="lng" style="display: none;">${placeLng}</div>
-                              </div>`;
-
-      let info =
-        `<input type="hidden" name='place_id' value=${placeId} />` +
-        `<input type="hidden" name='name' value= "${placeName}"/>` +
-        `<input type="hidden" name='address' value= "${placeAddr}"/>` +
-        `<input type="hidden" name='tel' value= ${placeTel} />` +
-        `<input type="hidden" name='lat' value=${placeLat} />` +
-        `<input type="hidden" name='lng' value=${placeLng} />` +
-        `<input type="hidden" name='image_url' value= ${placeImageUrl} />` +
-        `</div>`;
       this.places.push({
         name: placeName,
         address: placeAddr,
@@ -314,8 +331,6 @@ export default {
         lat: placeLat,
         lng: placeLng,
       });
-      document.getElementById("plan-content").innerHTML += makeDiv;
-      document.getElementById("plan-content").innerHTML += info;
 
       let latlng = new kakao.maps.LatLng(this.clickInfo.y, this.clickInfo.x);
       this.drawLine(latlng);
@@ -343,6 +358,28 @@ export default {
       }
       document.getElementById("plan-add-btn").style.display = "none";
       document.getElementById("overlay").remove();
+    },
+    // 장소 삭제하면 호출되는 메서드 --------------------------------------- >
+    deletePlace(placeId) {
+      this.places = this.places.filter((place) => place.placeId !== placeId);
+
+      // 마커 삭제
+      let lat = this.places.lat * 1;
+      let lng = this.places.lng * 1;
+
+      this.planMarkers = this.planMarkers.filter((marker) => marker.placeId !== placeId);
+
+      this.deleteMarker(lat, lng, this.places);
+
+      // 그려진 선 삭제
+      this.deleteLine();
+
+      this.drawingFlag = false;
+
+      // 선 다시 그리기
+      this.places.forEach((place) => {
+        this.drawLine(place, true);
+      });
     },
 
     drawLine(latlng) {
@@ -376,6 +413,14 @@ export default {
         this.clickLine.setPath(path);
         // var distance = Math.round(this.clickLine.getLength());
         //  displayCircleDot(clickPosition, distance);
+      }
+    },
+
+    // 선 삭제하기
+    deleteLine() {
+      if (this.clickLine) {
+        this.clickLine.setMap(null);
+        this.clickLine = null;
       }
     },
 
@@ -438,7 +483,7 @@ export default {
           `    <div class="info">` +
           `        <div class="title">` +
           `            ${place.place_name}` +
-          `            <div class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></div>` +
+          `            <div id="close" class="close" onclick='this.parentNode.parentNode.parentNode.remove(); document.getElementById("plan-add-btn").style.display = "none";' title="닫기"></div>` +
           `        </div>` +
           `        <div class="body">` +
           `            <div class="img">` +
@@ -595,5 +640,15 @@ export default {
   /* background-color: white; */
   background-color: #8fa5b8;
   color: white;
+}
+
+.left-container {
+  height: 80vh;
+  overflow-y: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.left-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 </style>

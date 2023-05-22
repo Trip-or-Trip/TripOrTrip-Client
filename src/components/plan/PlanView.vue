@@ -6,9 +6,7 @@
       </h2>
     </div>
     <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
-      <div class="row my-2">
-        <h2 class="text-secondary px-5">{{ article.article.title }}</h2>
-      </div>
+      <h2>{{ this.article.plan.title }}</h2>
       <div class="row">
         <div class="col-md-8">
           <div class="d-flex flex-col align-content-center">
@@ -20,9 +18,9 @@
             />
             <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-3" />
             <p>
-              <span class="fw-bold">{{ article.article.userId }}</span> <br />
+              <span class="fw-bold">{{ article.plan.userId }}</span> <br />
               <span class="text-secondary fw-light">
-                {{ article.article.createdAt }} 조회 : {{ article.article.hit }}
+                {{ article.plan.createdAt }} 조회 : {{ article.plan.hit }}
               </span>
             </p>
           </div>
@@ -64,7 +62,7 @@
                     id="register-id"
                     type="text"
                     readonly="readonly"
-                    v-bind:value="article.article.userId"
+                    v-bind:value="article.plan.userId"
                     class="form-control"
                   />
                 </div>
@@ -74,7 +72,7 @@
                     id="register-date"
                     type="text"
                     readonly="readonly"
-                    v-bind:value="article.article.createdAt"
+                    v-bind:value="article.plan.createdAt"
                     class="form-control"
                   />
                 </div>
@@ -84,7 +82,7 @@
                 id="plan-title"
                 type="text"
                 readonly="readonly"
-                v-bind:value="article.article.title"
+                v-bind:value="article.plan.title"
                 class="form-control"
               />
               <div class="row">
@@ -94,7 +92,7 @@
                     id="plan-start-date"
                     type="text"
                     readonly="readonly"
-                    v-bind:value="article.article.startDate"
+                    v-bind:value="article.plan.startDate"
                     class="form-control"
                   />
                 </div>
@@ -104,7 +102,7 @@
                     id="plan-end-date"
                     type="text"
                     readonly="readonly"
-                    v-bind:value="article.article.endDate"
+                    v-bind:value="article.plan.endDate"
                     class="form-control"
                   />
                 </div>
@@ -114,7 +112,7 @@
                 id="plan-description"
                 type="text"
                 readonly="readonly"
-                v-bind:value="article.article.description"
+                v-bind:value="article.plan.description"
                 class="form-control overflow-auto"
                 style="height: 10em"
               />
@@ -261,10 +259,10 @@
             <!-- 본인일때만 글수정, 글 삭제 버튼 보이도록 함 -->
             <div style="padding-top: 15px">
               <b-button @click="moveList">글목록</b-button>
-              <b-button v-if="user.id == article.article.userId" @click="moveModifyArticle">
+              <b-button v-if="user.id == article.plan.userId" @click="moveModifyArticle">
                 글수정
               </b-button>
-              <b-button v-if="user.id == article.article.userId" @click="deleteArticle">
+              <b-button v-if="user.id == article.plan.userId" @click="deleteArticle">
                 글삭제
               </b-button>
             </div>
@@ -308,7 +306,6 @@ export default {
     // 비동기
     // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
-    console.log(this.articleno);
     http
       .post(`/plan/${this.articleno}`, this.articleno, {
         headers: {
@@ -320,10 +317,10 @@ export default {
       });
   },
   mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.loadMap();
-    } else {
+    if (!window.kakao || !window.kakao.maps) {
       this.loadScript();
+    } else {
+      this.loadMap();
     }
   },
   methods: {
@@ -588,7 +585,7 @@ export default {
       // this.$router.push({ name: "planmodify", params: { articleno: this.article.id } });
     },
     deleteArticle() {
-      this.$router.push({ name: "plandelete", params: { articleno: this.article.article.id } });
+      this.$router.push({ name: "plandelete", params: { articleno: this.article.plan.id } });
     },
     moveList() {
       this.$router.push({ name: "planlist" });
