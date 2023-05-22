@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">여행계획 상세보기</mark>
@@ -11,24 +11,42 @@
       </div>
       <div class="row">
         <div class="col-md-8">
-          <div class="clearfix align-content-center">
-            <img class="avatar me-2 float-md-start bg-light p-2" src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
+          <div class="d-flex flex-col align-content-center">
+            <img
+              v-if="user.image"
+              :src="`/upload/profile/${user.image}`"
+              class="hotplace-profile-img me-3 rounded"
+              style="width: 3em; height: 3em"
+            />
+            <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-3" />
             <p>
               <span class="fw-bold">{{ article.article.userId }}</span> <br />
-              <span class="text-secondary fw-light"> {{ article.article.createdAt }} 조회 : {{ article.article.hit }} </span>
+              <span class="text-secondary fw-light">
+                {{ article.article.createdAt }} 조회 : {{ article.article.hit }}
+              </span>
             </p>
           </div>
         </div>
-        <div class="col-md-4 align-self-center text-end">댓글 : 0</div>
         <div class="divider mb-3"></div>
         <div class="container">
           <div class="row">
             <!-- kakao map 보여주기 -->
-            <div id="map" class="col-md-8 shadow rounded mx-auto p-2 mb-2" style="height: 25em"></div>
+            <div
+              id="map"
+              class="col-md-8 shadow rounded mx-auto p-2 mb-2"
+              style="height: 25em"
+            ></div>
 
-            <div v-for="place in article.places" :key="place.id" class="border border-4 rounded me-1 p-2" style="width: 20%; display: none">
+            <div
+              v-for="place in article.places"
+              :key="place.id"
+              class="border border-4 rounded me-1 p-2"
+              style="width: 20%; display: none"
+            >
               <div class="travel-info">
-                <strong id="old_place_name" class="old_place_name" style="display: none">{{ place.name }}</strong>
+                <strong id="old_place_name" class="old_place_name" style="display: none">{{
+                  place.name
+                }}</strong>
                 <p id="old_address" class="old_address" style="display: none">
                   {{ place.address }}
                 </p>
@@ -42,35 +60,80 @@
               <div class="row">
                 <div class="col-md-6">
                   <label for="register-id">등록자</label>
-                  <input id="register-id" type="text" readonly="readonly" v-bind:value="article.article.userId" class="form-control" />
+                  <input
+                    id="register-id"
+                    type="text"
+                    readonly="readonly"
+                    v-bind:value="article.article.userId"
+                    class="form-control"
+                  />
                 </div>
                 <div class="col-md-6">
                   <label for="register-date">등록일</label>
-                  <input id="register-date" type="text" readonly="readonly" v-bind:value="article.article.createdAt" class="form-control" />
+                  <input
+                    id="register-date"
+                    type="text"
+                    readonly="readonly"
+                    v-bind:value="article.article.createdAt"
+                    class="form-control"
+                  />
                 </div>
               </div>
               <label for="plan-title">계획 이름</label>
-              <input id="plan-title" type="text" readonly="readonly" v-bind:value="article.article.title" class="form-control" />
+              <input
+                id="plan-title"
+                type="text"
+                readonly="readonly"
+                v-bind:value="article.article.title"
+                class="form-control"
+              />
               <div class="row">
                 <div class="col-md-6">
                   <label for="plan-start-date">출발일</label>
-                  <input id="plan-start-date" type="text" readonly="readonly" v-bind:value="article.article.startDate" class="form-control" />
+                  <input
+                    id="plan-start-date"
+                    type="text"
+                    readonly="readonly"
+                    v-bind:value="article.article.startDate"
+                    class="form-control"
+                  />
                 </div>
                 <div class="col-md-6">
                   <label for="plan-end-date">도착일</label>
-                  <input id="plan-end-date" type="text" readonly="readonly" v-bind:value="article.article.endDate" class="form-control" />
+                  <input
+                    id="plan-end-date"
+                    type="text"
+                    readonly="readonly"
+                    v-bind:value="article.article.endDate"
+                    class="form-control"
+                  />
                 </div>
               </div>
               <label for="plan-description">계획 상세</label>
-              <input id="plan-description" type="text" readonly="readonly" v-bind:value="article.article.description" class="form-control overflow-auto" style="height: 10em" />
+              <input
+                id="plan-description"
+                type="text"
+                readonly="readonly"
+                v-bind:value="article.article.description"
+                class="form-control overflow-auto"
+                style="height: 10em"
+              />
             </div>
           </div>
         </div>
         <div class="divider mb-4"></div>
         <h2 align="center">추천 경로</h2>
-        <div id="planmap" class="col-md-8 shadow rounded mx-auto p-2 mb-2" style="height: 25em"></div>
+        <div
+          id="planmap"
+          class="col-md-8 shadow rounded mx-auto p-2 mb-2"
+          style="height: 25em"
+        ></div>
         <div class="d-flex center flex-row">
-          <div class="d-flex center flex-row" v-for="(fastPlace, index) in article.fastPlaces" v-bind:key="fastPlace.id">
+          <div
+            class="d-flex center flex-row"
+            v-for="(fastPlace, index) in article.fastPlaces"
+            v-bind:key="fastPlace.id"
+          >
             <div class="border border-4 rounded me-1 p-2">
               <div class="travel-info">
                 <strong id="fast_place_name" class="fast_place_name">{{ fastPlace.name }}</strong>
@@ -82,8 +145,17 @@
                 </div>
               </div>
             </div>
-            <div v-show="index != article.fastPlaces.length - 1" class="d-flex align-items-center" style="width: 50%">
-              <img :src="require('@/assets/img/arrows.png')" @error="require('@/assets/img/noimage.png')" style="width: 100%" class="me-2" />
+            <div
+              v-show="index != article.fastPlaces.length - 1"
+              class="d-flex align-items-center"
+              style="width: 50%"
+            >
+              <img
+                :src="require('@/assets/img/arrows.png')"
+                @error="require('@/assets/img/noimage.png')"
+                style="width: 100%"
+                class="me-2"
+              />
             </div>
           </div>
         </div>
@@ -116,7 +188,10 @@
           </div> -->
           <div v-for="(fastPlace, index) in article.fastPlaces" v-bind:key="fastPlace.id">
             <div v-if="index % 2 == 0" class="mb-2 container row" style="margin: 100 auto">
-              <div class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded" style="width: 50%; margin: 0 auto">
+              <div
+                class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded"
+                style="width: 50%; margin: 0 auto"
+              >
                 <img
                   v-if="fastPlace.imageUrl == '/' || fastPlace.imageUrl == 'undefined'"
                   :src="require('@/assets/img/noimage.png')"
@@ -130,7 +205,13 @@
                   style="width: 50%"
                   class="me-2"
                 />
-                <img v-else :src="fastPlace.imageUrl" :alt="fastPlace.name" style="width: 50%" class="me-2" />
+                <img
+                  v-else
+                  :src="fastPlace.imageUrl"
+                  :alt="fastPlace.name"
+                  style="width: 50%"
+                  class="me-2"
+                />
                 <div class="travel-info">
                   <h2 class="place_name">{{ fastPlace.name }}</h2>
                   <p class="address">{{ fastPlace.address }}</p>
@@ -142,7 +223,10 @@
             </div>
 
             <div v-else class="mb-2 row">
-              <div class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded" style="width: 50%; margin: 0 auto">
+              <div
+                class="col-md-8 p-3 travel-box d-flex flex-row align-content-center border border-4 rounded"
+                style="width: 50%; margin: 0 auto"
+              >
                 <img
                   v-if="fastPlace.imageUrl == '/' || fastPlace.imageUrl == 'undefined'"
                   :src="require('@/assets/img/noimage.png')"
@@ -156,7 +240,13 @@
                   style="width: 50%"
                   class="me-2"
                 />
-                <img v-else :src="fastPlace.imageUrl" :alt="fastPlace.name" style="width: 50%" class="me-2" />
+                <img
+                  v-else
+                  :src="fastPlace.imageUrl"
+                  :alt="fastPlace.name"
+                  style="width: 50%"
+                  class="me-2"
+                />
                 <div class="travel-info">
                   <h2 class="place_name">{{ fastPlace.name }}</h2>
                   <p class="address">{{ fastPlace.address }}</p>
@@ -170,19 +260,19 @@
           <div class="d-flex justify-content-end">
             <!-- 본인일때만 글수정, 글 삭제 버튼 보이도록 함 -->
             <div style="padding-top: 15px">
-              <v-btn @click="moveList">글목록</v-btn>
-              <v-btn  v-if="user.id == article.article.userId"  @click="moveModifyArticle" >
+              <b-button @click="moveList">글목록</b-button>
+              <b-button v-if="user.id == article.article.userId" @click="moveModifyArticle">
                 글수정
-              </v-btn>
-              <v-btn v-if="user.id == article.article.userId" @click="deleteArticle">
+              </b-button>
+              <b-button v-if="user.id == article.article.userId" @click="deleteArticle">
                 글삭제
-              </v-btn>
+              </b-button>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -210,43 +300,52 @@ export default {
       disOverlays: [],
     };
   },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
   created() {
     // 비동기
     // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
     console.log(this.articleno);
-    http.get(`/plan/${this.articleno}`).then(({ data }) => {
-      this.article = data;
-    });
-  },
-  computed: {
-    ...mapGetters(["isLoggedIn", "getToken"]),
-    ...mapState(["user"]),
+    http
+      .post(`/plan/${this.articleno}`, this.articleno, {
+        headers: {
+          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+        },
+      })
+      .then(({ data }) => {
+        this.article = data;
+      });
   },
   mounted() {
-    const script = document.createElement("script");
-
-    /* global kakao */
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
-    script.onload = () => window.kakao.maps.load(this.loadMap);
-    document.head.appendChild(script);
+    if (window.kakao && window.kakao.maps) {
+      this.loadMap();
+    } else {
+      this.loadScript();
+    }
   },
   methods: {
+    loadScript() {
+      const script = document.createElement("script");
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services,clusterer,drawing&autoload=false";
+      /* global kakao */ // eslint-disable-line no-unused-vars
+      script.onload = () => window.kakao.maps.load(this.loadMap);
+      document.head.appendChild(script);
+    },
     loadMap() {
       const mapContainer = document.getElementById("map"); // 지도를 표시할 div
+      const planmapContainer = document.getElementById("planmap"); // 지도를 표시할 div
       const mapOption = {
         center: new kakao.maps.LatLng(37.500613, 127.036431), // 지도의 중심좌표
         level: 5, // 지도의 확대 레벨
       };
-
-      const planmapContainer = document.getElementById("planmap"); // 지도를 표시할 div
-      const planmapOption = {
-        center: new kakao.maps.LatLng(37.500613, 127.036431), // 지도의 중심좌표
-        level: 5, // 지도의 확대 레벨
-      };
-
       this.map = new kakao.maps.Map(mapContainer, mapOption);
-      this.planmap = new kakao.maps.Map(planmapContainer, planmapOption);
+      this.planmap = new kakao.maps.Map(planmapContainer, mapOption);
       this.makeMarkers();
     },
     makeMarkers() {
@@ -266,7 +365,7 @@ export default {
           place_name: place_name[i].innerText,
           url_name: imgs[i].innerText,
         };
-        this.displayMarker(data);
+        this.displayMarker(data, this.map);
         bounds.extend(new kakao.maps.LatLng(data.y, data.x));
 
         // 선 그리기
@@ -278,7 +377,6 @@ export default {
       this.map.setBounds(bounds);
 
       /* ---------------- 추천 경로 ------------------ */
-
       let lats = document.querySelectorAll(".fast_lat");
       let lngs = document.querySelectorAll(".fast_lng");
       let names = document.querySelectorAll(".fast_place_name");
@@ -294,7 +392,7 @@ export default {
           place_name: names[i].innerHTML,
           url_name: images[i].innerText,
         };
-        this.displayMarkerPlan(data);
+        this.displayMarker(data, this.planmap);
         planbounds.extend(new kakao.maps.LatLng(data.y, data.x));
 
         // 선 그리기
@@ -306,19 +404,12 @@ export default {
       this.planmap.setBounds(planbounds);
     },
 
-    displayMarker(place) {
-      // 마커 이미지의 이미지 주소입니다
+    displayMarker(place, inputmap) {
       var imageSrc = require("@/assets/img/location.png");
-
-      // 마커 이미지의 이미지 크기 입니다
       var imageSize = new kakao.maps.Size(30, 35);
-
-      // 마커 이미지를 생성합니다
       var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-      // 마커를 생성합니다
       var marker = new kakao.maps.Marker({
-        map: this.map, // 마커를 표시할 지도
+        map: inputmap, // 마커를 표시할 지도
         position: new kakao.maps.LatLng(place.y, place.x), // 마커를 표시할 위치
         title: place.place_name, // a마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
         image: markerImage, // 마커 이미지
@@ -336,7 +427,7 @@ export default {
           `    <div class="info">` +
           `        <div class="title">` +
           `            ${place.place_name}` +
-          `            <div class="close" onclick="closeOverlay(this)" title="닫기"></div>` +
+          `            <button class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></button>` +
           `        </div>` +
           `        <div class="body">` +
           `            <div class="img">` +
@@ -351,88 +442,16 @@ export default {
           `</div>`;
         this.overlay = new kakao.maps.CustomOverlay({
           content: content,
-          map: this.map,
+          map: inputmap,
           position: new kakao.maps.LatLng(place.y, place.x),
         });
 
-        this.overlay.setMap(this.map);
-
-        // 추가 버튼 보이게 하기 (활성화)
-        document.getElementById("plan-add-btn").style.display = "block";
-        // 저장 버튼 보이게 하기 (활성화)
-        document.getElementById("plan-save-btn").style.display = "block";
-
+        this.overlay.setMap(inputmap);
         this.clickInfo = place;
       });
-    },
-
-    displayMarkerPlan(place) {
-      // 마커 이미지의 이미지 주소입니다
-      var imageSrc = require("@/assets/img/location.png");
-
-      // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(30, 35);
-
-      // 마커 이미지를 생성합니다
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-        map: this.planmap, // 마커를 표시할 지도
-        position: new kakao.maps.LatLng(place.y, place.x), // 마커를 표시할 위치
-        title: place.place_name, // a마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        image: markerImage, // 마커 이미지
-      });
-
-      this.planmarkers.push(marker);
-
-      var content = "";
-      var noimg = require("@/assets/img/noimage.png");
-
-      // 마커에 클릭이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, "click", () => {
-        content =
-          `<div class="wrap">` +
-          `    <div class="info">` +
-          `        <div class="title">` +
-          `            ${place.place_name}` +
-          `            <div class="close" @click="closeOverlay(this)" title="닫기"></div>` +
-          `        </div>` +
-          `        <div class="body">` +
-          `            <div class="img">` +
-          `                <img src="${place.url_name}" alt="${noimg}" width="73" height="70">` +
-          `           </div>` +
-          `            <div class="desc">` +
-          `                <div class="ellipsis">${place.address_name}</div>` +
-          `                <div><a href="https://map.kakao.com/link/to/${place.place_name},${place.y},${place.x}" style="color:blue" target="_blank" class="link">길찾기</a></div>` +
-          `            </div>` +
-          `        </div>` +
-          `    </div>` +
-          `</div>`;
-
-        var overlay = new kakao.maps.CustomOverlay({
-          content: content,
-          map: this.planmap,
-          position: new kakao.maps.LatLng(place.y, place.x),
-        });
-
-        overlay.setMap(this.planmap);
-
-        // 추가 버튼 보이게 하기 (활성화)
-        document.getElementById("plan-add-btn").style.display = "block";
-        // 저장 버튼 보이게 하기 (활성화)
-        document.getElementById("plan-save-btn").style.display = "block";
-
-        this.clickInfo = place;
-      });
-    },
-    closeOverlay(btn) {
-      btn.parentNode.parentNode.parentNode.remove();
     },
 
     drawLine(latlng) {
-      // 추가한 위치입니다
-
       var clickPosition = latlng;
       // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
       if (!this.drawingFlag) {
@@ -455,16 +474,12 @@ export default {
         this.displayCircleDot(clickPosition, 0);
       } else if (this.clickLine) {
         // 선이 그려지고 있는 상태이면
-
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
         var path = this.clickLine.getPath();
-
         // 좌표 배열에 클릭한 위치를 추가합니다
         path.push(clickPosition);
-
         // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
         this.clickLine.setPath(path);
-
         // var distance = Math.round(this.clickLine.getLength());
         //  displayCircleDot(clickPosition, distance);
       }
@@ -495,16 +510,12 @@ export default {
         this.displayCircleDot(clickPosition, 0);
       } else {
         // 선이 그려지고 있는 상태이면
-
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
         var path = this.planclickLine.getPath();
-
         // 좌표 배열에 클릭한 위치를 추가합니다
         path.push(clickPosition);
-
         // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
         this.planclickLine.setPath(path);
-
         // var distance = Math.round(this.planclickLine.getLength());
         //  displayCircleDot(clickPosition, distance);
       }
@@ -526,7 +537,8 @@ export default {
       if (distance > 0) {
         // 클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다
         distanceOverlay = new kakao.maps.CustomOverlay({
-          content: '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
+          content:
+            '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
           position: position,
           yAnchor: 1,
           zIndex: 2,

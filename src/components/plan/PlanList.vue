@@ -1,11 +1,13 @@
 <template>
-  <v-app>
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
+  <div class="m-5">
+    <div class="px-5 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">여행 계획 목록</mark>
+        <mark class="sky">여행계획</mark>
       </h2>
-      <div v-if="this.isLoggedIn" style="text-align: right">
-        <v-btn outlined @click="movePage">작성</v-btn>
+      <div style="float: right">
+        <router-link :to="{ name: 'planwrite' }" v-if="user" class="btn submit-btn mt-2 px-3 py-1">
+          작성
+        </router-link>
       </div>
     </div>
 
@@ -24,7 +26,7 @@
         </select>
         <div class="input-group input-group-sm">
           <input v-model="word" type="text" class="form-control" placeholder="검색어..." />
-          <v-btn outlined @click="searchKeyword">검색</v-btn>
+          <button @click="searchKeyword">검색</button>
         </div>
       </div>
       <table class="table table-hover">
@@ -47,7 +49,7 @@
       </table>
     </div>
     <div class="text-center" v-else>게시글이 없습니다.</div>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -85,11 +87,7 @@ export default {
   },
   methods: {
     printArticles() {
-      console.log("printArticles call!!");
       console.log(this.articles);
-    },
-    movePage() {
-      this.$router.push({ name: "planwrite" });
     },
     searchKeyword() {
       let boardParameterDto = {

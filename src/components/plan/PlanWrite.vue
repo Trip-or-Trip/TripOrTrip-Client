@@ -5,35 +5,62 @@
         <mark class="sky">글쓰기</mark>
       </h2>
     </div>
-    <div class="container justify-content-center" style="width: 80%">
-      <div class="text-center col-lg-8 col-md-10 col-sm-12">
+    <div class="container d-flex" style="width: 80%">
+      <div class="text-center col-2">
         <div class="d-flex my-3" style="width: 100%">
-          <input id="search-keyword" class="form-control me-2" type="search" placeholder="검색어" aria-label="검색어" />
-          <button id="btn-search" @click="search" class="btn submit-btn" type="button" style="width: 10em">검색</button>
+          <input
+            id="search-keyword"
+            class="form-control me-2"
+            type="search"
+            placeholder="검색어"
+            aria-label="검색어"
+          />
+          <b-button @click="search" variant="info" style="width: 5em"> 검색 </b-button>
         </div>
       </div>
-      <div class="">
+      <div class="col-6">
         <section class="position-relative">
           <!-- map이 들어갈 위치 -->
           <!-- kakao map start -->
           <div id="map" class="shadow rounded mx-auto p-2" style="width: 90%; height: 35em"></div>
           <!-- kakao map end -->
         </section>
-        <div class="position-absolute d-flex flex-row translate-middle-x z-3 buttons mb-2 mx-auto p-2" style="right: 0px">
-          <button class="z-3 btn delete-btn shadow p-2 me-2" id="plan-delete-btn" type="button" style="width: 4em; height: 2.5em; display: none">초기화</button>
-          <button class="place-add z-3 btn submit-btn shadow p-2" id="plan-add-btn" type="button" style="display: none; width: 4em; height: 2.5em" @click="addPlace">추가</button>
+        <div class="d-flex flex-row buttons mb-2 mx-auto p-2" style="right: 0px">
+          <button
+            class="z-3 btn delete-btn shadow p-2 me-2"
+            id="plan-delete-btn"
+            type="button"
+            style="width: 4em; height: 2.5em; display: none"
+          >
+            초기화
+          </button>
+          <button
+            class="place-add z-3 btn submit-btn shadow p-2"
+            id="plan-add-btn"
+            type="button"
+            style="display: none; width: 4em; height: 2.5em"
+            @click="addPlace"
+          >
+            추가
+          </button>
         </div>
         <div class="divider mb-5"></div>
+      </div>
+      <div class="col-4">
         <aside>
           <!-- 여행 계획 들어가는 영역 -->
-          <div class="d-flex flex-column justify-content-center mx-auto p-2" style="width: 100%; height: 35em">
+          <div class="d-flex flex-column mx-auto p-2" style="width: 100%; height: 35em">
             <h3 id="plan-title" class="text-center p-2"><strong>여행 계획</strong></h3>
             <form id="plan-form" onsubmit="return false;" role="search" method="POST">
               <input type="hidden" id="root" name="root" value="${root}" />
               <input type="hidden" name="action" value="save" />
               <div>
                 <div>
-                  <div id="plan-content" class="rounded bg-light shadow mb-2 mx-auto p-2 overflow-auto d-flex justify-content-center" style="width: 100%; height: 10em"></div>
+                  <div
+                    id="plan-content"
+                    class="rounded bg-light shadow mb-2 mx-auto p-2 overflow-auto d-flex justify-content-center"
+                    style="width: 100%; height: 10em"
+                  ></div>
                 </div>
                 <div class="divider mb-3"></div>
                 <div id="plan-detail" class="d-flex flex-column align-items-center rounded mx-auto">
@@ -48,7 +75,10 @@
                     style="width: 70%"
                   />
                   <br />
-                  <div class="plan-detail-date d-flex flex-row justify-content-between mb-3" style="width: 70%">
+                  <div
+                    class="plan-detail-date d-flex flex-row justify-content-between mb-3"
+                    style="width: 70%"
+                  >
                     <label for="start_datepicker"><strong>출발일</strong></label>
                     <input
                       v-model="sDate"
@@ -80,21 +110,21 @@
                     style="width: 70%; height: 10em"
                   ></textarea>
                   <br />
-                  <v-btn large @click="savePlan">
+                  <b-button variant="primary" @click="savePlan" style="width: 5em">
                     <strong>저장</strong>
-                  </v-btn>
+                  </b-button>
                 </div>
               </div>
             </form>
           </div>
         </aside>
       </div>
-      <div class="divider mb-5"></div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 export default {
   name: "BoardWrite",
@@ -114,50 +144,96 @@ export default {
       circleOverlays: [],
       clickInfo: null,
       searchedImgs: Object,
-      areaUrl: "https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1?MobileOS=WIN&MobileApp=triportrip&keyword=",
-      keyUrl: "&serviceKey=qqmr9xPPIeNaINQ4yBU1GUJljRKSxzGUILRxGpdQBkEyF16vLpll%2BbPZ%2FeFeoXRQIuE1OJReyMcWmRxtbNElSQ%3D%3D",
+      areaUrl:
+        "https://apis.data.go.kr/B551011/PhotoGalleryService1/gallerySearchList1?MobileOS=WIN&MobileApp=triportrip&keyword=",
+      keyUrl:
+        "&serviceKey=qqmr9xPPIeNaINQ4yBU1GUJljRKSxzGUILRxGpdQBkEyF16vLpll%2BbPZ%2FeFeoXRQIuE1OJReyMcWmRxtbNElSQ%3D%3D",
     };
   },
+
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
+  },
   mounted() {
-    const script = document.createElement("script");
-    /* global kakao */
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=74afa46ef6c4beac029af5a59d571a47&libraries=services,clusterer,drawing&autoload=false";
-    script.onload = () => window.kakao.maps.load(this.loadMap);
-    document.head.appendChild(script);
+    if (window.kakao && window.kakao.maps) {
+      // window.kakao.maps.load(this.loadMap);
+      this.loadMap();
+    } else {
+      this.loadScript();
+    }
   },
   methods: {
-    savePlan() {
-      // let form = document.getElementById("plan-form");
-      // form.setAttribute("action", "save");
-      // form.submit();
+    loadScript() {
+      const script = document.createElement("script");
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services,clusterer,drawing&autoload=false";
+      /* global kakao */ // eslint-disable-line no-unused-vars
+      script.onload = () => window.kakao.maps.load(this.loadMap);
 
+      document.head.appendChild(script);
+    },
+    loadMap() {
+      const mapContainer = document.querySelector("#map");
+      const mapOption = {
+        center: new window.kakao.maps.LatLng(37.500613, 127.036431), // 지도의 중심좌표
+        level: 5, // 지도의 확대 레벨
+      };
+
+      this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+    },
+
+    savePlan() {
+      if (!this.checkValue()) return;
       let article = {
         userId: this.userid,
         title: this.title,
         description: this.description,
         startDate: this.sDate,
         endDate: this.eDate,
-
         places: this.places,
       };
-      console.log(article);
-      http.post(`/plan/write`, article).then(({ data }) => {
-        let msg = "글 작성 시 문제 발생!!!";
-        if (data === "success") msg = "글 작성 성공!!!";
-        alert(msg);
-        this.moveList();
-      });
+      http
+        .post(`/plan/write`, article, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
+          let msg = "글 작성 시 문제 발생!!!";
+          if (data === "success") msg = "글 작성 성공!!!";
+          alert(msg);
+          this.moveList();
+        });
     },
-    loadMap() {
-      const mapContainer = document.getElementById("map"); // 지도를 표시할 div
-      const mapOption = {
-        center: new kakao.maps.LatLng(37.500613, 127.036431), // 지도의 중심좌표
-        level: 5, // 지도의 확대 레벨
-      };
+    checkValue() {
+      if (!this.title) {
+        alert("계획 제목을 입력하세요.");
+        return false;
+      } else if (!this.description) {
+        alert("상세 계획을 입력하세요.");
+        return false;
+      } else if (!this.sDate) {
+        alert("출발일을 입력하세요.");
+        return false;
+      } else if (!this.eDate) {
+        alert("도착일을 입력하세요.");
+        return false;
+      } else if (!this.places) {
+        alert("여행 장소를 입력하세요.");
+        return false;
+      } else {
+        return true;
+      }
+    },
 
-      this.map = new kakao.maps.Map(mapContainer, mapOption);
-    },
     search() {
+      if (!document.getElementById("search-keyword").value) {
+        alert("장소명을 입력해주세요!");
+        return;
+      }
       let ps = new kakao.maps.services.Places();
       ps.keywordSearch(document.getElementById("search-keyword").value, this.placesSearchCB);
     },
@@ -193,17 +269,18 @@ export default {
       if (areas.length == 0) {
         this.searchedImgs.set(keyword, noimg);
         console.log(id);
-        // http.get(`/tourist/img/${id}`).then(({ data }) => {
-        //   this.searchedImgs.set(keyword, data);
-        //   console.log(data);
-        // });
       } else {
         var area = areas[0];
-        this.searchedImgs.set(area.querySelector("galTitle").innerHTML.split(" ")[0], area.querySelector("galWebImageUrl").innerHTML);
+        this.searchedImgs.set(
+          area.querySelector("galTitle").innerHTML.split(" ")[0],
+          area.querySelector("galWebImageUrl").innerHTML
+        );
       }
     },
 
     addPlace() {
+      document.querySelectorAll(".overlay").forEach((e) => e.remove());
+
       let placeName = this.clickInfo.place_name;
       let placeAddr = this.clickInfo.address_name;
       let placeId = this.clickInfo.id;
@@ -254,35 +331,29 @@ export default {
       // marker들 뒤에서부터 읽어오면서 위도 경도 값이 같다면 그대로 두고 아닌 것들은 마커 다 삭제
       for (var i = this.markers.length - 1; i >= len; i--) {
         // console.log(i);
-        if (this.markers[i].getPosition().getLat().toFixed(13) == latlngMa && this.markers[i].getPosition().getLng().toFixed(13) == latlngLa) {
+        if (
+          this.markers[i].getPosition().getLat().toFixed(13) == latlngMa &&
+          this.markers[i].getPosition().getLng().toFixed(13) == latlngLa
+        ) {
           this.idxs.push(this.markers[i]);
         } else {
           this.markers[i].setMap(null);
           this.markers.splice(i, 1);
         }
       }
+      document.getElementById("plan-add-btn").style.display = "none";
+      document.getElementById("overlay").remove();
     },
 
     drawLine(latlng) {
-      // 추가한 위치입니다
       var clickPosition = latlng;
-      var clickLine = new kakao.maps.Polyline();
       // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
       if (!this.drawingFlag) {
         // 상태를 true로, 선이 그리고있는 상태로 변경합니다
         this.drawingFlag = true;
 
-        // 지도 위에 선이 표시되고 있다면 지도에서 제거합니다
-        // deleteClickLine();
-
-        // 지도 위에 커스텀오버레이가 표시되고 있다면 지도에서 제거합니다
-        // deleteDistance();
-
-        // 지도 위에 선을 그리기 위해 클릭한 지점과 해당 지점의 거리정보가 표시되고 있다면 지도에서 제거합니다
-        // deleteCircleDot();1
-
         // 클릭한 위치를 기준으로 선을 생성하고 지도위에 표시합니다
-        clickLine = new kakao.maps.Polyline({
+        this.clickLine = new kakao.maps.Polyline({
           map: this.map, // 선을 표시할 지도입니다
           path: [clickPosition], // 선을 구성하는 좌표 배열입니다 클릭한 위치를 넣어줍니다
           strokeWeight: 3, // 선의 두께입니다
@@ -291,24 +362,20 @@ export default {
           strokeStyle: "solid", // 선의 스타일입니다
         });
 
-        this.lines.push(clickLine);
+        this.lines.push(this.clickLine);
 
         // 클릭한 지점에 대한 정보를 지도에 표시합니다
         this.displayCircleDot(clickPosition, 0);
-      } else {
+      } else if (this.clickLine) {
         // 선이 그려지고 있는 상태이면
-
         // 그려지고 있는 선의 좌표 배열을 얻어옵니다
-        var path = clickLine.getPath();
-
+        var path = this.clickLine.getPath();
         // 좌표 배열에 클릭한 위치를 추가합니다
         path.push(clickPosition);
-
         // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
-        clickLine.setPath(path);
-
-        var distance = Math.round(clickLine.getLength());
-        this.displayCircleDot(clickPosition, distance);
+        this.clickLine.setPath(path);
+        // var distance = Math.round(this.clickLine.getLength());
+        //  displayCircleDot(clickPosition, distance);
       }
     },
 
@@ -328,7 +395,8 @@ export default {
       if (distance > 0) {
         // 클릭한 지점까지의 그려진 선의 총 거리를 표시할 커스텀 오버레이를 생성합니다
         distanceOverlay = new kakao.maps.CustomOverlay({
-          content: '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
+          content:
+            '<div class="dotOverlay">거리 <span class="number">' + distance + "</span>m</div>",
           position: position,
           yAnchor: 1,
           zIndex: 2,
@@ -366,11 +434,11 @@ export default {
       // 마커에 클릭이벤트를 등록합니다
       kakao.maps.event.addListener(marker, "click", () => {
         content =
-          `<div class="wrap">` +
+          `<div class="wrap" id="overlay">` +
           `    <div class="info">` +
           `        <div class="title">` +
           `            ${place.place_name}` +
-          `            <div class="close" @click="closeOverlay(this)" title="닫기"></div>` +
+          `            <div class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></div>` +
           `        </div>` +
           `        <div class="body">` +
           `            <div class="img">` +
@@ -403,45 +471,8 @@ export default {
         this.clickInfo = place;
       });
     },
-    // 입력값 체크하기 - 체크가 성공하면 registArticle 호출
-    checkValue() {
-      // 사용자 입력값 체크하기
-      // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
-      let err = true;
-      let msg = "";
-      !this.userid && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
-      err && !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
-      err && !this.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
-
-      if (!err) alert(msg);
-      // 만약, 내용이 다 입력되어 있다면 registArticle 호출
-      else this.registArticle();
-    },
-    closeOverlay(btn) {
-      btn.parentNode.parentNode.parentNode.remove();
-      //	overlay.setMap(null);
-    },
-    registArticle() {
-      // 비동기
-      // TODO : 글번호에 해당하는 글정보 등록.
-      // alert("글작성 하러가자!!!!");
-      let article = {
-        userid: this.userid,
-        title: this.title,
-        places: this.places,
-      };
-      console.log(this.content);
-      http.post(`/plan/write`, article).then(({ data }) => {
-        let msg = "글 작성 시 문제 발생!!!";
-        if (data === "success") msg = "글 작성 성공!!!";
-        alert(msg);
-        this.moveList();
-      });
-    },
-
     moveList() {
-      console.log("글목록 보러가자!!!");
-      this.$router.push({ path: "list" });
+      this.$router.push({ name: "planlist" });
     },
   },
 };
