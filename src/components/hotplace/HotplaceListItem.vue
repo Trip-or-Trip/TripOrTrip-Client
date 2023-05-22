@@ -4,7 +4,8 @@
       <div class="card-title mt-3 mb-3">
         <div class="row">
           <div class="ms-2 col-8 justify-content-start">
-            <img :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-3" />
+            <img v-if="user.image" :src="`/upload/profile/${user.image}`" class="hotplace-profile-img me-3" />
+            <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-3" />
             <span>{{ hotplace.userId }}</span>
           </div>
           <div class="col-3 justify-content-end">
@@ -120,8 +121,9 @@ export default {
 
 <style scoped>
 .hotplace-profile-img {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 2rem;
   object-fit: cover;
 }
 .hotplace-icon {
