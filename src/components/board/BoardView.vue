@@ -1,5 +1,5 @@
 <template>
-  <div class="m-5">
+  <div id="board-view">
     <div class="px-5 align-self-center">
       <h2 class="my-3 py-3 shadow-sm bg-light text-center">
         <mark class="sky">게시글 상세</mark>
@@ -19,7 +19,7 @@
             </p>
           </div>
         </div>
-        <div class="col-md-4 align-self-center text-end">댓글 : {{this.comments.length}}</div>
+        <div class="col-md-4 align-self-center text-end">댓글 : {{ this.comments.length }}</div>
         <div class="divider mb-3"></div>
         <div class="text-secondary">{{ article.content }}</div>
         <div class="divider mt-3 mb-3"></div>
@@ -65,9 +65,9 @@
 </template>
 
 <script>
+import CommentListItem from "@/components/board/CommentListItem";
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
-import CommentListItem from "@/components/board/CommentListItem";
 
 export default {
   name: "BoardView",
@@ -83,33 +83,36 @@ export default {
       comments: [],
     };
   },
-  
   computed: {
     ...mapGetters(["isLoggedIn", "getToken"]),
     ...mapState(["user"]),
   },
-
   created() {
-    // 비동기
-    // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
     console.log(this.articleno);
     http
-      .post(`/board/${this.articleno}`, this.articleno, {
+      .post(
+        `/board/${this.articleno}`,
+        {},
+        {
           headers: {
             "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-          },})
+          },
+        }
+      )
       .then(({ data }) => {
         console.log(data);
         this.article = data;
-        http.post(`/board/comment/${this.articleno}`, this.articleno,  {
+        http
+          .post(`/board/comment/${this.articleno}`, this.articleno, {
             headers: {
               "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-            },})
-        .then(({ data }) => {
-          console.log(data);
-          this.comments = data;
-        });
+            },
+          })
+          .then(({ data }) => {
+            console.log(data);
+            this.comments = data;
+          });
       })
       .catch(() => {
         // console.log("error 발생");
@@ -118,55 +121,9 @@ export default {
         this.$router.push("/user/signin");
         return;
       });
-
-    
   },
-  methods: {
-    moveModifyArticle() {
-      this.$router.push({ name: "boardmodify", params: { articleno: this.article.id } });
-    },
-    deleteArticle() {
-      this.$router.push({ name: "boarddelete", params: { articleno: this.article.id } });
-    },
-    moveList() {
-      this.$router.push({ name: "boardlist" });
-    },
-    writeComment() {
-      console.log(this.content);
-
-      if(this.content == null){
-        alert("댓글을 입력해주세요!");
-        return;
-      }else{
-        if (this.isLoggedIn) {
-          this.comment = {
-            userId: this.user.id,
-            content: this.content,
-            boardId: this.articleno,
-          };
-        } else {
-          alert("로그인 후 이용 가능합니다.");
-          return;
-        }
-      }
-      http.post(`/board/writecomment/${this.article.id}`, this.comment, {
-        headers: {
-          "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-        },
-      }).then(({ data }) => {
-        let msg = "댓글 작성 중 문제 발생!!!";
-        if (data === "success") {
-          msg = "댓글 작성 성공!!!";
-          alert(msg);
-          location.reload(this);
-        }else{
-          alert(msg);  
-        }
-      });
-    },
-   
-  },
+  methods: {},
 };
 </script>
 
-<style></style>
+<style scoped></style>

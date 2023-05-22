@@ -14,10 +14,10 @@
               <router-link to="/plan" class="nav-link active"> 여행 계획 보기 </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/hotplace" class="nav-link active"> 핫플레이스 보기 </router-link>
+              <router-link :to="{ name: 'hotplacelist' }" class="nav-link active"> 핫플레이스 보기 </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/board" class="nav-link active"> 자유게시판 </router-link>
+              <router-link :to="{ name: 'boardlist' }" class="nav-link active"> 자유게시판 </router-link>
             </li>
             <li class="nav-item">
               <router-link to="/notice" class="nav-link active"> 공지사항 </router-link>
