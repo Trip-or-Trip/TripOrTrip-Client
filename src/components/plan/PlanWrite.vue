@@ -163,6 +163,7 @@ export default {
       title: null,
       description: null,
       markers: [],
+      plannedMarkers: [],
       overlay: Array,
       idxs: [],
       lines: [],
@@ -218,6 +219,7 @@ export default {
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
     },
 
+    //  여행 계획 저장 시 호출되는 메서드 
     savePlan() {
       if (!this.checkValue()) return;
       let article = {
@@ -241,6 +243,8 @@ export default {
           this.moveList();
         });
     },
+
+    // 여행 계획 작성시 빈칸이 있는지 확인하는 메서드
     checkValue() {
       if (!this.title) {
         alert("계획 제목을 입력하세요.");
@@ -262,6 +266,7 @@ export default {
       }
     },
 
+    // 검색 버튼 눌렀을 시 호출되는 메서드
     search() {
       if (!document.getElementById("search-keyword").value) {
         alert("장소명을 입력해주세요!");
@@ -271,6 +276,7 @@ export default {
       ps.keywordSearch(document.getElementById("search-keyword").value, this.placesSearchCB);
     },
 
+    // 입력된 장소명을 바탕으로 결과를 비동기로 표시하는 메서드드
     placesSearchCB(datas, status) {
       if (status === kakao.maps.services.Status.OK) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
@@ -290,19 +296,19 @@ export default {
         }
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        this.map.setBounds(bounds);
-        this.results = datas;
-        console.log(datas);
+        this.map.setBounds(bounds); // 검색된 결과를 바탕으로 bounds를 다시 설정한다
+        this.results = datas; // 검색창 밑에 표시되기 위해 비동기 처리한다
       }
     },
 
+    // 마커가 표시될 때 이미지를 불러오는 메서드
     async makeOption(data, keyword, id) {
       let noimg = require("@/assets/img/noimage.png");
       let parser = new DOMParser();
       const xml = parser.parseFromString(data, "application/xml");
       let areas = xml.querySelectorAll("item");
-      if (areas.length == 0) {
-        this.searchedImgs.set(keyword, noimg);
+      if (areas.length == 0) { // 만약 data가 없다면
+        this.searchedImgs.set(keyword, noimg); //  noimage처리한다
         console.log(id);
       } else {
         var area = areas[0];
@@ -313,7 +319,8 @@ export default {
       }
     },
 
-    addPlace() {
+    // 장소 추가 버튼을 눌렀을 때 호출되는 메서드
+    addPlace() { 
       document.querySelectorAll(".overlay").forEach((e) => e.remove());
       let placeName = this.clickInfo.place_name;
       let placeAddr = this.clickInfo.address_name;
@@ -333,43 +340,37 @@ export default {
       });
 
       let latlng = new kakao.maps.LatLng(this.clickInfo.y, this.clickInfo.x);
-      this.drawLine(latlng);
+      this.drawLine(latlng, true);
       this.clickInfo = null;
 
-      // 지도 선 삭제
-      // let mark;
-
-      let latlngLa = latlng.La.toFixed(13);
-      let latlngMa = latlng.Ma.toFixed(13);
-
-      let len = this.idxs.length;
+      // let len = this.idxs.length;
       // marker들 뒤에서부터 읽어오면서 위도 경도 값이 같다면 그대로 두고 아닌 것들은 마커 다 삭제
-      for (var i = this.markers.length - 1; i >= len; i--) {
-        // console.log(i);
-        if (
-          this.markers[i].getPosition().getLat().toFixed(13) == latlngMa &&
-          this.markers[i].getPosition().getLng().toFixed(13) == latlngLa
-        ) {
-          this.idxs.push(this.markers[i]);
-        } else {
-          this.markers[i].setMap(null);
-          this.markers.splice(i, 1);
-        }
-      }
+      // for (var i = this.markers.length - 1; i >= len; i--) {
+      //   if (
+      //     this.markers[i].getPosition().getLat().toFixed(13) == latlng &&
+      //     this.markers[i].getPosition().getLng().toFixed(13) == latlng
+      //   ) {
+      //     this.idxs.push(this.markers[i]);
+      //   } else {
+      //     this.markers[i].setMap(null);
+      //     this.markers.splice(i, 1);
+      //   }
+      // }
       document.getElementById("plan-add-btn").style.display = "none";
       document.getElementById("overlay").remove();
     },
+
     // 장소 삭제하면 호출되는 메서드 --------------------------------------- >
     deletePlace(placeId) {
       this.places = this.places.filter((place) => place.placeId !== placeId);
 
       // 마커 삭제
-      let lat = this.places.lat * 1;
-      let lng = this.places.lng * 1;
+      // let lat = (this.places.lat * 1).toFixed(13);
+      // let lng = (this.places.lng * 1).toFixed(13);
 
-      this.planMarkers = this.planMarkers.filter((marker) => marker.placeId !== placeId);
+      this.plannedMarkers = this.plannedMarkers.filter((marker) => marker.placeId !== placeId);
 
-      this.deleteMarker(lat, lng, this.places);
+      // this.deleteMarker(lat, lng, this.places);
 
       // 그려진 선 삭제
       this.deleteLine();
@@ -378,12 +379,17 @@ export default {
 
       // 선 다시 그리기
       this.places.forEach((place) => {
-        this.drawLine(place, true);
+        this.drawLine(place, false);
       });
     },
 
-    drawLine(latlng) {
-      var clickPosition = latlng;
+    drawLine(latlng, flag) {
+      var clickPosition = null;
+      if (!flag) {
+        clickPosition = new window.kakao.maps.LatLng(latlng.lat, latlng.lng);
+      } else {
+        clickPosition = new window.kakao.maps.LatLng(latlng.Ma, latlng.La);
+      }
       // 지도 클릭이벤트가 발생했는데 선을 그리고있는 상태가 아니면
       if (!this.drawingFlag) {
         // 상태를 true로, 선이 그리고있는 상태로 변경합니다
@@ -399,18 +405,12 @@ export default {
           strokeStyle: "solid", // 선의 스타일입니다
         });
 
-        this.lines.push(this.clickLine);
-
         // 클릭한 지점에 대한 정보를 지도에 표시합니다
         this.displayCircleDot(clickPosition, 0);
-      } else if (this.clickLine) {
-        // 선이 그려지고 있는 상태이면
-        // 그려지고 있는 선의 좌표 배열을 얻어옵니다
-        var path = this.clickLine.getPath();
-        // 좌표 배열에 클릭한 위치를 추가합니다
-        path.push(clickPosition);
-        // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
-        this.clickLine.setPath(path);
+      } else if (this.clickLine) { // 선이 그려지고 있는 상태이면
+        var path = this.clickLine.getPath(); // 그려지고 있는 선의 좌표 배열을 얻어옵니다
+        path.push(clickPosition); // 좌표 배열에 클릭한 위치를 추가합니다
+        this.clickLine.setPath(path); // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
         // var distance = Math.round(this.clickLine.getLength());
         //  displayCircleDot(clickPosition, distance);
       }
@@ -422,6 +422,44 @@ export default {
         this.clickLine.setMap(null);
         this.clickLine = null;
       }
+    },
+
+     // 마커 삭제하기
+    deleteMarker(lat, lng, data) {
+      this.markers.forEach((marker) => {
+        if (
+          marker.getPosition().getLat().toFixed(13) === lat &&
+          marker.getPosition().getLng().toFixed(13) === lng
+        ) {
+          if (this.plannedMarkers) {
+            const markerData = {
+              marker: marker,
+              placeId: data.id,
+            };
+            this.plannedMarkers.push(markerData);
+            // console.log(this.planMarkers);
+          }
+        } else {
+          // 검색했을 때 뜨는 마커들 삭제 : flag = false
+          let planFlag = false;
+
+          for (let i = 0; i < this.plannedMarkers.length; i++) {
+            if (
+              this.plannedMarkers[i].marker.getTitle() === marker.getTitle() &&
+              this.plannedMarkers[i].marker.getPosition().getLat().toFixed(13) ===
+                marker.getPosition().getLat().toFixed(13) &&
+              this.plannedMarkers[i].marker.getPosition().getLng().toFixed(13) ===
+                marker.getPosition().getLng().toFixed(13)
+            ) {
+              planFlag = true;
+              break;
+            }
+          }
+          if (!planFlag) {
+            marker.setMap(null);
+          }
+        }
+      });
     },
 
     displayCircleDot(position, distance) {
