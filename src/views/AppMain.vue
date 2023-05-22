@@ -14,6 +14,70 @@
           </div>
         </div>
       </section>
+      <section id="hot-list" class="p-5" style="height: 50em;">
+        <div id="hotplace-list" class="mb-2 d-flex">
+          <!-- <b-carousel
+            id="carousel-1"
+            :interval="4000"
+            controls
+            indicators
+            background="#ababab"
+            img-width="128"
+            img-height="48"
+            style="text-shadow: 1px 1px 2px #333"
+          >
+            <b-carousel-slide
+              v-for="hotplace in hotplaces"
+              v-bind:key="hotplace.num"
+              :img-src="`/upload/hotplace/${hotplace.image}`"
+              :caption="hotplace.title"
+              :text="hotplace.desc"
+            >
+            </b-carousel-slide>
+          </b-carousel> -->
+          <b-card 
+              class="m-2 col-3"
+              v-for="hotplace in hotplaces"
+              v-bind:key="hotplace.num"
+              :title="hotplace.title"
+              :img-src="`/upload/hotplace/${hotplace.image}`"
+              >
+            <b-card-text>
+              #{{hotplace.tag1}}
+              #{{hotplace.tag2}} <br>
+              {{hotplace.desc}}
+            </b-card-text>
+            <b-button :href="`${hotplace.mapUrl}`" variant="primary">지도 검색</b-button>
+          </b-card>
+        </div>
+        <div id="plan-list" class="mb-2 d-flex">
+          <b-card 
+              class="m-2 col-3"
+              v-for="plan in plans"
+              v-bind:key="plan.id"
+              :title="plan.title"
+              :img-src="`http://t1.daumcdn.net/mapjsapi/images/bg_tile.png`"
+              >
+            <b-card-text>
+              {{plan.description}}
+            </b-card-text>
+            <b-button :to="{ name: 'planview', params: { articleno: plan.id } }" variant="primary">자세히</b-button>
+          </b-card>
+        </div>
+        <div id="board-list" class="mb-2 d-flex">
+          <b-card 
+              class="m-2 col-3"
+              v-for="board in boards"
+              v-bind:key="board.id"
+              :title="board.title"
+              >
+            <b-card-text>
+              {{board.description}}
+            </b-card-text>
+            <b-button :to="{ name: 'boardview', params: { articleno: board.id } }" variant="primary">자세히</b-button>
+          </b-card>
+        </div>
+      </section>
       <section id="service-list" class="service-list">
         <div class="container-fluid">
           <div class="row justify-content-center">
@@ -106,6 +170,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import http from "@/util/http-common";
 
 export default {
   name: "AppMain",
@@ -113,10 +178,33 @@ export default {
   data() {
     return {
       token: "",
+      hotplaces: [],
+      plans: [],
+      boards: [],
     };
   },
   created() {
     this.token = window.$cookies.get("TripOrTrip");
+    
+  },
+  mounted(){
+    http
+      .get(`/hotplace/list/hot`)
+      .then(({ data }) => {
+        this.hotplaces = data;
+      });
+    http
+      .get(`/plan/list/hot`)
+      .then(({ data }) => {
+        this.plans = data;
+        console.log(data);
+      });
+    http
+      .get(`/board/list/hot`)
+      .then(({ data }) => {
+        this.boards = data;
+        console.log(data);
+      });
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),
