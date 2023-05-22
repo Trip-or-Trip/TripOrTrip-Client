@@ -20,7 +20,7 @@
 
           <div v-if="this.isLoggedIn" class="ms-3">
             <!-- <button type="button" @click="movePage" class="btn submit-btn">글쓰기</button> -->
-            <button type="button" class="btn submit-btn">글쓰기</button>
+            <button type="button" class="btn submit-btn"><router-link :to="{ name: 'boardwrite' }">글쓰기</router-link></button>
           </div>
         </div>
       </div>
@@ -125,5 +125,9 @@ export default {
 }
 #input-group-container {
   padding: 0.7rem 0;
+}
+a {
+  text-decoration: none;
+  color: white;
 }
 </style>

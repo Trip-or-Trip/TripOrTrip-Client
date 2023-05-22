@@ -1,24 +1,47 @@
 <template>
   <div id="board-view">
-    <div class="px-5 align-self-center">
-      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">게시글 상세</mark>
-      </h2>
-    </div>
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
-      <div class="row my-2">
-        <h2 class="text-secondary px-5">{{ article.id }}. {{ article.title }}</h2>
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <div class="clearfix align-content-center">
-            <img class="avatar me-2 float-md-start bg-light p-2" src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg" />
-            <p>
-              <span class="fw-bold">{{ article.userId }}</span> <br />
-              <span class="text-secondary fw-light"> {{ article.createdAt }} 조회 : {{ article.hit }} </span>
-            </p>
+    <div class="article-container row d-flex justify-content-center">
+      <div id="article-content" class="col-lg-7 col-md-10 col-sm-12 mt-5 align-self-center">
+        <h3 class="mb-2">{{ article.title }}</h3>
+        <div class="clearfix align-content-center">
+          <!-- 글 작성자 프로필 사진으로 바꿔야 함 -->
+          <b-avatar v-if="user.image" variant="info" :src="`/upload/profile/${user.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <b-avatar v-else variant="info" :src="require('@/assets/img/user.png')" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <div>
+            <span class="fw-bold">{{ article.userId }}</span> <br />
+            <span class="text-secondary fw-light" style="font-size: 0.9rem"> {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }} </span>
+            <span v-if="article.userId == user.id" class="float-md-end">
+              <button type="button" class="btn btn-sm submit-btn me-2"><router-link :to="{ name: 'boardmodify', param: { articleno: articleno } }">글 수정</router-link></button>
+              <button type="button" @click="deleteArticle" class="btn btn-sm submit-btn">글 삭제</button>
+            </span>
           </div>
         </div>
+        <hr id="separator-line" style="width: 100%" />
+        <div class="content-container mx-3 my-5">
+          <div>{{ article.content }}</div>
+        </div>
+        <div class="ms-1" style="font-size: 0.9rem">
+          <i class="bi bi-chat-square-dots"></i>
+          &nbsp;&nbsp;<span>댓글 : {{ comments.length }}</span>
+        </div>
+        <hr id="separator-line" style="width: 100%" />
+        <div class="comment-input-container mb-3">
+          <div class="row d-flex justify-content-center">
+            <div id="input-group-container" class="input-group input-group-sm">
+              <input v-model="content" type="text" class="form-control" placeholder="댓글을 입력해주세요" />
+              <button type="button" @click="writeComment" class="btn submit-btn">작성</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="comments-container">
+          <comment-list-item v-for="comm in comments" :key="comm.id" :comment="comm"></comment-list-item>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-lg-7 col-md-10 col-sm-12 align-self-center">
+      <div class="row">
         <div class="col-md-4 align-self-center text-end">댓글 : {{ this.comments.length }}</div>
         <div class="divider mb-3"></div>
         <div class="text-secondary">{{ article.content }}</div>
@@ -29,38 +52,7 @@
           <b-button v-if="user.id == article.userId" @click="deleteArticle"> 글삭제 </b-button>
         </div>
       </div>
-      <!-- 댓글 영역 start -->
-      <div class="col-lg-8 col-md-10 col-sm-12">
-        <!-- 댓글 입력 영역 start -->
-        <div class="row">
-          <div class="col-md-11">
-            <input type="text" v-model="content" placeholder="댓글을 입력해주세요" style="width: 100%; height: 100%" />
-          </div>
-          <div class="col-md-1">
-            <b-button @click="writeComment">작성</b-button>
-          </div>
-        </div>
-        <!-- 댓글 입력 영역 end -->
-        <!-- 댓글 출력 영역 start -->
-        <div v-if="comments.length" class="row">
-          <table class="table table-hover">
-            <thead>
-              <tr class="text-center">
-                <th scope="col">작성자</th>
-                <th scope="col">내용</th>
-                <th scope="col">작성일</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <comment-list-item v-for="comment in comments" :key="comment.id" :comment="comment"></comment-list-item>
-            </tbody>
-          </table>
-        </div>
-        <!-- 댓글 출력 영역 end -->
-      </div>
-      <!-- 댓글 영역 end -->
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -78,6 +70,7 @@ export default {
     return {
       articleno: Number,
       article: Object,
+      createdAt: "",
       comment: null,
       content: null,
       comments: [],
@@ -103,12 +96,17 @@ export default {
       .then(({ data }) => {
         console.log(data);
         this.article = data;
+        this.createdAt = data.createdAt.substring(0, 16);
         http
-          .post(`/board/comment/${this.articleno}`, this.articleno, {
-            headers: {
-              "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-            },
-          })
+          .post(
+            `/board/comment/${this.articleno}`,
+            {},
+            {
+              headers: {
+                "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+              },
+            }
+          )
           .then(({ data }) => {
             console.log(data);
             this.comments = data;
@@ -122,8 +120,99 @@ export default {
         return;
       });
   },
-  methods: {},
+  methods: {
+    writeComment() {
+      if (this.content == null) {
+        alert("댓글을 입력해 주세요.");
+        return;
+      }
+      if (!this.isLoggedIn) {
+        alert("로그인 후 이용 가능합니다.");
+        return;
+      }
+
+      this.comment = {
+        userId: this.user.id,
+        content: this.content,
+        boardId: this.articleno,
+      };
+
+      http
+        .post(`/board/writecomment/${this.article.id}`, this.comment, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
+          if (data === "success") {
+            this.content = "";
+            this.reloadComments();
+            // location.reload(this);
+          } else {
+            alert("댓글 작성 중 문제가 발생했습니다. 다시 시도해 주세요.");
+            location.reload();
+          }
+        });
+    },
+    reloadComments() {
+      http
+        .post(
+          `/board/comment/${this.articleno}`,
+          {},
+          {
+            headers: {
+              "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+            },
+          }
+        )
+        .then(({ data }) => {
+          this.comments = data;
+        })
+        .catch(() => {
+          // console.log("error 발생");
+          // console.log(response);
+          alert("댓글을 가져오는 중 문제가 발생했습니다.");
+          location.reload();
+          return;
+        });
+    },
+    deleteArticle() {
+      http
+        .delete(`/board/${this.articleno}`, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
+          if (data === "success") {
+            this.$router.push({ name: "boardlist" });
+          } else {
+            alert("게시글 삭제 중 문제가 발생했습니다. 다시 시도해 주세요.");
+          }
+        });
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#article-content {
+  border: 1px solid lightgray;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+}
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+</style>
