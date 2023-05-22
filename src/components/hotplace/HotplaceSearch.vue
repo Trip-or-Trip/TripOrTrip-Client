@@ -63,9 +63,10 @@ export default {
   mounted() {
     if (!window.kakao || !window.kakao.maps) {
       this.loadScript();
-    } else {
-      console.log(window.kakao.maps);
     }
+    // else {
+    //   console.log(window.kakao.maps);
+    // }
   },
   methods: {
     loadScript() {
@@ -81,13 +82,11 @@ export default {
       if (!this.keyword) {
         alert("장소를 입력해 주세요.");
       } else {
-        console.log(this.keyword);
         this.places = [];
 
         let ps = new window.kakao.maps.services.Places(); // 장소 검색 객체 생성
 
         let callback = (result, status) => {
-          console.log(status);
           if (status === window.kakao.maps.services.Status.OK) {
             this.places = result;
             // this.addClickEvent();

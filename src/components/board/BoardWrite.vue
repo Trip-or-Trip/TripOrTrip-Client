@@ -15,7 +15,7 @@
           </div>
           <div class="button-container d-flex justify-content-center mb-4">
             <button type="button" class="btn submit-btn me-2" @click="checkValue" style="width: 6rem">등록</button>
-            <button type="button" class="btn submit-btn ms-2" style="width: 6rem"><router-link :to="{ name: 'boardlist', param: { articleno: 'articleno' } }">목록</router-link></button>
+            <button type="button" @click="$router.push({ name: 'boardlist' })" class="btn submit-btn ms-2" style="width: 6rem">목록</button>
           </div>
         </div>
       </div>
@@ -72,10 +72,10 @@ export default {
           },
         })
         .then(({ data }) => {
-          if (data != "success") {
-            alert("글 작성 중 문제가 발생했습니다. 다시 시도해 주세요.");
-          } else {
+          if (data === "success") {
             this.$router.push({ name: "boardlist" });
+          } else {
+            alert("글 작성 중 문제가 발생했습니다. 다시 시도해 주세요.");
           }
         });
     },
@@ -97,10 +97,6 @@ export default {
 .submit-btn:hover {
   /* background-color: white; */
   background-color: #8fa5b8;
-  color: white;
-}
-a {
-  text-decoration: none;
   color: white;
 }
 </style>

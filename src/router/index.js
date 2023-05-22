@@ -107,12 +107,6 @@ const routes = [
         // component: BoardModify,
         component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardModify"),
       },
-      {
-        path: "",
-        name: "boarddelete",
-        // component: BoardDelete,
-        component: () => import(/* webpackChunkName: "board" */ "../components/board/BoardDelete"),
-      },
     ],
   },
   {
@@ -129,7 +123,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeList"),
       },
       {
-        path: "",
+        path: "write",
         name: "noticewrite",
         // component: NoticeWrite,
         component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
@@ -141,16 +135,10 @@ const routes = [
         component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeView"),
       },
       {
-        path: "",
+        path: "modify/:articleno",
         name: "noticemodify",
         // component: NoticeModify,
         component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
-      },
-      {
-        path: "",
-        name: "noticedelete",
-        // component: NoticeDelete,
-        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeDelete"),
       },
     ],
   },

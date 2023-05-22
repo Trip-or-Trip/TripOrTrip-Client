@@ -1,89 +1,79 @@
 <template>
-  <div class="m-5">
-    <div class="px-5 align-self-center">
-      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">공지사항</mark>
-      </h2>
-    </div>
-    <div class="col-lg-8 col-md-10 col-sm-12 align-self-center">
-      <div class="row my-2">
-        <h2 class="text-secondary px-5">{{article.id}}. {{article.title}}</h2>
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <div class="clearfix align-content-center">
-            <img
-              class="avatar me-2 float-md-start bg-light p-2"
-              src="https://raw.githubusercontent.com/twbs/icons/main/icons/person-fill.svg"
-            />
-            <p>
-              <span class="fw-bold">{{article.userId}}</span> <br />
-              <span class="text-secondary fw-light">
-                {{article.createdAt}} 조회 : {{article.hit}}
-              </span>
-            </p>
+  <div id="notice-view">
+    <div class="article-container row d-flex justify-content-center">
+      <div id="article-content" class="col-lg-7 col-md-10 col-sm-12 mt-5 align-self-center">
+        <h3 class="mb-2">{{ article.title }}</h3>
+        <div class="clearfix align-content-center">
+          <!-- 글 작성자 프로필 사진으로 바꿔야 함 -->
+          <b-avatar v-if="user.image" variant="info" :src="`/upload/profile/${user.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <b-avatar v-else variant="info" :src="require('@/assets/img/user.png')" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <div>
+            <span class="fw-bold">{{ article.userId }}</span> <br />
+            <span class="text-secondary fw-light" style="font-size: 0.9rem"> {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }} </span>
+            <span v-if="article.userId == user.id" class="float-md-end">
+              <button type="button" @click="$router.push({ name: 'noticemodify', param: { articleno: articleno } })" class="btn btn-sm submit-btn me-2">글 수정</button>
+              <button type="button" @click="deleteArticle" class="btn btn-sm submit-btn">글 삭제</button>
+            </span>
           </div>
         </div>
-        <!-- <div class="col-md-4 align-self-center text-end">댓글 : 0</div> -->
-        <div class="divider mb-3"></div>
-        <div class="text-secondary">{{article.content}}</div>
-        <div class="divider mt-3 mb-3"></div>
-        <div class="d-flex justify-content-end">
-          <v-btn @click="moveList">글목록</v-btn>
-          <v-btn  v-if="user.id == `admin` " @click="moveModifyArticle" >
-            글수정
-          </v-btn>
-          <v-btn  v-if="user.id == `admin` " @click="deleteArticle">
-            글삭제
-          </v-btn>
+        <hr id="separator-line" style="width: 100%" />
+        <div class="content-container mx-3 my-5">
+          <div>{{ article.content }}</div>
         </div>
       </div>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
+
 export default {
   name: "NoticeView",
   data() {
     return {
       articleno: Number,
       article: Object,
+      createdAt: "",
     };
-  },
-  created() {
-    // 비동기
-    // TODO : 글번호에 해당하는 글정보 얻기.
-    this.articleno = this.$route.params.articleno;
-    console.log(this.articleno);
-    http.post(`/notice/${this.articleno}`, this.articleno, {
-          headers: {
-            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
-          },
-        })
-        .then(({ data }) => {
-      this.article = data;
-    });
   },
   computed: {
     ...mapGetters(["isLoggedIn", "getToken"]),
     ...mapState(["user"]),
   },
+  created() {
+    this.articleno = this.$route.params.articleno;
+    http
+      .post(
+        `/notice/${this.articleno}`,
+        {},
+        {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        }
+      )
+      .then(({ data }) => {
+        this.article = data;
+        this.createdAt = data.createdAt.substring(0, 16);
+      });
+  },
   methods: {
-    moveModifyArticle() {
-      console.log("글수정 하러가자!!!");
-      this.$router.push({ name: "noticemodify", params: { articleno: this.articleno } });
-    },
     deleteArticle() {
-      console.log("글삭제 하러가자!!!");
-      this.$router.push({ name: "noticedelete", params: { articleno: this.articleno } });
-    },
-    moveList() {
-      console.log("글목록 보러가자!!!");
-      this.$router.push({ name: "noticelist" });
+      http
+        .delete(`/notice/${this.articleno}`, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
+          if (data === "success") {
+            this.$router.push({ name: "noticelist" });
+          } else {
+            alert("게시글 삭제 중 문제가 발생했습니다. 다시 시도해 주세요.");
+          }
+        });
     },
   },
 };

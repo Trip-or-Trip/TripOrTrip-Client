@@ -107,8 +107,6 @@ export default {
       formData.append("mapUrl", this.place.mapUrl);
       formData.append("image", file.files[0]);
 
-      for (let key of formData.keys()) console.log(`${key}: ${formData.get(key)}`);
-
       http
         .post(`/hotplace`, formData, {
           headers: {
@@ -116,10 +114,9 @@ export default {
             "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
           },
         })
+        // eslint-disable-next-line no-unused-vars
         .then(({ data }) => {
-          console.log(data);
-          // alert("핫플레이스 등록 성공");
-          this.$router.push({ name: "HotplaceList" });
+          this.$router.push({ name: "hotplacelist" });
         })
         .catch(() => {
           alert("등록 중 문제가 생겼습니다. 다시 시도해 주세요.");

@@ -20,7 +20,7 @@
               <router-link :to="{ name: 'boardlist' }" class="nav-link active"> 자유게시판 </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/notice" class="nav-link active"> 공지사항 </router-link>
+              <router-link :to="{ name: 'noticelist' }" class="nav-link active"> 공지사항 </router-link>
             </li>
           </ul>
 

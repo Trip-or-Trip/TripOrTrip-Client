@@ -1,85 +1,95 @@
 <template>
-  <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10 col-sm-12">
-          <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-            <mark class="sky">공지사항 수정</mark>
-          </h2>
+  <div id="notice-modify">
+    <div class="write-container row d-flex justify-content-center">
+      <div id="write-content" class="col-lg-7 col-md-10 col-sm-12 mt-5 align-self-center">
+        <h3 class="mb-2">글 수정</h3>
+        <hr style="width: 100%" />
+        <div class="form-container">
+          <div class="title-container mx-4 mb-4">
+            <label for="title" class="form-label">제목</label>
+            <input type="text" class="form-control" id="title" name="title" v-model="article.title" placeholder="제목..." />
+          </div>
+          <div class="content-container mx-4 mb-4">
+            <label for="content" class="form-label">내용</label>
+            <textarea v-model="article.content" class="form-control" rows="10"></textarea>
+          </div>
+          <div class="button-container d-flex justify-content-center mb-4">
+            <button type="button" class="btn submit-btn me-2" @click="checkValue" style="width: 6rem">수정</button>
+            <button type="button" @click="$router.push({ name: 'noticelist' })" class="btn submit-btn ms-2" style="width: 6rem">목록</button>
+          </div>
         </div>
-        <div class="col-lg-8 col-md-10 col-sm-12">
-          <div class="mb-3">
-            <label for="subject" class="form-label">제목 : </label>
-            <input v-model="article.title" />
-            <input type="hidden" v-model="article.id" />
-          </div>
-          <div class="mb-3">
-            <label for="content" class="form-label">내용 : </label>
-            <textarea v-model="article.content" rows="10"></textarea>
-          </div>
-          <div class="col-auto text-center">
-            
-            <v-btn @click="moveList">목록</v-btn>
-            <v-btn @click="checkValue">수정</v-btn>
-          </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
+
 export default {
   name: "NoticeModify",
   data() {
     return {
-      articleno: Number,
-      article: Object,
+      articleno: "",
+      article: null,
     };
   },
-  methods: {
-    // 입력값 체크하기 - 체크가 성공하면 modifyArticle 호출
-    checkValue() {
-      // 사용자 입력값 체크하기
-      // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
-      let err = true;
-      let msg = "";
-      !this.article.userId &&
-        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userId.focus());
-      err &&
-        !this.article.title &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
-      err &&
-        !this.article.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
-
-      if (!err) alert(msg);
-      // 만약, 내용이 다 입력되어 있다면 modifyArticle 호출
-      else this.modifyArticle();
-    },
-    modifyArticle() {
-      console.log(this.article.id + "번 글수정 하러가자!!!!");
-      // 비동기
-      // TODO : 글번호에 해당하는 글정보 수정.
-      http.put(`/notice`, this.article).then(({ data }) => {
-        let msg = "글 수정 시 문제 발생!!!";
-        if (data === "success") msg = "글 수정 성공!!!";
-        alert(msg);
-        this.moveList();
-      });
-    },
-
-    moveList() {
-      console.log("글목록 보러가자!!!");
-      this.$router.push({ name: "noticelist" });
-    },
+  computed: {
+    ...mapGetters(["isLoggedIn", "getToken"]),
+    ...mapState(["user"]),
   },
   created() {
-    // 비동기
-    // TODO : 글번호에 해당하는 글정보 얻기.
     this.articleno = this.$route.params.articleno;
-    http.get(`/notice/${this.articleno}`).then(({ data }) => {
-      this.article = data;
-    });
+    http
+      .post(
+        `/notice/${this.articleno}`,
+        {},
+        {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        }
+      )
+      .then(({ data }) => {
+        this.article = data;
+      });
+  },
+  methods: {
+    checkValue() {
+      if (!this.article.title || !this.article.content) alert("내용을 전부 입력해 주세요.");
+      else {
+        this.modifyArticle();
+      }
+    },
+    modifyArticle() {
+      http
+        .put(`/notice`, this.article, {
+          headers: {
+            "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
+          },
+        })
+        .then(({ data }) => {
+          if (data === "success") {
+            this.$router.push({ name: "noticeview", param: { articleno: this.articleno } });
+          } else {
+            alert("글 수정 중 문제가 발생했습니다. 다시 시도해 주세요.");
+          }
+        });
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+}
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
+}
+</style>

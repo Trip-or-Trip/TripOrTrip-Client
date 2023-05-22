@@ -11,7 +11,7 @@
             <span class="fw-bold">{{ article.userId }}</span> <br />
             <span class="text-secondary fw-light" style="font-size: 0.9rem"> {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }} </span>
             <span v-if="article.userId == user.id" class="float-md-end">
-              <button type="button" class="btn btn-sm submit-btn me-2"><router-link :to="{ name: 'boardmodify', param: { articleno: articleno } }">글 수정</router-link></button>
+              <button type="button" @click="$router.push({ name: 'boardmodify', param: { articleno: articleno } })" class="btn btn-sm submit-btn me-2">글 수정</button>
               <button type="button" @click="deleteArticle" class="btn btn-sm submit-btn">글 삭제</button>
             </span>
           </div>
@@ -28,7 +28,7 @@
         <div class="comment-input-container mb-3">
           <div class="row d-flex justify-content-center">
             <div id="input-group-container" class="input-group input-group-sm">
-              <input v-model="content" type="text" class="form-control" placeholder="댓글을 입력해주세요" />
+              <input v-model="content" type="text" class="form-control" placeholder="댓글을 입력해 주세요" />
               <button type="button" @click="writeComment" class="btn submit-btn">작성</button>
             </div>
           </div>
@@ -82,7 +82,6 @@ export default {
   },
   created() {
     this.articleno = this.$route.params.articleno;
-    console.log(this.articleno);
     http
       .post(
         `/board/${this.articleno}`,
@@ -94,7 +93,6 @@ export default {
         }
       )
       .then(({ data }) => {
-        console.log(data);
         this.article = data;
         this.createdAt = data.createdAt.substring(0, 16);
         http
@@ -108,7 +106,6 @@ export default {
             }
           )
           .then(({ data }) => {
-            console.log(data);
             this.comments = data;
           });
       })
@@ -169,8 +166,6 @@ export default {
           this.comments = data;
         })
         .catch(() => {
-          // console.log("error 발생");
-          // console.log(response);
           alert("댓글을 가져오는 중 문제가 발생했습니다.");
           location.reload();
           return;
@@ -209,10 +204,6 @@ export default {
 .submit-btn:hover {
   /* background-color: white; */
   background-color: #8fa5b8;
-  color: white;
-}
-a {
-  text-decoration: none;
   color: white;
 }
 </style>

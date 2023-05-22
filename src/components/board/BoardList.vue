@@ -15,12 +15,10 @@
           </select>
 
           <input v-model="word" type="text" class="form-control ms-3" placeholder="검색어..." />
-          <!-- <button type="button" @click="searchKeyword" class="btn submit-btn">검색</button> -->
-          <button type="button" class="btn submit-btn">검색</button>
+          <button type="button" @click="searchKeyword" class="btn submit-btn">검색</button>
 
-          <div v-if="this.isLoggedIn" class="ms-3">
-            <!-- <button type="button" @click="movePage" class="btn submit-btn">글쓰기</button> -->
-            <button type="button" class="btn submit-btn"><router-link :to="{ name: 'boardwrite' }">글쓰기</router-link></button>
+          <div v-if="isLoggedIn" class="ms-3">
+            <button type="button" @click="$router.push({ name: 'boardwrite' })" class="btn submit-btn">글쓰기</button>
           </div>
         </div>
       </div>
@@ -28,11 +26,11 @@
 
     <div class="row d-flex justify-content-center">
       <div v-if="articles.length" id="articles-container" class="col-lg-7 col-md-10 align-self-center mb-2">
-        <b-table id="article-container" :items="articles" :fields="fields" sort-icon-right :per-page="perPage" :current-page="currentPage" @row-clicked="articleClick"></b-table>
+        <b-table id="article-container" :items="articles" :fields="fields" sort-icon-right :per-page="perPage" :current-page="currentPage" @row-clicked="articleClick" class="mb-4"></b-table>
         <b-pagination pills v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="article-container" align="center"></b-pagination>
       </div>
-      <div v-else class="title-container">
-        <h5>게시글이 없습니다.</h5>
+      <div v-else class="title-container text-center mt-5">
+        <h5 class="mt-5">게시글이 없습니다.</h5>
       </div>
     </div>
   </div>
@@ -91,19 +89,33 @@ export default {
     },
   },
   created() {
-    http.get(`/board/list?key=${this.key}&word=${this.word}`).then(({ data }) => {
+    http.get(`/board/list`).then(({ data }) => {
       this.articles = data;
     });
   },
   methods: {
     // eslint-disable-next-line no-unused-vars
     articleClick(result, event) {
-      console.log(this.isLoggedIn);
       if (!this.isLoggedIn) {
         alert("로그인 후 이용 가능합니다.");
         return;
       }
       this.$router.push({ name: "boardview", params: { articleno: result.id } });
+    },
+    searchKeyword() {
+      let boardParameterDto = {
+        pg: this.currentPage,
+        spp: this.perPage,
+        start: 1,
+        key: this.key,
+        word: this.word,
+      };
+      // http.get(`/board/list?key=${this.key}&word=${this.word}`).then(({ data }) => {
+      //   this.articles = data;
+      // });
+      http.post(`/board/list`, boardParameterDto).then(({ data }) => {
+        this.articles = data;
+      });
     },
   },
 };
@@ -125,9 +137,5 @@ export default {
 }
 #input-group-container {
   padding: 0.7rem 0;
-}
-a {
-  text-decoration: none;
-  color: white;
 }
 </style>

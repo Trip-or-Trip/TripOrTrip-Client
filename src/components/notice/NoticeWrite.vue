@@ -1,23 +1,23 @@
 <template>
-  <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10 col-sm-12">
-      <h2 class="my-3 py-3 shadow-sm bg-light text-center">
-        <mark class="sky">공지 작성</mark>
-      </h2>
-    </div>
-    <div class="col-lg-8 col-md-10 col-sm-12">
-      <div class="mb-3">
-        <input type="hidden" v-model="userid" />
-        <label for="title" class="form-label">제목 : </label>
-        <input type="text" class="form-control" id="title" name="title" v-model="title" placeholder="제목..." />
-      </div>
-      <div class="mb-3">
-        <label for="content" class="form-label">내용 : </label>
-        <textarea v-model="content" rows="10"></textarea>
-      </div>
-      <div class="col-auto text-center">
-        <v-btn @click="checkValue">등록</v-btn>
-        <v-btn @click="moveList">목록</v-btn>
+  <div id="notice-write">
+    <div class="write-container row d-flex justify-content-center">
+      <div id="write-content" class="col-lg-7 col-md-10 col-sm-12 mt-5 align-self-center">
+        <h3 class="mb-2">공지 작성</h3>
+        <hr style="width: 100%" />
+        <div class="form-container">
+          <div class="title-container mx-4 mb-4">
+            <label for="title" class="form-label">제목</label>
+            <input type="text" class="form-control" id="title" name="title" v-model="title" placeholder="제목..." />
+          </div>
+          <div class="content-container mx-4 mb-4">
+            <label for="content" class="form-label">내용</label>
+            <textarea v-model="content" class="form-control" rows="10"></textarea>
+          </div>
+          <div class="button-container d-flex justify-content-center mb-4">
+            <button type="button" class="btn submit-btn me-2" @click="checkValue" style="width: 6rem">등록</button>
+            <button type="button" @click="$router.push({ name: 'noticelist' })" class="btn submit-btn ms-2" style="width: 6rem">목록</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -26,13 +26,14 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
+
 export default {
   name: "NoticeWrite",
   data() {
     return {
       userid: "admin",
-      title: null,
-      content: null,
+      title: "",
+      content: "",
     };
   },
   computed: {
@@ -40,10 +41,7 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
-    // 입력값 체크하기 - 체크가 성공하면 registArticle 호출
     checkValue() {
-      // 사용자 입력값 체크하기
-      // 작성자아이디, 제목, 내용이 없을 경우 각 항목에 맞는 메세지를 출력
       let err = true;
       let msg = "";
       !this.title && ((msg = "제목 입력해주세요"), (err = false), this.$refs.title.focus());
@@ -54,32 +52,38 @@ export default {
       else this.registArticle();
     },
     registArticle() {
-      // 비동기
-      // TODO : 글번호에 해당하는 글정보 등록.
-      // alert("글작성 하러가자!!!!");
       let article = {
-        userId: this.userid,
+        userId: this.user.id,
         title: this.title,
         content: this.content,
       };
-      http.post(`/notice/write`, article, {
+      http
+        .post(`/notice/write`, article, {
           headers: {
-            Origin: "http://localhost:9999",
             "X-ACCESS-TOKEN": "Bearer " + this.getToken, // the token is a variable which holds the token
           },
-        }).then(({ data }) => {
-        let msg = "글 작성 시 문제 발생!!!";
-        if (data === "success") msg = "글 작성 성공!!!";
-        alert(msg);
-        this.moveList();
-      });
-    },
-
-    moveList() {
-      this.$router.push({ name: "noticelist" });
+        })
+        .then(({ data }) => {
+          if (data === "success") {
+            this.$router.push({ name: "noticelist" });
+          } else {
+            alert("글 작성 중 문제가 발생했습니다. 다시 시도해 주세요.");
+          }
+        });
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+}
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
+}
+</style>

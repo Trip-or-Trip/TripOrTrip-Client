@@ -139,7 +139,7 @@ export default {
         .then(({ data }) => {
           console.log(data);
           // alert("핫플레이스 등록 성공");
-          this.$router.push({ name: "HotplaceList" });
+          this.$router.push({ name: "hotplacelist" });
         })
         .catch(() => {
           alert("등록 중 문제가 생겼습니다. 다시 시도해 주세요.");
