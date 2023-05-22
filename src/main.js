@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 // vuetify
-import Vuetify from "vuetify";
+// import Vuetify from "vuetify";
 // import "vuetify/dist/vuetify.min.css";
 // import vuetify from './plugins/vuetify'
 
@@ -29,7 +29,7 @@ import VueMasonry from "vue-masonry-css";
 // Vue.component('font-awesome-icon', FontAwesomeIcon)
 // Vue.config.productionTip = false
 
-Vue.use(Vuetify);
+// Vue.use(Vuetify);
 Vue.use(BootstrapVue);
 Vue.use(VueCookie);
 Vue.use(VueMasonry);
@@ -38,6 +38,6 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  vuetify: new Vuetify(),
+  // vuetify: new Vuetify(),
   render: (h) => h(App),
 }).$mount("#app");

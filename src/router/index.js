@@ -201,7 +201,7 @@ const routes = [
     children: [
       {
         path: "",
-        name: "HotplaceList",
+        name: "hotplacelist",
         component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
       },
       {
