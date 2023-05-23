@@ -18,42 +18,16 @@
           <button type="button" @click="searchKeyword" class="btn submit-btn">검색</button>
 
           <div v-if="isLoggedIn" class="ms-3">
-            <button
-              type="button"
-              @click="$router.push({ name: 'planwrite' })"
-              class="btn submit-btn"
-            >
-              글쓰기
-            </button>
+            <button type="button" @click="$router.push({ name: 'planwrite' })" class="btn submit-btn">글쓰기</button>
           </div>
         </div>
       </div>
     </div>
 
     <div class="row d-flex justify-content-center">
-      <div
-        v-if="articles.length"
-        id="articles-container"
-        class="col-lg-7 col-md-10 align-self-center mb-2"
-      >
-        <b-table
-          id="article-container"
-          :items="articles"
-          :fields="fields"
-          sort-icon-right
-          :per-page="perPage"
-          :current-page="currentPage"
-          @row-clicked="articleClick"
-          class="mb-4"
-        ></b-table>
-        <b-pagination
-          pills
-          v-model="currentPage"
-          :total-rows="rows"
-          :per-page="perPage"
-          aria-controls="article-container"
-          align="center"
-        ></b-pagination>
+      <div v-if="articles.length" id="articles-container" class="col-lg-7 col-md-10 align-self-center mb-2">
+        <b-table id="article-container" :items="articles" :fields="fields" sort-icon-right :per-page="perPage" :current-page="currentPage" @row-clicked="articleClick" class="mb-4"></b-table>
+        <b-pagination pills v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="article-container" align="center"></b-pagination>
       </div>
       <div v-else class="title-container text-center mt-5">
         <h5 class="mt-5">게시글이 없습니다.</h5>
@@ -152,6 +126,9 @@ export default {
   computed: {
     ...mapGetters(["isLoggedIn", "getToken"]),
     ...mapState(["user"]),
+    rows() {
+      return this.articles.length;
+    },
   },
   methods: {
     searchKeyword() {
@@ -166,8 +143,12 @@ export default {
         this.articles = data;
       });
     },
-    test() {
-      console.log(this.articles);
+    articleClick(result) {
+      if (!this.isLoggedIn) {
+        alert("로그인 후 이용 가능합니다.");
+        return;
+      }
+      this.$router.push({ name: "planview", params: { articleno: result.id } });
     },
   },
 };
