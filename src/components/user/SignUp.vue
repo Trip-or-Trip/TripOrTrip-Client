@@ -41,21 +41,27 @@
             </div>
           </div>
           <div class="row d-flex justify-content-center my-4">
-            <div class="col-5">
-              <input type="text" v-model="emailId" @keyup="checkDuplEmail" class="form-control" name="emailId" id="signup-email-id" placeholder="이메일">
+            <div class="col-4">
+              <input type="text" v-model="emailId" @keyup="checkDuplEmail" class="form-control" name="emailId" id="signup-email-id" placeholder="이메일" >
             </div>
             @
-            <div class="col-5">
-              <select class="form-control" v-model="emailDomain" @change="checkDuplEmail" name="emailDomain" id="signup-email-domain">
-                <option value="none" selected="selected">도메인 선택</option>
-                <option value="naver.com">naver.com</option>
-                <option value="gmail.com">gmail.com</option>
-              </select>
+            <div class="col-4">
+              <input type="text" class="form-control" v-model="emailDomain" @change="checkDuplEmail" name="emailDomain" id="signup-email-domain">
+                
+            </div>
+            <div class="col-2">
+              <button @click="sendEmail" type="button" class="btn submit-btn" v-if="validEmail">인증</button>
             </div>
           </div>
           <div class="row d-flex justify-content-center my-4">
             <div class="col-10">
               <div v-text="checkEmail" id="check-email-result" :class="[validEmail? 'text-primary': 'text-danger']"></div>
+            </div>
+          </div>
+          <div v-if="showEmailAuthInput" class="row d-flex justify-content-center my-4" id="email-auth-input">
+            <div class="col-10">
+              <input type="text" v-model="emailAuthNumber" placeholder="인증번호 입력"/>
+              <button type="button" @click="checkEmailAuth" id="check-email-auth-btn" class="btn submit-btn" >확인</button>
             </div>
           </div>
           <div class="row d-flex justify-content-center submit my-4">
@@ -86,6 +92,10 @@ export default {
       emailDomain: '',
       validId: false,
       validEmail: false,
+      confirmedEmail: false,
+      showEmailAuthInput: false,
+      emailAuthNumber: 0,
+      emailConfirmed: false,
     };
   },
   methods: {
@@ -103,9 +113,11 @@ export default {
       else if(!this.emailId)
         alert("이메일 주소를 입력해 주세요.");
       else if(!this.emailDomain)
-        alert("이메일 도메인을 선택해 주세요.");
+        alert("이메일 도메인을 입력해 주세요.");
       else if(!this.validEmail)
         alert("사용할 수 없는 이메일입니다. 다시 입력해 주세요.");
+      else if(!this.emailConfirmed)
+        alert("이메일 인증에 실패하였습니다. 재시도해주세요.");
       else
         this.signup();
     },
@@ -149,20 +161,53 @@ export default {
     },
     checkDuplEmail() {
       console.log(this.emailDomain);
+      
       if(this.emailId && this.emailDomain) {
         http.get(`/user/email/${this.emailId}/${this.emailDomain}`)
           .then(({data}) => {
             console.log(data);
-            if(data == 0) {
+            if(data == 0 && this.emailDomain.split(".").length >= 2 && this.emailDomain.split(".")[1]) {
               this.checkEmail = "사용 가능한 이메일입니다.";
               this.validEmail = true;
             }
             else {
-              this.checkEmail = "사용할 수 없는 아이디입니다.";
+              this.checkEmail = "사용할 수 없는 이메일입니다.";
               this.validEmail = false;
             }
           })
       }
+    },
+    sendEmail(){
+      document.getElementById("signup-email-id").readOnly = "true";
+      document.getElementById("signup-email-domain").readOnly = "true";
+      document.getElementById("signup-email-id").style.backgroundColor = "lightgray";
+      document.getElementById("signup-email-domain").style.backgroundColor = "lightgray";
+      this.showEmailAuthInput = true;
+      http.get(`/user/auth/${this.emailId}/${this.emailDomain}`)
+        .then((response)=>{
+          console.log(response);
+          if(response.data == "success"){
+            this.checkEmail = "인증번호가 발송되었습니다."
+          }
+        });
+    },
+
+    checkEmailAuth(){
+      http.get(`/user/check/${this.emailId}/${this.emailDomain}/${this.emailAuthNumber}`)
+        .then((data)=>{
+          console.log(data);
+          if(data.data == true){
+            this.emailConfirmed = true;
+            this.checkEmail = "인증확인되었습니다."
+          }else{
+            this.checkEmail = "인증이 실패하였습니다."
+            this.validEmail = false;
+            document.getElementById("signup-email-id").readOnly = "false";
+            document.getElementById("signup-email-domain").readOnly = "false";
+            document.getElementById("signup-email-id").style.backgroundColor = "white";
+            document.getElementById("signup-email-domain").style.backgroundColor = "white";
+          }
+        });
     }
   }
 };
