@@ -412,6 +412,7 @@ export default {
           placeId: this.places[i].id,
           lat: this.places[i].y,
           lng: this.places[i].x,
+          mapUrl: this.places[i].place_url,
         };
         selectedPlaces.push(selected);
       }
