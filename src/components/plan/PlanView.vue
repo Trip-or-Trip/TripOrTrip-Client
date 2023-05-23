@@ -21,8 +21,18 @@
     </div>
 
     <div id="plan-container" class="row">
-      <div id="left-container" class="col-md-6 col-sm-12 d-flex justify-content-center">
+      <!-- <div id="left-container" class="col-md-6 col-sm-12 d-flex justify-content-center">
+        <h5>여행 경로</h5>
         <div id="original-map" style="width: 85%; height: 90%"></div>
+      </div> -->
+
+      <div id="left-container" class="col-md-6 col-sm-12 d-flex flex-column">
+        <div class="ms-4">
+          <h5>여행 경로</h5>
+        </div>
+        <div class="flex-grow-1 d-flex justify-content-center">
+          <div id="original-map" style="width: 85%; height: 90%"></div>
+        </div>
       </div>
 
       <div id="right-container" class="col-md-6 col-sm-12 d-flex justify-content-center">
