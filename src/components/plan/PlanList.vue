@@ -17,7 +17,7 @@
           <input v-model="word" type="text" class="form-control ms-3" placeholder="검색어..." />
           <button type="button" @click="searchKeyword" class="btn submit-btn">검색</button>
 
-          <div v-if="user.grade == '관리자'" class="ms-3">
+          <div v-if="isLoggedIn" class="ms-3">
             <button type="button" @click="$router.push({ name: 'planwrite' })" class="btn submit-btn">글쓰기</button>
           </div>
         </div>
