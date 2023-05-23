@@ -15,11 +15,10 @@
           </div>
         </div>
       </section>
-      <div id="hot-list" class="p-5 d-flex" style="height: 30rem">
+      <div id="hot-list" class="p-5 container" >
         <div
           id="hotplace-list"
-          class="mb-2 p-2 d-flex-row col-12 col-m-6 col-sm-4 row-12"
-          style="height: 20rem"
+          class="mb-2 col-4 col-sm-12"
         >
           <h3>인기 핫플레이스</h3>
           <b-carousel
@@ -47,15 +46,13 @@
             </b-carousel-slide>
           </b-carousel>
         </div>
+        
         <div
           id="plan-list"
-          class="mb-2 p-2 d-flex-row col-12 col-m-6 col-sm-4"
-          style="height: auto"
+          class="mb-2 col-4 col-sm-12"
         >
           <h3>인기 여행계획</h3>
-          <div v-for="plan in plans" :key="plan.id">
-            <the-kakao-map :plans="plan"></the-kakao-map>
-          </div>
+          
           <b-carousel
             id="carousel-2"
             :interval="4000"
@@ -64,6 +61,7 @@
             background="#FFFFFF"
             style="text-shadow: 1px 1px 2px #333; height: 20rem; overflow: hidden"
           >
+            
             <b-carousel-slide
               v-for="plan in plans.plans"
               v-bind:key="plan.id"
@@ -80,7 +78,7 @@
             </b-carousel-slide>
           </b-carousel>
         </div>
-        <div id="board-list" class="mb-2 d-flex-row col-12 col-m-6 col-sm-4">
+        <div id="board-list" class="mb-2 col-4 col-sm-12">
           <h3>인기 게시글</h3>
           <div style="height: 20rem; overflow: scroll">
             <b-card
@@ -94,6 +92,18 @@
                 {{ board.content }}
               </b-card-text>
             </b-card>
+          </div>
+        </div>
+        <div>
+          <div class="container">
+            <div id="0-plan" class="p-1 m-1">
+            </div>
+            <div id="1-plan" class="p-1 m-1">
+            </div>
+            <div id="2-plan" class="p-1 m-1">
+            </div>
+            <div id="3-plan" class="p-1 m-1">
+            </div>
           </div>
         </div>
       </div>
@@ -200,12 +210,10 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
-import TheKakaoMap from "@/components/TheKakaoMap.vue";
 
 export default {
   name: "AppMain",
   components: {
-    TheKakaoMap,
   },
   data() {
     return {
@@ -219,11 +227,21 @@ export default {
     this.token = window.$cookies.get("TripOrTrip");
   },
   mounted() {
+    if (window.kakao && window.kakao.maps) {
+      this.loadMap();
+    } else {
+      this.loadScript();
+    }
+    
     http.get(`/hotplace/list/hot`).then(({ data }) => {
       this.hotplaces = data;
     });
     http.get(`/plan/list/hot`).then(({ data }) => {
       this.plans = data;
+      for(var i = 0; i < this.plans.places.length ; i++){
+        console.log(this.plans.places[0][0]);
+        this.updateMap(this.plans.places[i][0].lat, this.plans.places[i][0].lng, i % 4);
+      }
     });
     http.get(`/board/list/hot`).then(({ data }) => {
       this.boards = data;
@@ -234,9 +252,38 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    loadScript() {
+      const script = document.createElement("script");
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services&autoload=false";
+      /* global kakao */ //eslint-disable-line no-unused-vars
+      script.onload = () => window.kakao.maps.load(this.loadMap); 
+      document.head.appendChild(script);
+    },
+    // 맵 출력하기
+    loadMap() {
+      // const container = document.getElementById("map");
+      // const options = {
+      //   center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+      //   level: 3,
+      // };
+
+      // this.map = new window.kakao.maps.Map(container, options);
+    },
+
     moveBoard(id) {
       this.$router.push({ name: "boardview", params: { articleno: id } });
     },
+    updateMap(x, y, id){
+      var staticMapContainer = document.getElementById(id+"-plan"); // 이미지 지도를 표시할 div
+      const staticMapOption = {
+        center: new window.kakao.maps.LatLng(x,y), // 이미지 지도의 중심좌표
+        level: 3, // 이미지 지도의 확대 레벨
+      };
+      new window.kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+    }
   },
 };
 </script>
@@ -245,7 +292,9 @@ export default {
 h3 {
   text-align: center;
 }
-
+.container{
+  display: grid;
+}
 .card-img-top {
   height: 15rem;
   width: 15rem;
