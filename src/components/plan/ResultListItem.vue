@@ -11,7 +11,7 @@
               <b>{{ result.place_name }}</b>
             </div>
             <div style="font-size: 0.8rem">{{ result.address_name }}</div>
-            <button type="button" class="btn btn-sm place-btn">위치 보기</button>
+            <button type="button" @click="clickDetailResult(result, $event)" class="btn btn-sm place-btn">자세히 보기</button>
           </div>
         </div>
       </div>
@@ -26,6 +26,11 @@ export default {
     result: Object,
   },
   components: {},
+  methods: {
+    clickDetailResult(place) {
+      this.$emit("makeCustomOverlay", place);
+    },
+  },
 };
 </script>
 
@@ -40,8 +45,14 @@ export default {
 }
 .place-btn {
   font-size: 0.7rem;
-  width: 4rem;
+  width: 4.5rem;
   height: 1.4rem;
   background-color: #dee4e9;
+}
+.place-btn:hover {
+  /* font-size: 0.7rem;
+  width: 4.5rem;
+  height: 1.4rem; */
+  background-color: #c9d1da;
 }
 </style>

@@ -34,7 +34,9 @@
               <i class="hotplace-icon bi bi-heart me-3"></i>
             </span>
             <a :href="`${hotplace.mapUrl}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
-            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i></a>
+            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"
+              ><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i
+            ></a>
           </div>
           <div>
             <div v-if="hotplace.tag1 || hotplace.tag2" class="mb-2">
