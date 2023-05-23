@@ -1,50 +1,109 @@
 <template>
   <div id="hotplace-create">
     <div id="content-container" class="row shadow d-flex justify-content-center">
+      <h3 class="mt-2">글 작성</h3>
+      <hr style="width: 100%" />
       <div id="img-container" class="row col-6 me-3">
-        <div v-if="!image" class="align-self-center text-center mt-5"><h5>이미지가 표시됩니다.</h5></div>
+        <img v-if="!image" src="@/assets/img/noimage.png" />
         <img v-else class="p-5" :src="image" />
       </div>
       <div id="form-container" class="align-self-center col-5 ms-3">
         <div class="row">
           <div class="col-10">
-            <input type="file" @change="upload" accept="image/*" class="form-control my-3 px-3 py-2" id="hotplace-image" name="hotplace-image" placeholder="이미지" required />
+            <input
+              type="file"
+              @change="upload"
+              accept="image/jpg, image/png, image/jpeg"
+              class="form-control my-3 px-3 py-2"
+              id="hotplace-image"
+              name="hotplace-image"
+              placeholder="이미지"
+              required
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-10">
-            <input type="text" v-model="place.title" @click="isModalView = true" class="form-control my-3 py-2" id="hotplace-title" name="title" placeholder="장소명" required />
+            <input
+              type="text"
+              v-model="place.title"
+              @click="isModalView = true"
+              class="form-control my-3 py-2"
+              id="hotplace-title"
+              name="title"
+              placeholder="장소명"
+              required
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-10">
-            <input type="date" v-model="place.joinDate" class="form-control my-3 px-3 py-2" id="hotplace-join-date" name="joinDate" placeholder="방문 날짜" />
+            <input
+              type="date"
+              v-model="place.joinDate"
+              class="form-control my-3 px-3 py-2"
+              id="hotplace-join-date"
+              name="joinDate"
+              placeholder="방문 날짜"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-10">
-            <input type="text" v-model="place.tag1" class="form-control my-3 px-3 py-2" id="hotplace-tag1" name="tag1" placeholder="해시태그1" />
+            <input
+              type="text"
+              v-model="place.tag1"
+              class="form-control my-3 px-3 py-2"
+              id="hotplace-tag1"
+              name="tag1"
+              placeholder="해시태그1"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-10">
-            <input type="text" v-model="place.tag2" class="form-control my-3 px-3 py-2" id="hotplace-tag2" name="tag2" placeholder="해시태그2" />
+            <input
+              type="text"
+              v-model="place.tag2"
+              class="form-control my-3 px-3 py-2"
+              id="hotplace-tag2"
+              name="tag2"
+              placeholder="해시태그2"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-10">
-            <textarea v-model="place.desc" class="form-control my-3 px-3 py-2" id="hotplace-desc" name="desc" placeholder="설명" />
+            <textarea
+              v-model="place.desc"
+              class="form-control my-3 px-3 py-2"
+              id="hotplace-desc"
+              name="desc"
+              placeholder="설명"
+            />
           </div>
         </div>
         <div class="row">
           <div class="col-10">
-            <button @click="createHotplace" type="button" id="hotplace-btn" class="btn submit-btn mt-2" style="width: 100%">등록</button>
+            <button
+              @click="createHotplace"
+              type="button"
+              id="hotplace-btn"
+              class="btn submit-btn mt-2"
+              style="width: 100%"
+            >
+              등록
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-    <hotplace-search v-show="isModalView" @close-modal="isModalView = false" @searchResult="setPlace"></hotplace-search>
+    <hotplace-search
+      v-show="isModalView"
+      @close-modal="isModalView = false"
+      @searchResult="setPlace"
+    ></hotplace-search>
   </div>
 </template>
 

@@ -5,7 +5,11 @@
         <div class="left-container col-lg-2 col-md-3">
           <div class="result-container">
             <div id="search-title-container" class="px-3 py-2 border-bottom">검색 결과</div>
-            <div v-for="(result, index) in results" :key="index" @click="clickResult(result, $event)">
+            <div
+              v-for="(result, index) in results"
+              :key="index"
+              @click="clickResult(result, $event)"
+            >
               <div class="d-flex mb-1">
                 <div class="icon flex-shrink-0 mx-2 mt-3">
                   <i class="result-icon bi bi-search"></i>
@@ -13,7 +17,9 @@
                 <div class="mt-3 mb-1 me-2">
                   <div class="title" style="font-size: 1.1rem">{{ result.title }}</div>
                   <p class="description" style="font-size: 0.9rem">
-                    {{ result.addr1 }} &nbsp;<span style="color: gray">(우){{ result.zipcode }}</span>
+                    {{ result.addr1 }} &nbsp;<span style="color: gray"
+                      >(우){{ result.zipcode }}</span
+                    >
                   </p>
                 </div>
               </div>
@@ -27,7 +33,12 @@
               <div class="col-4">
                 <!-- 지역 리스트 -->
                 <!-- <select id="search-area" v-model="selectedSido" @change="findGuGun" class="form-select me-2"> -->
-                <select id="search-area" v-model="selectedSido" @change="[findGuGun(), search()]" class="form-select">
+                <select
+                  id="search-area"
+                  v-model="selectedSido"
+                  @change="[findGuGun(), search()]"
+                  class="form-select"
+                >
                   <option value="0" disabled>검색 지역 선택</option>
                   <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">
                     {{ sido.sidoName }}
@@ -37,7 +48,12 @@
 
               <div class="col-4">
                 <!-- 구/군 리스트 -->
-                <select id="search-gugun-id" v-model="selectedGugun" @change="search" class="form-select">
+                <select
+                  id="search-gugun-id"
+                  v-model="selectedGugun"
+                  @change="search"
+                  class="form-select"
+                >
                   <option v-if="guguns == null" value="0">구/군</option>
                   <option v-for="gugun in guguns" :key="gugun.gugunCode" :value="gugun.gugunCode">
                     {{ gugun.gugunName }}
@@ -53,31 +69,80 @@
             <div class="content-type mt-3 text-center">
               <!-- 관광지 유형 리스트 -->
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="12" id="type-1" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="12"
+                  id="type-1"
+                />
                 <label class="form-check-label" for="type-1">관광지</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="14" id="type-2" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="14"
+                  id="type-2"
+                />
                 <label class="form-check-label" for="type-2">문화시설</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="15" id="type-3" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="15"
+                  id="type-3"
+                />
                 <label class="form-check-label" for="type-3">축제공연행사</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="28" id="type-5" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="28"
+                  id="type-5"
+                />
                 <label class="form-check-label" for="type-5">레포츠</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="32" id="type-6" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="32"
+                  id="type-6"
+                />
                 <label class="form-check-label" for="type-6">숙박</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="38" id="type-7" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="38"
+                  id="type-7"
+                />
                 <label class="form-check-label" for="type-7">쇼핑</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="39" id="type-8" />
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  v-model="selectedContents"
+                  @change="search"
+                  value="39"
+                  id="type-8"
+                />
                 <label class="form-check-label" for="type-8">음식점</label>
               </div>
             </div>
@@ -134,7 +199,10 @@ export default {
   methods: {
     loadScript() {
       const script = document.createElement("script");
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services,clusterer,drawing&autoload=false";
       /* global kakao */ // eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.loadMap);
 
@@ -231,7 +299,8 @@ export default {
     },
 
     search() {
-      if (this.selectedSido == 0 || this.selectedGugun == 0 || this.selectedContents.length == 0) return;
+      if (this.selectedSido == 0 || this.selectedGugun == 0 || this.selectedContents.length == 0)
+        return;
       let contents = "";
       for (let i = 0; i < this.selectedContents.length - 1; i++) {
         contents += this.selectedContents[i] + ",";
@@ -282,7 +351,8 @@ export default {
         else if (positions[i].contentTypeId == 28) imageSrc = require("@/assets/img/leisure.png");
         else if (positions[i].contentTypeId == 32) imageSrc = require("@/assets/img/hotel.png");
         else if (positions[i].contentTypeId == 38) imageSrc = require("@/assets/img/shop.png");
-        else if (positions[i].contentTypeId == 39) imageSrc = require("@/assets/img/restaurant.png");
+        else if (positions[i].contentTypeId == 39)
+          imageSrc = require("@/assets/img/restaurant.png");
         else imageSrc = require("@/assets/img/location.png");
 
         var imageSize = new window.kakao.maps.Size(35, 35); // 마커 이미지의 이미지 크기
