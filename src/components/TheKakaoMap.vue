@@ -49,20 +49,36 @@ export default {
 
     updateMap() {
       let newIdx = this.idx;
-      // console.log(this.plans.places[newIdx]);
-      http.get(`/plan/list/${this.plans.places[newIdx][0].planId}`).then(({ data }) => {
-        document.getElementById("map-" + this.idx).firstChild.id = "map-" + this.idx;
-        var staticMapContainer = document.getElementById("map-" + this.idx); // 이미지 지도를 표시할 div
-        const staticMapOption = {
-          center: new window.kakao.maps.LatLng(data[0].lat, data[0].lng), // 이미지 지도의 중심좌표
-          level: 2, // 이미지 지도의 확대 레벨
-        };
-        this.map = new window.kakao.maps.Map(staticMapContainer, staticMapOption);
-        for (var i = 0; i < data.length; i++) {
-          this.expandMap(data[i]);
-        }
-        this.drawLine(data);
-      });
+      console.log(this.plans.places[newIdx]);
+      if (this.plans.places && this.plans.places[newIdx].length > 0) {
+        http.get(`/plan/list/${this.plans.places[newIdx][0].planId}`).then(({ data }) => {
+          document.getElementById("map-" + this.idx).firstChild.id = "map-" + this.idx;
+          var staticMapContainer = document.getElementById("map-" + this.idx); // 이미지 지도를 표시할 div
+          const staticMapOption = {
+            center: new window.kakao.maps.LatLng(data[0].lat, data[0].lng), // 이미지 지도의 중심좌표
+            level: 2, // 이미지 지도의 확대 레벨
+          };
+          this.map = new window.kakao.maps.Map(staticMapContainer, staticMapOption);
+          for (var i = 0; i < data.length; i++) {
+            this.expandMap(data[i]);
+          }
+          this.drawLine(data);
+        });
+      } else {
+        http.get(`/plan/list/${this.plans.places.planId}`).then(({ data }) => {
+          document.getElementById("map-" + this.idx).firstChild.id = "map-" + this.idx;
+          var staticMapContainer = document.getElementById("map-" + this.idx); // 이미지 지도를 표시할 div
+          const staticMapOption = {
+            center: new window.kakao.maps.LatLng(data[0].lat, data[0].lng), // 이미지 지도의 중심좌표
+            level: 2, // 이미지 지도의 확대 레벨
+          };
+          this.map = new window.kakao.maps.Map(staticMapContainer, staticMapOption);
+          for (var i = 0; i < data.length; i++) {
+            this.expandMap(data[i]);
+          }
+          this.drawLine(data);
+        });
+      }
 
       // for (var i = 0; i < tmp.length; i++) {
       //   var staticMapContainer = document.getElementById("map"); // 이미지 지도를 표시할 div
