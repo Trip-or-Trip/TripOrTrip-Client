@@ -5,8 +5,7 @@
         <div id="main-container">
           <div id="info-message">
             <h1 id="title-header" class="mb-5">
-              <span>T</span><span>r</span><span>i</span><span>p</span> <span>o</span><span>r</span>
-              <span>T</span><span>r</span><span>i</span><span>p</span><span>!</span>
+              <span>T</span><span>r</span><span>i</span><span>p</span> <span>o</span><span>r</span> <span>T</span><span>r</span><span>i</span><span>p</span><span>!</span>
               <!-- <b>Trip or Trip!</b> -->
             </h1>
             <p style="font-size: 1.5rem">
@@ -15,37 +14,47 @@
           </div>
         </div>
       </section>
-      <div id="hot-list" class="p-5 container">
-        <div id="hotplace-list" class="mb-2 col-4 col-sm-12">
-          <h3>인기 핫플레이스</h3>
-          <div v-if="hotplaces && hotplaces.length">
-            <b-carousel
-              id="carousel-1"
-              :interval="4000"
-              controls
-              indicators
-              background="#FFFFFF"
-              img-width="1024"
-              img-height="480"
-              style="text-shadow: 1px 1px 2px #333; height: 30rem; align: center"
-            >
-              <b-carousel-slide
-                v-for="hotplace in hotplaces"
-                v-bind:key="hotplace.num"
-                width="100%"
-                height="100%"
-                style="height: 30rem; object-fit: cover"
-                :img-src="`/upload/hotplace/${hotplace.image}`"
-                :caption="hotplace.title"
-                :text="hotplace.desc"
-              >
-                #{{ hotplace.tag1 }} #{{ hotplace.tag2 }} <br />
-                <b-button :href="`${hotplace.mapUrl}`" variant="primary">지도 검색</b-button>
-              </b-carousel-slide>
-            </b-carousel>
+
+      <div id="hot-list" class="row p-5">
+        <div id="hotplace-list" class="col-lg-4 col-md-5">
+          <div class="mb-2">
+            <h4>핫플레이스</h4>
           </div>
-          <div v-else>
-            <h4>등록된 핫플레이스가 없습니다.</h4>
+          <swiper class="swiper" :options="swiperOption">
+            <swiper-slide v-for="(hotplace, index) in hotplaces" :key="index">
+              <div style="border: 1px solid lightgray; border-radius: 0.5rem">
+                <img :src="`/upload/hotplace/${hotplace.image}`" style="width: 100%; height: 20rem; object-fit: cover; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem" />
+                <div class="mt-3 ms-2">
+                  <img v-if="user.image" :src="`/upload/profile/${user.image}`" class="hotplace-profile-img me-2" />
+                  <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-2" />
+                  <span>{{ hotplace.userId }}</span>
+                </div>
+                <div class="mt-3 ms-3">
+                  <span>#{{ hotplace.tag1 }}</span> <span>#{{ hotplace.tag2 }}</span>
+                </div>
+                <div class="mt-2 mb-4 ms-3">{{ hotplace.desc }}</div>
+              </div>
+            </swiper-slide>
+            <!-- <swiper-slide>Slide 1</swiper-slide>
+            <swiper-slide>Slide 2</swiper-slide>
+            <swiper-slide>Slide 3</swiper-slide>
+            <swiper-slide>Slide 4</swiper-slide>
+            <swiper-slide>Slide 5</swiper-slide>
+            <swiper-slide>Slide 6</swiper-slide>
+            <swiper-slide>Slide 7</swiper-slide>
+            <swiper-slide>Slide 8</swiper-slide>
+            <swiper-slide>Slide 9</swiper-slide>
+            <swiper-slide>Slide 10</swiper-slide> -->
+            <div class="swiper-pagination" slot="pagination"></div>
+            <div class="swiper-button-prev" slot="button-prev"></div>
+            <div class="swiper-button-next" slot="button-next"></div>
+          </swiper>
+        </div>
+
+        <div id="hotplace-list" class="col-lg-4 col-md-5">
+          <div class="mb-2">
+            <h4>인기글</h4>
+            <div style="height: 100%; border: 1px solid lightgray"></div>
           </div>
         </div>
 
@@ -53,20 +62,12 @@
           <h3>인기 여행계획</h3>
           <div v-if="plans.plans && plans.plans.length">
             <div class="container">
-              <masonry
-                :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }"
-                :gutter="10"
-                class="card-style"
-              >
+              <masonry :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }" :gutter="10" class="card-style">
                 <span class="col-4 p-3" v-for="(plan, index) in plans.plans" :key="plan.id">
                   <h4>{{ plan.title }}</h4>
                   <the-kakao-map :id="`map-` + index" :plans="plans" :idx="index"></the-kakao-map>
                   <div>{{ plan.description }}</div>
-                  <b-button
-                    :to="{ name: 'planview', params: { articleno: plan.id } }"
-                    variant="info"
-                    >상세보기</b-button
-                  >
+                  <b-button :to="{ name: 'planview', params: { articleno: plan.id } }" variant="info">상세보기</b-button>
                 </span>
               </masonry>
             </div>
@@ -100,13 +101,7 @@
           <h3>인기 게시글</h3>
           <div v-if="boards && boards.length">
             <div style="height: 20rem; overflow: scroll">
-              <b-card
-                class="p-2 m-2"
-                v-for="board in boards"
-                v-bind:key="board.id"
-                :title="board.title"
-                @click="moveBoard(board.id)"
-              >
+              <b-card class="p-2 m-2" v-for="board in boards" v-bind:key="board.id" :title="board.title" @click="moveBoard(board.id)">
                 <b-card-text>
                   {{ board.content }}
                 </b-card-text>
@@ -117,104 +112,7 @@
             <h4>등록된 게시글이 없습니다.</h4>
           </div>
         </div>
-        <div></div>
       </div>
-      <section id="service-list" class="service-list">
-        <div class="container-fluid">
-          <div class="row justify-content-center">
-            <!-- 서비스 기능 start -->
-            <div class="col-lg-2 col-md-5 service-item d-flex mb-3 mx-3" data-aos="fade-up">
-              <div class="icon flex-shrink-0 me-3 mt-2">
-                <!-- <i class="bi bi-globe-central-south-asia"></i> -->
-                <i class="bi bi-search"></i>
-              </div>
-              <div class="mt-3 mb-2">
-                <h4 class="title">지역별 검색</h4>
-                <p class="description">
-                  검색 지역을 군/구 단위로 선택해 관광지를 검색합니다.<br />
-                  우리 동네에는 어떤 볼 것이 있을까요?
-                </p>
-                <router-link to="/tourist">
-                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
-                </router-link>
-              </div>
-            </div>
-            <!-- 서비스 기능 end -->
-
-            <!-- 서비스 기능 start -->
-            <div class="col-lg-2 col-md-5 service-item d-flex mb-3 mx-3" data-aos="fade-up">
-              <div class="icon flex-shrink-0 me-3 mt-2">
-                <i class="bi bi-airplane-engines"></i>
-              </div>
-              <div class="mt-3 mb-2">
-                <h4 class="title">여행 경로</h4>
-                <p class="description">
-                  여행에 방문할 새로운 관광지를 추가하고 여행 경로를 확인합니다.<br />
-                  나만의 Trip or Trip!을 함께 떠나볼까요?
-                </p>
-                <router-link to="/plan">
-                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
-                </router-link>
-              </div>
-            </div>
-            <!-- 서비스 기능 end -->
-
-            <!-- 서비스 기능 start -->
-            <div class="col-lg-2 col-md-5 service-item d-flex mb-3 mx-3" data-aos="fade-up">
-              <div class="icon flex-shrink-0 me-3 mt-2">
-                <!-- <i class="bi bi-moon-stars"></i> -->
-                <i class="bi bi-bookmark-star"></i>
-              </div>
-              <div class="mt-3 mb-2">
-                <h4 class="title">핫플레이스</h4>
-                <p class="description">
-                  다른 사람에게 소개하고 싶은 나만의 장소가 있나요?<br />
-                  핫플레이스를 공유하고, 새로운 핫플레이스를 추천받으세요!
-                </p>
-                <router-link to="/hotplace">
-                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
-                </router-link>
-              </div>
-            </div>
-            <!-- 서비스 기능 end -->
-
-            <!-- 서비스 기능 start -->
-            <div class="col-lg-2 col-md-5 service-item d-flex mb-3 mx-3" data-aos="fade-up">
-              <div class="icon flex-shrink-0 me-3 mt-2">
-                <!-- <i class="bi bi-moon-stars"></i> -->
-                <i class="bi bi-archive"></i>
-              </div>
-              <div class="mt-3 mb-2">
-                <h4 class="title">게시판</h4>
-                <p class="description">
-                  Trip or Trip 사용자들과 자유로운 소통을 원하시나요?<br />
-                  사람들과 다양한 이야기를 나누어 보세요!
-                </p>
-                <router-link to="/board">
-                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
-                </router-link>
-              </div>
-            </div>
-            <!-- 서비스 기능 end -->
-
-            <!-- 서비스 기능 start -->
-            <div class="col-lg-2 col-md-5 service-item d-flex mb-3 mx-3" data-aos="fade-up">
-              <div class="icon flex-shrink-0 me-3 mt-2">
-                <!-- <i class="bi bi-moon-stars"></i> -->
-                <i class="bi bi-tags"></i>
-              </div>
-              <div class="mt-3 mb-2">
-                <h4 class="title">공지사항</h4>
-                <p class="description">Trip or Trip의 공지사항을 확인해보세요!</p>
-                <router-link to="/notice">
-                  <span>Learn More</span><i class="bi bi-arrow-right"></i>
-                </router-link>
-              </div>
-            </div>
-            <!-- 서비스 기능 end -->
-          </div>
-        </div>
-      </section>
     </main>
   </div>
 </template>
@@ -222,12 +120,24 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
-import TheKakaoMap from "@/components/TheKakaoMap.vue";
+import TheKakaoMap from "@/components/TheKakaoMap";
+
+import Vue from "vue";
+import VueAwesomeSwiper from "vue-awesome-swiper";
+import "swiper/css/swiper.css";
+Vue.use(VueAwesomeSwiper);
+
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+// import HotplaceListItem from "@/components/hotplace/HotplaceListItem";
 
 export default {
   name: "AppMain",
   components: {
     TheKakaoMap,
+    Swiper,
+    SwiperSlide,
+    // HotplaceListItem,
+    // MainHotplace,
   },
   data() {
     return {
@@ -235,18 +145,36 @@ export default {
       hotplaces: [],
       plans: [],
       boards: [],
+      swiperOption: {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        autoplay: {
+          //자동슬라이드 (false-비활성화)
+          delay: 2500, // 시간 설정
+          disableOnInteraction: false, // false-스와이프 후 자동 재생
+        },
+        loop: false, // 슬라이드 반복 여부
+        loopAdditionalSlides: 1,
+      },
     };
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    ...mapState(["user"]),
+    swiper() {
+      return this.$refs.mySwiper.$swiper;
+    },
   },
   created() {
     this.token = window.$cookies.get("TripOrTrip");
-  },
-  mounted() {
-    // if (window.kakao && window.kakao.maps) {
-    //   this.loadMap();
-    // } else {
-    //   this.loadScript();
-    // }
-
     http.get(`/hotplace/list/hot`).then(({ data }) => {
       this.hotplaces = data;
     });
@@ -261,17 +189,17 @@ export default {
       this.boards = data;
     });
   },
-  computed: {
-    ...mapGetters(["isLoggedIn"]),
-    ...mapState(["user"]),
+  mounted() {
+    // if (window.kakao && window.kakao.maps) {
+    //   this.loadMap();
+    // } else {
+    //   this.loadScript();
+    // }
   },
   methods: {
     loadScript() {
       const script = document.createElement("script");
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
-        process.env.VUE_APP_KAKAO_MAP_API_KEY +
-        "&libraries=services&autoload=false";
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services&autoload=false";
       /* global kakao */ //eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.loadMap);
       document.head.appendChild(script);
@@ -297,6 +225,9 @@ export default {
     //   };
     //   new window.kakao.maps.StaticMap(staticMapContainer, staticMapOption);
     // },
+    slideChangeTransitionStart() {
+      console.log(this.swiper.activeIndex); //현재 index값 얻기
+    },
   },
 };
 </script>
@@ -317,8 +248,7 @@ h3 {
   position: relative;
   width: 100%;
   height: 40vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-    url("@/assets/img/background.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("@/assets/img/background.jpg");
   /* background-image: url('./assets/img/background.jpg'); */
   background-size: cover;
   opacity: 90%;
@@ -351,5 +281,40 @@ h3 {
 
 .service-item .icon:hover {
   color: #8fa5b8;
+}
+
+/* #carousel-1 img {
+  object-fit: contain;
+}
+
+.carousel-item {
+  width: 20rem;
+  height: 40rem;
+} */
+
+/* .swiper {
+  width: 25rem;
+  height: 25rem;
+} */
+
+/* .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+} */
+
+/* .swiper-lazy-loaded {
+  object-fit: cover !important;
+  width: 100% !important;
+  max-width: none !important;
+} */
+
+.hotplace-profile-img {
+  width: 30px;
+  height: 30px;
+  border-radius: 2rem;
+  object-fit: cover;
 }
 </style>
