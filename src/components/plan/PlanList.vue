@@ -148,7 +148,8 @@ export default {
         alert("로그인 후 이용 가능합니다.");
         return;
       }
-      this.$router.push({ name: "planview", params: { articleno: result.id } });
+      location.href = `/plan/${result.id}`;
+      // this.$router.push({ name: "planview", params: { articleno: result.id } });
     },
   },
 };

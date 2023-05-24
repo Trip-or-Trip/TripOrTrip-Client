@@ -32,9 +32,23 @@
           <br />
           <div class="plan-detail-date d-flex flex-row justify-content-between mb-3" style="width: 70%">
             <label for="st-date"><strong>출발일</strong></label>
-            <input v-model="plan.sDate" type="date" id="st-date" placeholder="년도-월-일" style="width: 8em; height: 1.8em" class="plan-detail-content plan-detail-start ms-2 me-2 align-middle rounded" />
+            <input
+              v-model="plan.sDate"
+              type="date"
+              id="st-date"
+              placeholder="년도-월-일"
+              style="width: 8em; height: 1.8em"
+              class="plan-detail-content plan-detail-start ms-2 me-2 align-middle rounded"
+            />
             <label for="end-date"><strong>도착일</strong></label>
-            <input v-model="plan.eDate" type="date" id="end-date" placeholder="년도-월-일" style="width: 8em; height: 1.8em" class="plan-detail-content plan-detail-end ms-2 me-2 align-middle rounded" />
+            <input
+              v-model="plan.eDate"
+              type="date"
+              id="end-date"
+              placeholder="년도-월-일"
+              style="width: 8em; height: 1.8em"
+              class="plan-detail-content plan-detail-end ms-2 me-2 align-middle rounded"
+            />
           </div>
           <label for="description"><strong>상세 계획</strong></label>
           <textarea v-model="plan.description" id="description" placeholder="상세 계획..." class="plan-detail-content align-middle ms-2 mt-2 rounded" style="width: 70%; height: 10em"> </textarea>
@@ -481,7 +495,8 @@ export default {
 #map {
   border-radius: 0.5rem;
 }
-#result-container {
+#result-container,
+#right-container {
   overflow: auto;
 }
 .submit-btn {

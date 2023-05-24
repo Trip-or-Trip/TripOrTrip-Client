@@ -32,9 +32,7 @@ export default {
     index: Number,
     total: Number,
   },
-  created() {
-    console.log(this.place);
-  },
+  created() {},
   methods: {
     clickRemoveBtn(index, place) {
       this.$emit("removeItem", index, place);
