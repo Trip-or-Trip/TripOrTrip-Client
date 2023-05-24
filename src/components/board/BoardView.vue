@@ -5,14 +5,49 @@
         <h3 class="mb-2">{{ article.title }}</h3>
         <div class="clearfix align-content-center">
           <!-- 글 작성자 프로필 사진으로 바꿔야 함 -->
-          <b-avatar v-if="user.image" variant="info" :src="`/upload/profile/${user.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
-          <b-avatar v-else variant="info" :src="require('@/assets/img/user.png')" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <b-avatar
+            v-if="user.image"
+            variant="info"
+            :src="`/upload/profile/${user.image}`"
+            class="float-md-start me-2 mt-1"
+            size="2.5rem"
+          ></b-avatar>
+          <b-avatar
+            v-else
+            variant="info"
+            :src="require('@/assets/img/user.png')"
+            class="float-md-start me-2 mt-1"
+            size="2.5rem"
+          ></b-avatar>
           <div>
             <span class="fw-bold">{{ article.userId }}</span> <br />
-            <span class="text-secondary fw-light" style="font-size: 0.9rem"> {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }} </span>
-            <span v-if="article.userId == user.id" class="float-md-end">
-              <button type="button" @click="$router.push({ name: 'boardmodify', param: { articleno: articleno } })" class="btn btn-sm submit-btn me-2">글 수정</button>
-              <button type="button" @click="deleteArticle" class="btn btn-sm submit-btn">글 삭제</button>
+            <span class="text-secondary fw-light" style="font-size: 0.9rem">
+              {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }}
+            </span>
+            <span class="float-md-end">
+              <button
+                v-if="article.userId == user.id"
+                type="button"
+                @click="$router.push({ name: 'boardmodify', param: { articleno: articleno } })"
+                class="btn btn-sm submit-btn me-2"
+              >
+                글 수정
+              </button>
+              <button
+                v-if="article.userId == user.id"
+                type="button"
+                @click="deleteArticle"
+                class="btn btn-sm submit-btn me-2"
+              >
+                글 삭제
+              </button>
+              <button
+                type="button"
+                @click="$router.push({ name: 'boardlist' })"
+                class="btn btn-sm submit-btn"
+              >
+                목록
+              </button>
             </span>
           </div>
         </div>
@@ -28,14 +63,23 @@
         <div class="comment-input-container mb-3">
           <div class="row d-flex justify-content-center">
             <div id="input-group-container" class="input-group input-group-sm">
-              <input v-model="content" type="text" class="form-control" placeholder="댓글을 입력해 주세요" />
+              <input
+                v-model="content"
+                type="text"
+                class="form-control"
+                placeholder="댓글을 입력해 주세요"
+              />
               <button type="button" @click="writeComment" class="btn submit-btn">작성</button>
             </div>
           </div>
         </div>
 
         <div class="comments-container">
-          <comment-list-item v-for="comm in comments" :key="comm.id" :comment="comm"></comment-list-item>
+          <comment-list-item
+            v-for="comm in comments"
+            :key="comm.id"
+            :comment="comm"
+          ></comment-list-item>
         </div>
       </div>
     </div>

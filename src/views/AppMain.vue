@@ -14,65 +14,86 @@
           </div>
         </div>
       </section>
-      <div id="hot-container" class="row">
-        <div id="hot-hotplace-container" class="col-md-6 col-sm-12"></div>
-      </div>
       <div id="hot-list" class="p-5 container">
         <div id="hotplace-list" class="mb-2 col-4 col-sm-12">
           <h3>인기 핫플레이스</h3>
-          <b-carousel id="carousel-1" :interval="4000" controls indicators background="#FFFFFF" img-width="1024" img-height="480" style="text-shadow: 1px 1px 2px #333; height: 20rem">
-            <b-carousel-slide
-              v-for="hotplace in hotplaces"
-              v-bind:key="hotplace.num"
-              width="100%"
-              height="100%"
-              style="height: 20rem; object-fit: cover"
-              :img-src="`/upload/hotplace/${hotplace.image}`"
-              :caption="hotplace.title"
-              :text="hotplace.desc"
-            >
-              #{{ hotplace.tag1 }} #{{ hotplace.tag2 }} <br />
-              <b-button :href="`${hotplace.mapUrl}`" variant="primary">지도 검색</b-button>
-            </b-carousel-slide>
-          </b-carousel>
+          <div v-if="hotplaces.length">
+            <b-carousel id="carousel-1" :interval="4000" controls indicators background="#FFFFFF" img-width="1024" img-height="480" style="text-shadow: 1px 1px 2px #333; height: 30rem; align: center">
+              <b-carousel-slide
+                v-for="hotplace in hotplaces"
+                v-bind:key="hotplace.num"
+                width="100%"
+                height="100%"
+                style="height: 30rem; object-fit: cover"
+                :img-src="`/upload/hotplace/${hotplace.image}`"
+                :caption="hotplace.title"
+                :text="hotplace.desc"
+              >
+                #{{ hotplace.tag1 }} #{{ hotplace.tag2 }} <br />
+                <b-button :href="`${hotplace.mapUrl}`" variant="primary">지도 검색</b-button>
+              </b-carousel-slide>
+            </b-carousel>
+          </div>
+          <div v-else>
+            <h4>등록된 핫플레이스가 없습니다.</h4>
+          </div>
         </div>
 
-        <div id="plan-list" class="mb-2 col-4 col-sm-12">
+        <div id="plan-list" class="mb-2 pt-5 col-4 col-sm-12">
           <h3>인기 여행계획</h3>
-
-          <b-carousel id="carousel-2" :interval="4000" controls indicators background="#FFFFFF" style="text-shadow: 1px 1px 2px #333; height: 20rem; overflow: hidden">
-            <b-carousel-slide
-              v-for="plan in plans.plans"
-              v-bind:key="plan.id"
-              :img-src="`http://t1.daumcdn.net/mapjsapi/images/bg_tile.png`"
-              :caption="plan.title"
-              :text="plan.description"
-              style="height: 20rem; object-fit: contain"
+          <div v-if="plans.plans.length">
+            <div class="container">
+              <masonry :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }" :gutter="10" class="card-style">
+                <span class="col-4 p-3" v-for="(plan, index) in plans.plans" :key="plan.id">
+                  <h4>{{ plan.title }}</h4>
+                  <the-kakao-map :id="`map-` + index" :plans="plans" :idx="index"></the-kakao-map>
+                  <div>{{ plan.description }}</div>
+                  <b-button :to="{ name: 'planview', params: { articleno: plan.id } }" variant="info">상세보기</b-button>
+                </span>
+              </masonry>
+            </div>
+            <!-- <b-carousel
+              id="carousel-2"
+              :interval="4000"
+              controls
+              indicators
+              background="#FFFFFF"
+              style="text-shadow: 1px 1px 2px #333; height: 20rem; overflow: hidden"
             >
-              <!-- #{{ plans.places[index].name }}<br />
-              #{{ plans.places[index].address }}<br /> -->
-              <b-button :to="{ name: 'planview', params: { articleno: plan.id } }" variant="primary">자세히</b-button>
-            </b-carousel-slide>
-          </b-carousel>
+              <b-carousel-slide
+                v-for="plan in plans.plans"
+                v-bind:key="plan.id"
+                :img-src="`http://t1.daumcdn.net/mapjsapi/images/bg_tile.png`"
+                :caption="plan.title"
+                :text="plan.description"
+                style="height: 20rem; object-fit: contain"
+              >
+                <b-button :to="{ name: 'planview', params: { articleno: plan.id } }" variant="primary"
+                  >자세히</b-button
+                >
+              </b-carousel-slide>
+            </b-carousel> -->
+          </div>
+          <div v-else>
+            <h4>등록된 여행계획이 없습니다.</h4>
+          </div>
         </div>
-        <div id="board-list" class="mb-2 col-4 col-sm-12">
+        <div id="board-list" class="mb-2 pt-5 col-4 col-sm-12">
           <h3>인기 게시글</h3>
-          <div style="height: 20rem; overflow: scroll">
-            <b-card class="p-2 m-2" v-for="board in boards" v-bind:key="board.id" :title="board.title" @click="moveBoard(board.id)">
-              <b-card-text>
-                {{ board.content }}
-              </b-card-text>
-            </b-card>
+          <div v-if="boards.length">
+            <div style="height: 20rem; overflow: scroll">
+              <b-card class="p-2 m-2" v-for="board in boards" v-bind:key="board.id" :title="board.title" @click="moveBoard(board.id)">
+                <b-card-text>
+                  {{ board.content }}
+                </b-card-text>
+              </b-card>
+            </div>
+          </div>
+          <div v-else>
+            <h4>등록된 게시글이 없습니다.</h4>
           </div>
         </div>
-        <div>
-          <div class="container">
-            <div id="0-plan" class="p-1 m-1"></div>
-            <div id="1-plan" class="p-1 m-1"></div>
-            <div id="2-plan" class="p-1 m-1"></div>
-            <div id="3-plan" class="p-1 m-1"></div>
-          </div>
-        </div>
+        <div></div>
       </div>
       <section id="service-list" class="service-list">
         <div class="container-fluid">
@@ -167,10 +188,17 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
+import TheKakaoMap from "@/components/TheKakaoMap.vue";
 
 export default {
   name: "AppMain",
+<<<<<<< HEAD
   components: {},
+=======
+  components: {
+    TheKakaoMap,
+  },
+>>>>>>> d89cbd8c8ffc4dd77f643d0ca94a8915f96c0cd1
   data() {
     return {
       token: "",
@@ -183,21 +211,36 @@ export default {
     this.token = window.$cookies.get("TripOrTrip");
   },
   mounted() {
+<<<<<<< HEAD
     if (window.kakao && window.kakao.maps) {
       this.loadMap();
     } else {
       this.loadScript();
     }
+=======
+    // if (window.kakao && window.kakao.maps) {
+    //   this.loadMap();
+    // } else {
+    //   this.loadScript();
+    // }
+>>>>>>> d89cbd8c8ffc4dd77f643d0ca94a8915f96c0cd1
 
     http.get(`/hotplace/list/hot`).then(({ data }) => {
       this.hotplaces = data;
     });
     http.get(`/plan/list/hot`).then(({ data }) => {
       this.plans = data;
+<<<<<<< HEAD
       for (var i = 0; i < this.plans.places.length; i++) {
         console.log(this.plans.places[0][0]);
         this.updateMap(this.plans.places[i][0].lat, this.plans.places[i][0].lng, i % 4);
       }
+=======
+      // for (var i = 0; i < this.plans.places.length; i++) {
+      //   console.log(this.plans.places[0][0]);
+      //   this.updateMap(this.plans.places[i][0].lat, this.plans.places[i][0].lng, i % 4);
+      // }
+>>>>>>> d89cbd8c8ffc4dd77f643d0ca94a8915f96c0cd1
     });
     http.get(`/board/list/hot`).then(({ data }) => {
       this.boards = data;
@@ -216,6 +259,7 @@ export default {
       document.head.appendChild(script);
     },
     // 맵 출력하기
+<<<<<<< HEAD
     loadMap() {
       // const container = document.getElementById("map");
       // const options = {
@@ -224,10 +268,21 @@ export default {
       // };
       // this.map = new window.kakao.maps.Map(container, options);
     },
+=======
+    // loadMap() {
+    // const container = document.getElementById("map");
+    // const options = {
+    //   center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+    //   level: 3,
+    // };
+    // this.map = new window.kakao.maps.Map(container, options);
+    // },
+>>>>>>> d89cbd8c8ffc4dd77f643d0ca94a8915f96c0cd1
 
     moveBoard(id) {
       this.$router.push({ name: "boardview", params: { articleno: id } });
     },
+<<<<<<< HEAD
     updateMap(x, y, id) {
       var staticMapContainer = document.getElementById(id + "-plan"); // 이미지 지도를 표시할 div
       const staticMapOption = {
@@ -236,6 +291,16 @@ export default {
       };
       new window.kakao.maps.StaticMap(staticMapContainer, staticMapOption);
     },
+=======
+    // updateMap(x, y, id) {
+    //   var staticMapContainer = document.getElementById(id + "-plan"); // 이미지 지도를 표시할 div
+    //   const staticMapOption = {
+    //     center: new window.kakao.maps.LatLng(x, y), // 이미지 지도의 중심좌표
+    //     level: 3, // 이미지 지도의 확대 레벨
+    //   };
+    //   new window.kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+    // },
+>>>>>>> d89cbd8c8ffc4dd77f643d0ca94a8915f96c0cd1
   },
 };
 </script>
