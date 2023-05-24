@@ -76,7 +76,7 @@ export default {
       // console.log(kakao);
     },
     expandMap(place) {
-      console.log(place);
+      // console.log(place);
       var bounds = this.map.getBounds();
       bounds.extend(new window.kakao.maps.LatLng(place.lat, place.lng));
       var imageSrc = require("@/assets/img/marker.png");
@@ -87,13 +87,13 @@ export default {
       var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
 
       // 마커를 생성합니다
-      var marker = new window.kakao.maps.Marker({
+      new window.kakao.maps.Marker({
         map: this.map, // 마커를 표시할 지도
         position: new kakao.maps.LatLng(place.lat, place.lng), // 마커를 표시할 위치
         title: place.name, // a마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
         image: markerImage, // 마커 이미지
       });
-      console.log(marker);
+      // console.log(marker);
 
       this.map.setBounds(bounds);
     },

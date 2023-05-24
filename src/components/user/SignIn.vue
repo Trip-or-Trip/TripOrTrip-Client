@@ -15,12 +15,26 @@
           <hr />
           <div class="row d-flex justify-content-center my-4">
             <div class="col-10">
-              <input type="text" v-model="id" class="form-control" name="id" id="signin-id" placeholder="아이디" />
+              <input
+                type="text"
+                v-model="id"
+                class="form-control"
+                name="id"
+                id="signin-id"
+                placeholder="아이디"
+              />
             </div>
           </div>
           <div class="row d-flex justify-content-center mt-4 mb-3">
             <div class="col-10">
-              <input type="password" v-model="password" class="form-control" name="password" id="signin-password" placeholder="비밀번호" />
+              <input
+                type="password"
+                v-model="password"
+                class="form-control"
+                name="password"
+                id="signin-password"
+                placeholder="비밀번호"
+              />
             </div>
           </div>
           <div class="row justify-content-end">
@@ -30,7 +44,15 @@
           </div>
           <div class="row d-flex justify-content-center my-4">
             <div class="col-10">
-              <button type="button" @click="login" id="signin-btn" class="btn submit-btn" style="width: 100%">로그인</button>
+              <button
+                type="button"
+                @click="login"
+                id="signin-btn"
+                class="btn submit-btn"
+                style="width: 100%"
+              >
+                로그인
+              </button>
             </div>
           </div>
         </form>
@@ -50,7 +72,13 @@ export default {
       password: "",
     };
   },
+  mounted() {
+    this.startCursor();
+  },
   methods: {
+    startCursor() {
+      document.getElementById("signin-id").focus();
+    },
     login() {
       http
         .post("/user/auth", {
@@ -58,12 +86,12 @@ export default {
           password: this.password,
         })
         .then(({ data }) => {
-          console.log(data);
+          // console.log(data);
           if (data) {
-            console.log("쿠키 저장");
+            // console.log("쿠키 저장");
             window.$cookies.set("TripOrTrip", data, "1d");
             this.$store.commit("setToken", data);
-            console.log("App.vue.afterSetToken");
+            // console.log("App.vue.afterSetToken");
             this.$store.dispatch("getUserFromServer");
             this.$router.push("/");
           } else {

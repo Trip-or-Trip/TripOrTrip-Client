@@ -41,13 +41,24 @@ const routes = [
   {
     path: "/mypage",
     name: "mypage",
-    redirect: { name: 'userdetail' },
+    redirect: { name: "userdetail" },
     component: () => import(/* webpackChunkName: "mypage" */ "../views/AppMypage"),
     children: [
       {
         path: "",
         name: "userdetail",
         component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageUser"),
+      },
+      {
+        path: "",
+        name: "updateuser",
+        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/UpdateUser"),
+      },
+      {
+        path: "",
+        name: "updateuserdetail",
+        component: () =>
+          import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageUserUpdate"),
       },
       {
         path: "",
@@ -62,12 +73,14 @@ const routes = [
       {
         path: "",
         name: "mypagehotplace",
-        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageHotplace"),
+        component: () =>
+          import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageHotplace"),
       },
       {
         path: "",
         name: "mypagecomment",
-        component: () => import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageComment"),
+        component: () =>
+          import(/* webpackChunkName: "mypage" */ "@/components/mypage/MypageComment"),
       },
       {
         path: "",
@@ -126,7 +139,8 @@ const routes = [
         path: "write",
         name: "noticewrite",
         // component: NoticeWrite,
-        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeWrite"),
       },
       {
         path: ":articleno",
@@ -138,7 +152,8 @@ const routes = [
         path: "modify/:articleno",
         name: "noticemodify",
         // component: NoticeModify,
-        component: () => import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
+        component: () =>
+          import(/* webpackChunkName: "notice" */ "../components/notice/NoticeModify"),
       },
     ],
   },
@@ -190,17 +205,20 @@ const routes = [
       {
         path: "",
         name: "hotplacelist",
-        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
+        component: () =>
+          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceList"),
       },
       {
         path: "create",
         name: "hotplacecreate",
-        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
+        component: () =>
+          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceCreate"),
       },
       {
         path: ":num",
         name: "hotplaceupdate",
-        component: () => import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceUpdate"),
+        component: () =>
+          import(/* webpackChunkName: "hotplace" */ "@/components/hotplace/HotplaceUpdate"),
       },
     ],
   },
