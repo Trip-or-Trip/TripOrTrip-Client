@@ -533,7 +533,8 @@ export default {
 #map {
   border-radius: 0.5rem;
 }
-#result-container {
+#result-container,
+#right-container {
   overflow: auto;
 }
 .submit-btn {

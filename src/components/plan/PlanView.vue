@@ -66,53 +66,41 @@
     </div>
 
     <div id="timeline-container" class="row d-flex justify-content-center mb-2">
-      <h5 style="width: 80%"><b>타임라인</b></h5>
       <!-- <div id="timeline-content" class="col-lg-7 col-md-10 col-sm-12 d-flex justify-content-between"> -->
-      <div id="timeline-content" class="col-11 d-flex">
-        <div v-for="(place, index) in places" :key="index" class="d-flex align-items-center">
-          <div class="place-content py-1 me-3">
-            <div class="d-flex">
-              <div>
-                <img class="place-img" :src="require('@/assets/img/noimage.png')" />
-              </div>
-              <div class="flex-grow-1">
-                <div class="mt-3">
-                  <div style="font-size: 0.9rem">
-                    <b>{{ place.name }}</b>
-                  </div>
-                  <div style="font-size: 0.8rem">{{ place.address }}</div>
-                </div>
-              </div>
+      <h5 class="col-lg-8 col-md-11"><b>타임라인</b></h5>
+
+      <div id="timeline-content" class="col-lg-8 col-md-11 d-flex justify-content-evenly">
+        <div v-for="(place, index) in places" :key="index" style="width: 10rem" class="flex-fill d-flex justify-content-evenly">
+          <div>
+            <img class="place-img" :src="require('@/assets/img/noimage.png')" />
+            <div style="font-size: 0.9rem">
+              <b>{{ place.name }}</b>
             </div>
+            <div style="font-size: 0.8rem">{{ place.address }}</div>
           </div>
-          <div v-if="index != places.length - 1" class="text-center my-1">
-            <img :src="require('@/assets/img/arrows.png')" height="32px" />
+          <div v-if="index != places.length - 1" class="text-center mt-5">
+            <img :src="require('@/assets/img/arrows.png')" height="50px" />
           </div>
         </div>
       </div>
     </div>
 
-    <div id="fast-con" class="row d-flex justify-content-center">
+    <div id="fast-con" class="row d-flex justify-content-center mb-5">
       <div id="title-content" class="col-lg-7 col-md-10 col-sm-12 mt-5 align-self-center">
         <h5 class="mb-3"><b>최적 경로</b></h5>
         <div id="new-map" style="width: 85%; height: 30rem"></div>
       </div>
     </div>
-
-    <plan-fast-route v-show="isModalView" @close-modal="isModalView = false"></plan-fast-route>
   </div>
 </template>
 
 <script>
-import PlanFastRoute from "@/components/plan/PlanFastRoute";
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 
 export default {
   name: "PlanView",
-  components: {
-    PlanFastRoute,
-  },
+  components: {},
   data() {
     return {
       articleno: Number,
@@ -127,22 +115,6 @@ export default {
       originalPolyline: null,
       newPolyline: null,
       isModalView: false,
-
-      // article: Object,
-      // overlay: Array,
-      // clickInfo: Object,
-      // drawingFlag: false, // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
-      // plandrawingFlag: false, // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
-      // clickLine: Object, // 마우스로 클릭한 좌표로 그려질 선 객체입니다
-      // planclickLine: Object, // 마우스로 클릭한 좌표로 그려질 선 객체입니다
-      // distanceOverlay: Object, // 선의 거리정보를 표시할 커스텀오버레이 입니다
-      // dots: [], // 선이 그려지고 있을때 클릭할 때마다 클릭 지점과 거리를 표시하는 커스텀 오버레이 배열입니다.
-      // lines: [],
-      // planlines: [],
-      // markers: [],
-      // planmarkers: [],
-      // circleOverlays: [],
-      // disOverlays: [],
     };
   },
   computed: {
@@ -162,8 +134,6 @@ export default {
         this.places = data.places;
         this.fastPlaces = data.fastPlaces;
         this.createdAt = data.article.createdAt.substring(0, 16);
-
-        console.log(this.places);
       });
   },
   mounted() {
@@ -175,14 +145,19 @@ export default {
   },
   methods: {
     loadScript() {
+      console.log("load script");
       const script = document.createElement("script");
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing";
       /* global kakao */ // eslint-disable-line no-unused-vars
-      script.onload = () => window.kakao.maps.load(this.loadMap);
+      script.onload = () => {
+        window.kakao.maps.load(this.loadMap);
+      };
 
       document.head.appendChild(script);
     },
     loadMap() {
+      console.log("load map");
+      console.log(window.kakao.maps);
       const originMapContainer = document.getElementById("original-map"); // 지도를 표시할 div
       const newMapContainer = document.getElementById("new-map"); // 지도를 표시할 div
       const mapOption = {
@@ -190,7 +165,7 @@ export default {
         level: 5, // 지도의 확대 레벨
       };
       this.originalMap = new window.kakao.maps.Map(originMapContainer, mapOption);
-      this.newMap = new kakao.maps.Map(newMapContainer, mapOption);
+      this.newMap = new window.kakao.maps.Map(newMapContainer, mapOption);
       this.makeMarkers("original");
       this.drawLine("original");
       this.makeMarkers("new");
@@ -251,7 +226,6 @@ export default {
       }
     },
     drawLine(status) {
-      console.log("draw line call");
       var linePath = [];
       var place = [];
 
@@ -267,7 +241,6 @@ export default {
       }
 
       if (status == "original") {
-        console.log("draw line originsl");
         this.originalPolyline = new window.kakao.maps.Polyline({
           path: linePath, // 선을 구성하는 좌표배열
           strokeWeight: 5, // 선의 두께
