@@ -142,6 +142,7 @@ export default {
     }
   },
   methods: {
+    
     loadScript() {
       const script = document.createElement("script");
       script.src =
@@ -183,6 +184,7 @@ export default {
       };
 
       ps.keywordSearch(this.keyword, callback);
+            
     },
     makeMarker(results) {
       var flag;
@@ -253,13 +255,7 @@ export default {
       if (this.overlay) this.overlay.setMap(null);
 
       let latlng = new window.kakao.maps.LatLng(place.y, place.x);
-      let imageUrl = "";
-      // if (place.first_image !== "") {
-      //   image = place.first_image;
-      // } else {
-      //   image = require("@/assets/img/noimage.png");
-      // }
-      imageUrl = require("@/assets/img/noimage.png");
+      let imageUrl = place.image_url;
 
       if (!place.category_group_name) place.category_group_name = "기타";
 
@@ -465,6 +461,7 @@ export default {
           lat: this.places[i].y,
           lng: this.places[i].x,
           mapUrl: this.places[i].place_url,
+          imageUrl: this.places[i].image_url,
         };
         selectedPlaces.push(selected);
       }

@@ -72,7 +72,7 @@
       <div id="timeline-content" class="col-lg-8 col-md-11 d-flex justify-content-evenly">
         <div v-for="(place, index) in places" :key="index" style="width: 10rem" class="flex-fill d-flex justify-content-evenly">
           <div>
-            <img class="place-img" :src="require('@/assets/img/noimage.png')" />
+            <img class="place-img" :src="place.imageUrl" />
             <div style="font-size: 0.9rem">
               <b>{{ place.name }}</b>
             </div>

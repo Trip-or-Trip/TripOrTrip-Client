@@ -3,7 +3,7 @@
     <div class="place-content py-1">
       <div class="d-flex">
         <div>
-          <img class="place-img" :src="require('@/assets/img/noimage.png')" />
+          <img class="place-img" :src="this.image" />
         </div>
         <div class="flex-grow-1">
           <div class="align-self-center" style="position: relative">
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import kakao from "@/util/kakao";
+
 export default {
   name: "PlanListItem",
   props: {
@@ -32,8 +34,29 @@ export default {
     index: Number,
     total: Number,
   },
+  data(){
+    return{
+      image: `@/assets/img/noimage.png`,
+    }
+  },
   created() {},
+  
+  mounted(){
+    this.viewImage();
+  },
   methods: {
+    viewImage(){
+      this.viewPlaceImg(this.place.place_name, 
+        ({data}) => {
+        this.image = data.documents[0].thumbnail_url;
+        console.log(this.image);
+      }
+      )
+    },
+    async viewPlaceImg(keyword, success, fail){
+      await kakao.get(`/image?query=${keyword}&sort=accuracy&page=1&size=1`)
+      .then(success).catch(fail);
+    },
     clickRemoveBtn(index, place) {
       this.$emit("removeItem", index, place);
     },
