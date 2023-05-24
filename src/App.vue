@@ -1,20 +1,24 @@
 <template>
   <div id="app">
     <the-header-nav></the-header-nav>
-    <router-view></router-view>
+    <div class="content">
+      <router-view></router-view>
+    </div>
+    <the-footer-nav></the-footer-nav>
   </div>
 </template>
 
 <script>
 import TheHeaderNav from "@/components/TheHeaderNav";
+import TheFooterNav from "@/components/TheFooterNav";
 
 export default {
   name: "App",
   components: {
     TheHeaderNav,
+    TheFooterNav,
   },
   created() {
-    console.log("App.vue");
   },
   mounted() {},
 };
@@ -26,6 +30,8 @@ export default {
 
 #app {
   font-family: "NanumSquareRound";
+  position: relative;
+  min-height: 100vh;
 }
 
 .submit-btn {
@@ -49,5 +55,9 @@ export default {
   background-color: #ff9494;
   color: white;
   cursor: point;
+}
+
+.content {
+  padding-bottom: 100px; /* 원하는 간격 설정 */
 }
 </style>
