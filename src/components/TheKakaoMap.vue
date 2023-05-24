@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="map" style="height: 150px"></div>
+    <div id="map" style="height: 17rem"></div>
   </div>
 </template>
 
@@ -38,10 +38,7 @@ export default {
     // api 불러오기
     loadScript() {
       const script = document.createElement("script");
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
-        process.env.VUE_APP_KAKAO_MAP_API_KEY +
-        "&libraries=services&autoload=false";
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services&autoload=false";
       /* global kakao */ //eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.updateMap);
       document.head.appendChild(script);

@@ -21,6 +21,10 @@ import VueCookie from "vue-cookies";
 // vue-masnory-css
 import VueMasonry from "vue-masonry-css";
 
+// AOS
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 // fontawesome
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -37,6 +41,9 @@ Vue.use(VueMasonry);
 Vue.config.productionTip = false;
 
 new Vue({
+  created() {
+    AOS.init();
+  },
   router,
   store,
   // vuetify: new Vuetify(),
