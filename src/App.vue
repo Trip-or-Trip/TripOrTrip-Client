@@ -17,16 +17,14 @@ export default {
     console.log("App.vue");
   },
   mounted() {
-    const script = document.createElement("script");
-
-    /* global kakao */ // eslint-disable-line no-unused-vars
-    script.src =
-      "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
-      process.env.VUE_APP_KAKAO_MAP_API_KEY +
-      "&libraries=services,clusterer,drawing&autoload=false";
-    script.onload = () => window.kakao.maps.load();
-
-    document.head.appendChild(script);
+    // const script = document.createElement("script");
+    // /* global kakao */ // eslint-disable-line no-unused-vars
+    // script.src =
+    //   "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+    //   process.env.VUE_APP_KAKAO_MAP_API_KEY +
+    //   "&libraries=services,clusterer,drawing&autoload=false";
+    // script.onload = () => window.kakao.maps.load();
+    // document.head.appendChild(script);
   },
 };
 </script>
