@@ -3,7 +3,7 @@
     <div class="result-content py-1">
       <div class="d-flex">
         <div>
-          <img class="result-img" :src="require('@/assets/img/noimage.png')" />
+          <img class="result-img" :src="this.image" />
         </div>
         <div class="flex-grow-1">
           <div class="align-self-center">
@@ -20,14 +20,37 @@
 </template>
 
 <script>
+import kakao from "@/util/kakao";
+
 export default {
   name: "PlanList",
   props: {
     result: Object,
   },
+  data(){
+    return {
+      image: `@/assets/img/noimage.png`,
+    }
+  },
+  mounted(){
+    this.viewImage();
+  },
   components: {},
   methods: {
+    viewImage(){
+      this.viewPlaceImg(this.result.place_name, 
+        ({data}) => {
+        this.image = data.documents[0].thumbnail_url;
+        console.log(this.image);
+      }
+      )
+    },
+    async viewPlaceImg(keyword, success, fail){
+      await kakao.get(`/image?query=${keyword}&sort=accuracy&page=1&size=1`)
+      .then(success).catch(fail);
+    },
     clickDetailResult(place) {
+      place.image_url = this.image;
       this.$emit("makeCustomOverlay", place);
     },
   },

@@ -46,6 +46,7 @@ export default {
     return {
       currentPage: 1,
       perPage: 20,
+      article: [],
       articles: [],
       fields: [
         {
@@ -98,12 +99,8 @@ export default {
       });
   },
   methods: {
-    articleClick(result) {
-      if (!this.isLoggedIn) {
-        alert("로그인 세션이 만료되었습니다. 다시 로그인 해주세요.");
-        return;
-      }
-      this.$router.push({ name: "boardview", params: { articleno: result.id } });
+    articleClick() {
+      this.$router.push({ name: "boardview", params: { articleno: this.article[0].id } });
     },
   },
 };
