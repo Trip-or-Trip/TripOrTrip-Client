@@ -18,7 +18,7 @@
       <div id="hot-list" class="p-5 container">
         <div id="hotplace-list" class="mb-2 col-4 col-sm-12">
           <h3>인기 핫플레이스</h3>
-          <div v-if="hotplaces.length">
+          <div v-if="hotplaces && hotplaces.length">
             <b-carousel
               id="carousel-1"
               :interval="4000"
@@ -51,7 +51,7 @@
 
         <div id="plan-list" class="mb-2 pt-5 col-4 col-sm-12">
           <h3>인기 여행계획</h3>
-          <div v-if="plans.plans.length">
+          <div v-if="plans.plans && plans.plans.length">
             <div class="container">
               <masonry
                 :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }"
@@ -98,7 +98,7 @@
         </div>
         <div id="board-list" class="mb-2 pt-5 col-4 col-sm-12">
           <h3>인기 게시글</h3>
-          <div v-if="boards.length">
+          <div v-if="boards && boards.length">
             <div style="height: 20rem; overflow: scroll">
               <b-card
                 class="p-2 m-2"

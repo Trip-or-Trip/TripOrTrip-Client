@@ -44,6 +44,8 @@ export default {
   components: {},
   data() {
     return {
+      currentPage: 1,
+      perPage: 20,
       articles: [],
       fields: [
         {
@@ -76,6 +78,9 @@ export default {
   computed: {
     ...mapGetters(["getToken", "isLoggedIn"]),
     ...mapState(["user"]),
+    rows() {
+      return this.articles.length;
+    },
   },
   created() {
     // 비동기
