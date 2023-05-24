@@ -5,49 +5,17 @@
         <h3 class="mb-2">{{ article.title }}</h3>
         <div class="clearfix align-content-center">
           <!-- 글 작성자 프로필 사진으로 바꿔야 함 -->
-          <b-avatar
-            v-if="user.image"
-            variant="info"
-            :src="`/upload/profile/${user.image}`"
-            class="float-md-start me-2 mt-1"
-            size="2.5rem"
-          ></b-avatar>
-          <b-avatar
-            v-else
-            variant="info"
-            :src="require('@/assets/img/user.png')"
-            class="float-md-start me-2 mt-1"
-            size="2.5rem"
-          ></b-avatar>
+          <b-avatar v-if="article.image" variant="info" :src="`/upload/profile/${article.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <b-avatar v-else variant="info" :src="require('@/assets/img/user.png')" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
           <div>
             <span class="fw-bold">{{ article.userId }}</span> <br />
-            <span class="text-secondary fw-light" style="font-size: 0.9rem">
-              {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }}
-            </span>
+            <span class="text-secondary fw-light" style="font-size: 0.9rem"> {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ article.hit }} </span>
             <span class="float-md-end">
-              <button
-                v-if="article.userId == user.id"
-                type="button"
-                @click="$router.push({ name: 'noticemodify', param: { articleno: articleno } })"
-                class="btn btn-sm submit-btn me-2"
-              >
+              <button v-if="article.userId == user.id" type="button" @click="$router.push({ name: 'noticemodify', param: { articleno: articleno } })" class="btn btn-sm submit-btn me-2">
                 글 수정
               </button>
-              <button
-                v-if="article.userId == user.id"
-                type="button"
-                @click="deleteArticle"
-                class="btn btn-sm submit-btn me-2"
-              >
-                글 삭제
-              </button>
-              <button
-                type="button"
-                @click="$router.push({ name: 'noticelist' })"
-                class="btn btn-sm submit-btn"
-              >
-                목록
-              </button>
+              <button v-if="article.userId == user.id" type="button" @click="deleteArticle" class="btn btn-sm submit-btn me-2">글 삭제</button>
+              <button type="button" @click="$router.push({ name: 'noticelist' })" class="btn btn-sm submit-btn">목록</button>
             </span>
           </div>
         </div>

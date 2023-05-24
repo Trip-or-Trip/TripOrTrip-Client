@@ -5,7 +5,7 @@
         <h3 class="mb-2">{{ plan.title }}</h3>
         <div class="clearfix align-content-center">
           <!-- 글 작성자 프로필 사진으로 바꿔야 함 -->
-          <b-avatar v-if="user.image" variant="info" :src="`/upload/profile/${user.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <b-avatar v-if="plan.image" variant="info" :src="`/upload/profile/${plan.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
           <b-avatar v-else variant="info" :src="require('@/assets/img/user.png')" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
           <div>
             <span class="fw-bold">{{ plan.userId }}</span> <br />
@@ -130,10 +130,13 @@ export default {
         },
       })
       .then(({ data }) => {
+        console.log(data.article);
         this.plan = data.article;
         this.places = data.places;
         this.fastPlaces = data.fastPlaces;
         this.createdAt = data.article.createdAt.substring(0, 16);
+
+        console.log(this.plan);
       });
   },
   mounted() {
@@ -145,7 +148,6 @@ export default {
   },
   methods: {
     loadScript() {
-      console.log("load script");
       const script = document.createElement("script");
       script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing";
       /* global kakao */ // eslint-disable-line no-unused-vars
@@ -156,8 +158,6 @@ export default {
       document.head.appendChild(script);
     },
     loadMap() {
-      console.log("load map");
-      console.log(window.kakao.maps);
       const originMapContainer = document.getElementById("original-map"); // 지도를 표시할 div
       const newMapContainer = document.getElementById("new-map"); // 지도를 표시할 div
       const mapOption = {
@@ -190,7 +190,7 @@ export default {
           addr: results[i].address,
           // zipcode: results[i].zipcode,
           // tel: results[i].phone,
-          // mapUrl: results[i].place_url,
+          mapUrl: results[i].mapUrl,
           placeId: results[i].placeId,
         };
         this.displayMarker(markerInfo, status);

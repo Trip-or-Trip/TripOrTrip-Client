@@ -66,7 +66,7 @@ export default {
     logout() {
       this.$store.commit("logout");
       window.$cookies.remove("TripOrTrip");
-      location.reload();
+      this.$router.push({ name: "main" }).catch(() => {});
     },
   },
 };
