@@ -110,6 +110,48 @@ export default {
       this.loadScript();
     }
   },
+  created() {
+    var initItem = this.$route.params.place;
+    console.log(initItem);
+    if (initItem) {
+      let item = {
+        address_name: initItem.addr1,
+        id: initItem.contentId,
+        place_name: initItem.title,
+        x: initItem.longitude,
+        y: initItem.latitude,
+        phone: initItem.tel,
+      };
+
+      if (initItem.first_image) {
+        item.image_url = initItem.first_image;
+      } else {
+        item.image_url = "";
+      }
+      if (initItem.mapUrl) {
+        item.place_url = initItem.mapUrl;
+      } else {
+        item.place_url = "";
+      }
+
+      this.places.push(item);
+
+      console.log(this.places[0]);
+      var bounds = new window.kakao.maps.LatLngBounds();
+      var markerInfo = {
+        title: this.places[0].place_name,
+        latlng: new window.kakao.maps.LatLng(this.places[0].y, this.places[0].x),
+        // image: data[i].first_image,
+        addr: this.places[0].address_name,
+        // zipcode: results[i].zipcode,
+        tel: this.places[0].phone,
+        mapUrl: this.places[0].place_url,
+        placeId: this.places[0].id,
+      };
+      this.displayMarker(markerInfo, 1);
+      bounds.extend(new window.kakao.maps.LatLng(this.places[0].y, this.places[0].x));
+    }
+  },
   methods: {
     loadScript() {
       const script = document.createElement("script");
@@ -348,6 +390,7 @@ export default {
       this.initPage();
       this.keyword = "";
       this.places.push(place);
+      console.log(this.places);
       this.makeMarker(this.places, 1);
 
       var markerInfo = {

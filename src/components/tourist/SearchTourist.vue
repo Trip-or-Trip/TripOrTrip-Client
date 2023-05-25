@@ -190,50 +190,172 @@ export default {
       if (this.overlay) this.overlay.setMap(null);
 
       let latlng = new window.kakao.maps.LatLng(place.latitude, place.longitude);
-      let image = "";
+      let imageUrl = "";
       if (place.first_image !== "") {
-        image = place.first_image;
+        imageUrl = place.first_image;
       } else {
-        image = require("@/assets/img/noimage.png");
+        imageUrl = require("@/assets/img/noimage.png");
       }
 
-      let content = `
-        <div class="wrap">
-          <div class="info">
-            <div class="title">
-              ${place.title}
-              <div class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></div>
-            </div>
-            <div class="body">
-              <div class="img">
-              <img src="${image}" width="73" height="70">
-            </div>
-            <div class="desc">
-              <div class="ellipsis mb-1">${place.addr1}</div>
-              <div class="jibun ellipsis">(우) ${place.zipcode}</div>
-              <div class="mt-1">`;
-
-      if (mapUrl !== "") {
-        content += `<a href="${mapUrl}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-geo-alt me-1"></i>지도검색</a>`;
-      }
-
-      content += `<a href="https://map.kakao.com/link/to/${place.title},${latlng.Ma},${latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>
-                  <a href="https://search.naver.com/search.naver?where=view&sm=tab_jum&query=${place.title}" target="_blank" class="me-2 url-link" style="color: black; text-decoration: none;"<i class="tourist-icon bi bi-search me-1"></i>블로그 검색</a> 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      `;
-
-      this.overlay = new window.kakao.maps.CustomOverlay({
-        content: content,
-        map: this.map,
+      var customOverlay = new window.kakao.maps.CustomOverlay({
         position: latlng,
+        map: this.map,
       });
 
-      this.overlay.setMap(this.map);
+      var wrap = document.createElement("div");
+      wrap.className = "wrap";
+
+      var info = document.createElement("div");
+      info.className = "info";
+
+      var title = document.createElement("div");
+      title.className = "title";
+
+      var close = document.createElement("div");
+      close.id = "close";
+      close.className = "close";
+      close.onclick = function () {
+        customOverlay.setMap(null);
+      };
+
+      var body = document.createElement("div");
+      body.className = "body";
+
+      var imageContainer = document.createElement("div");
+      imageContainer.className = "img";
+
+      var image = document.createElement("img");
+      image.src = imageUrl;
+      image.width = "73";
+      image.height = "70";
+
+      var desc = document.createElement("div");
+      desc.className = "desc";
+
+      var address = document.createElement("div");
+      address.classList.add("ellipsis", "mb-1");
+
+      var category = document.createElement("div");
+      category.classList.add("jibun", "ellipsis");
+
+      var linkContainer = document.createElement("div");
+      linkContainer.className = "mt-1";
+
+      var route = document.createElement("a");
+      route.href = `https://map.kakao.com/link/to/${place.title},${latlng.Ma},${latlng.La}`;
+      route.target = "_blank";
+      route.classList.add("me-2", "url-link");
+      route.style.color = "black";
+      route.style.textDecoration = "none";
+
+      var icon = document.createElement("i");
+      icon.classList.add("tourist-icon", "bi", "bi-sign-turn-right", "me-1");
+
+      var search = document.createElement("a");
+      search.href = `https://search.naver.com/search.naver?where=view&sm=tab_jum&query=${place.title}`;
+      search.target = "_blank";
+      search.classList.add("me-2", "url-link");
+      search.style.color = "black";
+      search.style.textDecoration = "none";
+
+      var searchIcon = document.createElement("i");
+      searchIcon.classList.add("tourist-icon", "bi", "bi-search", "me-1");
+
+      var button = document.createElement("button");
+      button.classList.add("btn", "btn-primary", "add-btn");
+      button.style.marginTop = "0.25rem";
+      button.appendChild(document.createTextNode("여행 계획 작성"));
+      button.onclick = () => {
+        this.$router.push({ name: "planwrite", params: { place: place } });
+      };
+
+      title.appendChild(document.createTextNode(place.title));
+      title.appendChild(close);
+
+      address.appendChild(document.createTextNode(place.addr1));
+      category.appendChild(document.createTextNode(`유형: ${place.category_group_name}`));
+
+      if (place.mapUrl) {
+        var mapUrlTag = document.createElement("a");
+        mapUrlTag.href = place.mapUrl;
+        mapUrlTag.target = "_blank";
+        mapUrlTag.classList.add("me-2", "url-link");
+        mapUrlTag.style.color = "black";
+        mapUrlTag.style.textDecoration = "none";
+
+        var mapIcon = document.createElement("i");
+        mapIcon.classList.add("tourist-icon", "bi", "bi-geo-alt", "me-1");
+        mapIcon.appendChild(document.createTextNode("지도 검색"));
+
+        mapUrlTag.appendChild(mapIcon);
+        linkContainer.appendChild(mapUrlTag);
+      }
+
+      icon.appendChild(document.createTextNode("길찾기"));
+      route.appendChild(icon);
+      linkContainer.appendChild(route);
+
+      searchIcon.appendChild(document.createTextNode("블로그 검색"));
+      search.appendChild(searchIcon);
+      linkContainer.appendChild(search);
+
+      imageContainer.appendChild(image);
+      desc.appendChild(address);
+      desc.appendChild(linkContainer);
+      desc.appendChild(button);
+
+      body.appendChild(imageContainer);
+      body.appendChild(desc);
+
+      info.appendChild(title);
+      info.appendChild(body);
+
+      wrap.appendChild(info);
+
+      customOverlay.setMap(this.map);
+      customOverlay.setContent(wrap);
+
+      this.overlay = customOverlay;
       this.map.setCenter(latlng);
+
+      console.log(place);
+      // let content = `
+      //   <div class="wrap">
+      //     <div class="info">
+      //       <div class="title">
+      //         ${place.title}
+      //         <div class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></div>
+      //       </div>
+      //       <div class="body">
+      //         <div class="img">
+      //         <img src="${image}" width="73" height="70">
+      //       </div>
+      //       <div class="desc">
+      //         <div class="ellipsis mb-1">${place.addr1}</div>
+      //         <div class="jibun ellipsis">(우) ${place.zipcode}</div>
+      //         <div class="mt-1">`;
+
+      // if (mapUrl !== "") {
+      //   content += `<a href="${mapUrl}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-geo-alt me-1"></i>지도검색</a>`;
+      // }
+
+      // content += `<a href="https://map.kakao.com/link/to/${place.title},${latlng.Ma},${latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>
+      //             <a href="https://search.naver.com/search.naver?where=view&sm=tab_jum&query=${place.title}" target="_blank" class="me-2 url-link" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-search me-1"></i>블로그 검색</a>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   </div>
+      // </div>
+      // `;
+
+      // this.overlay = new window.kakao.maps.CustomOverlay({
+      //   content: content,
+      //   map: this.map,
+      //   position: latlng,
+      // });
+
+      // this.overlay.setMap(this.map);
+      // this.map.setCenter(latlng);
     },
 
     search() {
@@ -324,7 +446,7 @@ export default {
   position: absolute;
   left: 0;
   bottom: 40px;
-  width: 288px;
+  width: 310px;
   height: 132px;
   margin-left: -144px;
   text-align: left;
@@ -337,7 +459,7 @@ export default {
   margin: 0;
 }
 .wrap .info {
-  width: 286px;
+  width: 308px;
   height: 120px;
   border-radius: 5px;
   border-bottom: 2px solid #ccc;
