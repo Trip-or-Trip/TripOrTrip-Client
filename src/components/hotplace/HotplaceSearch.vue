@@ -133,7 +133,7 @@ export default {
   position: relative;
   width: 80%;
   max-width: 70rem;
-  height: 42rem;
+  height: 50vh;
   margin: auto;
   margin-top: 10rem;
   padding: 20px;

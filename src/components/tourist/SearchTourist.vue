@@ -100,6 +100,7 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "SearchTourist",
@@ -125,6 +126,10 @@ export default {
       .catch((response) => {
         console.log(response);
       });
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    ...mapState(["user"]),
   },
   updated() {},
   mounted() {
@@ -266,6 +271,10 @@ export default {
       button.style.marginTop = "0.25rem";
       button.appendChild(document.createTextNode("여행 계획 작성"));
       button.onclick = () => {
+        if (!this.isLoggedIn) {
+          alert("로그인 후 이용 가능합니다.");
+          return;
+        }
         place.mapUrl = mapUrl;
         this.$router.push({ name: "planwrite", params: { place: place } });
       };
@@ -318,44 +327,6 @@ export default {
 
       this.overlay = customOverlay;
       this.map.setCenter(latlng);
-
-      // let content = `
-      //   <div class="wrap">
-      //     <div class="info">
-      //       <div class="title">
-      //         ${place.title}
-      //         <div class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></div>
-      //       </div>
-      //       <div class="body">
-      //         <div class="img">
-      //         <img src="${image}" width="73" height="70">
-      //       </div>
-      //       <div class="desc">
-      //         <div class="ellipsis mb-1">${place.addr1}</div>
-      //         <div class="jibun ellipsis">(우) ${place.zipcode}</div>
-      //         <div class="mt-1">`;
-
-      // if (mapUrl !== "") {
-      //   content += `<a href="${mapUrl}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-geo-alt me-1"></i>지도검색</a>`;
-      // }
-
-      // content += `<a href="https://map.kakao.com/link/to/${place.title},${latlng.Ma},${latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>
-      //             <a href="https://search.naver.com/search.naver?where=view&sm=tab_jum&query=${place.title}" target="_blank" class="me-2 url-link" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-search me-1"></i>블로그 검색</a>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   </div>
-      // </div>
-      // `;
-
-      // this.overlay = new window.kakao.maps.CustomOverlay({
-      //   content: content,
-      //   map: this.map,
-      //   position: latlng,
-      // });
-
-      // this.overlay.setMap(this.map);
-      // this.map.setCenter(latlng);
     },
 
     search() {

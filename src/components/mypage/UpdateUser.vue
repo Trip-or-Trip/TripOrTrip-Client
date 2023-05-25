@@ -9,19 +9,11 @@
           <div class="mb-4">
             <br />
             <div class="d-flex justify-content-center">
-              <b-form-input
-                placeholder="비밀번호를 입력해주세요"
-                type="password"
-                class="form-control"
-                name="userPwd"
-                id="userPwd"
-                v-model="userPwd"
-                :state="pwdCheck"
-              ></b-form-input>
+              <b-form-input placeholder="비밀번호를 입력해주세요" type="password" class="form-control" name="userPwd" id="userPwd" v-model="userPwd" :state="pwdCheck"></b-form-input>
             </div>
           </div>
           <div class="mb-5">
-            <button type="submit" class="m-1 btn" @click="confirmPw">확인</button>
+            <button type="submit" class="m-1 btn submit-btn" @click="confirmPw">확인</button>
           </div>
         </div>
       </div>
@@ -82,5 +74,15 @@ export default {
   background-color: #4199ff;
   color: black;
   font-weight: 400;
+}
+.submit-btn {
+  /* background-color: white; */
+  background-color: #aebdca;
+  color: white;
+}
+.submit-btn:hover {
+  /* background-color: white; */
+  background-color: #8fa5b8;
+  color: white;
 }
 </style>

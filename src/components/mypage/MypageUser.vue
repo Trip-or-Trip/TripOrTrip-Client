@@ -38,35 +38,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div class="user-info-container text-center mt-4">
-          <div style="display: inline-block; text-align: left; width: 30rem">
-            <div class="row d-flex justify-content-center">
-              <div class="col-10 mb-2">
-                <span>아이디</span>
-                <input type="text" class="form-control mt-2 mb-3 px-3 py-2" id="view-id" name="view-id" :value="user.id" readonly />
-              </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <div class="col-10 mb-2">
-                <span>이름</span>
-                <input type="text" class="form-control mt-2 mb-3 px-3 py-2" id="view-name" name="view-name" :value="user.name" readonly />
-              </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <div class="col-10 mb-2">
-                <span>회원 등급</span>
-                <input type="text" class="form-control mt-2 mb-3 px-3 py-2" id="view-grade" name="view-grade" :value="user.grade" readonly />
-              </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <div class="col-10 mb-2">
-                <span>이메일</span>
-                <input type="email" class="form-control mt-2 mb-3 px-3 py-2" id="view-email" name="view-email" :value="email" readonly />
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
 

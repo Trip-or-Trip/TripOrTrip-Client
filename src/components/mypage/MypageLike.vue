@@ -4,17 +4,9 @@
       <h2>좋아요</h2>
       <div v-if="hotplaces.length" id="mypage-board">
         <div class="mt-5">
-          <div id="hotplace-container" class="px-3 mx-5">
-            <masonry
-              :cols="{ default: 3, 1600: 3, 1100: 2, 700: 1 }"
-              :gutter="10"
-              class="card-style"
-            >
-              <hotplace-list-item
-                v-for="hotplace in hotplaces"
-                :key="hotplace.num"
-                :hotplace="hotplace"
-              ></hotplace-list-item>
+          <div id="hotplace-container" class="px-3 mx-5 mb-4">
+            <masonry :cols="{ default: 3, 1600: 3, 1100: 2, 700: 1 }" :gutter="10" class="card-style">
+              <hotplace-list-item v-for="hotplace in hotplaces" :key="hotplace.num" :hotplace="hotplace"></hotplace-list-item>
             </masonry>
           </div>
         </div>

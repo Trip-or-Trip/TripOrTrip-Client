@@ -3,13 +3,15 @@
     <div class="card hotplace-card px-3 py-2 mx-2">
       <div class="card-title mt-3 mb-3">
         <div class="row">
-          <div class="ms-2 col-8 justify-content-start">
+          <!-- <div class="ms-2 col-8 justify-content-start"> -->
+          <div class="ps-2 col-8">
             <img :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-3" />
             <span>{{ hotplace.userId }}</span>
           </div>
-          <div class="col-3 justify-content-end">
+          <!-- <div class="col-3 justify-content-end"> -->
+          <div class="col-2 me-1">
             <div v-if="user.id == hotplace.userId" class="dropdown">
-              <b-dropdown size="sm" text="menu" variant="outline-dark" class="m-2">
+              <b-dropdown size="sm" text="menu" variant="outline-dark">
                 <b-dropdown-item-button><router-link :to="{ name: 'hotplaceupdate', params: { num: hotplace.num } }" :hotplace="hotplace">핫플레이스 수정</router-link></b-dropdown-item-button>
                 <b-dropdown-item-button @click="hotplaceDelete">핫플레이스 삭제</b-dropdown-item-button>
               </b-dropdown>
@@ -33,9 +35,7 @@
               <i class="hotplace-icon bi bi-heart me-3"></i>
             </span>
             <a :href="`${hotplace.mapUrl}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
-            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"
-              ><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i
-            ></a>
+            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i></a>
           </div>
           <div>
             <div v-if="hotplace.tag1 || hotplace.tag2" class="mb-2">

@@ -13,7 +13,7 @@
       <div style="height: 70px"></div>
 
       <!-- 비동기로 핫플레이스 가져오기 -->
-      <div id="hotplace-container" class="px-3 mx-5">
+      <div id="hotplace-container" class="px-3 mx-5 mb-4">
         <masonry :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }" :gutter="10" class="card-style">
           <hotplace-list-item v-for="hotplace in hotplaces" :key="hotplace.num" :hotplace="hotplace"></hotplace-list-item>
         </masonry>
