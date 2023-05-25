@@ -4,7 +4,7 @@
       <div class="card-title mt-3 mb-3">
         <div class="row">
           <div class="ms-2 col-8 justify-content-start">
-            <img v-if="user.image" :src="`/upload/profile/${user.image}`" class="hotplace-profile-img me-3" />
+            <img v-if="hotplace.userImage" :src="`/upload/profile/${hotplace.userImage}`" class="hotplace-profile-img me-3" />
             <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-3" />
             <span>{{ hotplace.userId }}</span>
           </div>
@@ -34,7 +34,9 @@
               <i class="hotplace-icon bi bi-heart me-3"></i>
             </span>
             <a :href="`${hotplace.mapUrl}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-geo-alt me-3" title="카카오맵 검색"></i></a>
-            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i></a>
+            <a :href="`https://map.kakao.com/link/to/${hotplace.title},${hotplace.latitude},${hotplace.longitude}`" target="_blank" style="color: black"
+              ><i class="hotplace-icon bi bi-sign-turn-right" title="길 찾기"></i
+            ></a>
           </div>
           <div>
             <div v-if="hotplace.tag1 || hotplace.tag2" class="mb-2">
