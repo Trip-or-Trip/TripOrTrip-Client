@@ -294,6 +294,9 @@ export default {
 
       var image = document.createElement("img");
       image.src = imageUrl;
+      if (!imageUrl || imageUrl == "undefined" || imageUrl == "") {
+        image.src = require(`@/assets/img/noimage.png`);
+      }
       image.width = "73";
       image.height = "70";
 
