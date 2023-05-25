@@ -109,6 +109,22 @@ export default {
     } else {
       this.loadScript();
     }
+
+    if (this.places.length) {
+      var bounds = new window.kakao.maps.LatLngBounds();
+      var markerInfo = {
+        title: this.places[0].place_name,
+        latlng: new window.kakao.maps.LatLng(this.places[0].y, this.places[0].x),
+        // image: data[i].first_image,
+        addr: this.places[0].address_name,
+        // zipcode: results[i].zipcode,
+        tel: this.places[0].phone,
+        mapUrl: this.places[0].place_url,
+        placeId: this.places[0].id,
+      };
+      this.displayMarker(markerInfo, 1);
+      bounds.extend(new window.kakao.maps.LatLng(this.places[0].y, this.places[0].x));
+    }
   },
   created() {
     var initItem = this.$route.params.place;
@@ -137,19 +153,6 @@ export default {
       this.places.push(item);
 
       console.log(this.places[0]);
-      var bounds = new window.kakao.maps.LatLngBounds();
-      var markerInfo = {
-        title: this.places[0].place_name,
-        latlng: new window.kakao.maps.LatLng(this.places[0].y, this.places[0].x),
-        // image: data[i].first_image,
-        addr: this.places[0].address_name,
-        // zipcode: results[i].zipcode,
-        tel: this.places[0].phone,
-        mapUrl: this.places[0].place_url,
-        placeId: this.places[0].id,
-      };
-      this.displayMarker(markerInfo, 1);
-      bounds.extend(new window.kakao.maps.LatLng(this.places[0].y, this.places[0].x));
     }
   },
   methods: {
@@ -225,6 +228,7 @@ export default {
       this.map.setBounds(bounds);
     },
     displayMarker(markerInfo, status) {
+      console.log(markerInfo);
       var imageSrc;
       if (status) {
         imageSrc = require("@/assets/img/marker.png");

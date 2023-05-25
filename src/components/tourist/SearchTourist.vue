@@ -266,6 +266,7 @@ export default {
       button.style.marginTop = "0.25rem";
       button.appendChild(document.createTextNode("여행 계획 작성"));
       button.onclick = () => {
+        place.mapUrl = mapUrl;
         this.$router.push({ name: "planwrite", params: { place: place } });
       };
 
@@ -275,9 +276,9 @@ export default {
       address.appendChild(document.createTextNode(place.addr1));
       category.appendChild(document.createTextNode(`유형: ${place.category_group_name}`));
 
-      if (place.mapUrl) {
+      if (mapUrl) {
         var mapUrlTag = document.createElement("a");
-        mapUrlTag.href = place.mapUrl;
+        mapUrlTag.href = mapUrl;
         mapUrlTag.target = "_blank";
         mapUrlTag.classList.add("me-2", "url-link");
         mapUrlTag.style.color = "black";
@@ -318,7 +319,6 @@ export default {
       this.overlay = customOverlay;
       this.map.setCenter(latlng);
 
-      console.log(place);
       // let content = `
       //   <div class="wrap">
       //     <div class="info">
@@ -560,5 +560,11 @@ export default {
 }
 .place-btn:hover {
   background-color: #c9d1da;
+}
+.add-btn {
+  font-size: 0.7rem;
+  width: 5rem;
+  height: 1.2rem;
+  /* background-color: #c9d1da; */
 }
 </style>
