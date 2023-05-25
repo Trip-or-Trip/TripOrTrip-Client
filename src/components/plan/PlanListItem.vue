@@ -11,7 +11,11 @@
               <b>{{ place.place_name }}</b>
             </div>
             <div style="position: absolute; top: -3px; right: 5px">
-              <i @click="clickRemoveBtn(index, place, $event)" class="cancel-btn bi bi-x-circle-fill" style="font-size: 1.1rem"></i>
+              <i
+                @click="clickRemoveBtn(index, place, $event)"
+                class="cancel-btn bi bi-x-circle-fill"
+                style="font-size: 1.1rem"
+              ></i>
             </div>
             <div style="font-size: 0.8rem">{{ place.address_name }}</div>
           </div>
@@ -25,7 +29,7 @@
 </template>
 
 <script>
-import kakao from "@/util/kakao";
+// import kakao from "@/util/kakao";
 
 export default {
   name: "PlanListItem",
@@ -34,29 +38,25 @@ export default {
     index: Number,
     total: Number,
   },
-  data(){
-    return{
-      image: `@/assets/img/noimage.png`,
-    }
+  data() {
+    return {
+      image: require(`@/assets/img/noimage.png`),
+    };
   },
   created() {},
-  
-  mounted(){
-    this.viewImage();
+
+  mounted() {
+    if (
+      !this.place.image_url ||
+      this.place.image_url == "undefined" ||
+      this.place.image_url == ""
+    ) {
+      this.image = require(`@/assets/img/noimage.png`);
+    } else {
+      this.image = this.place.image_url;
+    }
   },
   methods: {
-    viewImage(){
-      this.viewPlaceImg(this.place.place_name, 
-        ({data}) => {
-        this.image = data.documents[0].thumbnail_url;
-        console.log(this.image);
-      }
-      )
-    },
-    async viewPlaceImg(keyword, success, fail){
-      await kakao.get(`/image?query=${keyword}&sort=accuracy&page=1&size=1`)
-      .then(success).catch(fail);
-    },
     clickRemoveBtn(index, place) {
       this.$emit("removeItem", index, place);
     },

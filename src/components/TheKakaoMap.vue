@@ -38,7 +38,10 @@ export default {
     // api 불러오기
     loadScript() {
       const script = document.createElement("script");
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services&autoload=false";
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services&autoload=false";
       /* global kakao */ //eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.updateMap);
       document.head.appendChild(script);
@@ -53,7 +56,7 @@ export default {
           var staticMapContainer = document.getElementById("map-" + this.idx); // 이미지 지도를 표시할 div
           const staticMapOption = {
             center: new window.kakao.maps.LatLng(data[0].lat, data[0].lng), // 이미지 지도의 중심좌표
-            level: 2, // 이미지 지도의 확대 레벨
+            level: 5, // 이미지 지도의 확대 레벨
           };
           this.map = new window.kakao.maps.Map(staticMapContainer, staticMapOption);
           for (var i = 0; i < data.length; i++) {

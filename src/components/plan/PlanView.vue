@@ -5,14 +5,49 @@
         <h3 class="mb-2">{{ plan.title }}</h3>
         <div class="clearfix align-content-center">
           <!-- 글 작성자 프로필 사진으로 바꿔야 함 -->
-          <b-avatar v-if="plan.image" variant="info" :src="`/upload/profile/${plan.image}`" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
-          <b-avatar v-else variant="info" :src="require('@/assets/img/user.png')" class="float-md-start me-2 mt-1" size="2.5rem"></b-avatar>
+          <b-avatar
+            v-if="plan.image"
+            variant="info"
+            :src="`/upload/profile/${plan.image}`"
+            class="float-md-start me-2 mt-1"
+            size="2.5rem"
+          ></b-avatar>
+          <b-avatar
+            v-else
+            variant="info"
+            :src="require('@/assets/img/user.png')"
+            class="float-md-start me-2 mt-1"
+            size="2.5rem"
+          ></b-avatar>
           <div>
             <span class="fw-bold">{{ plan.userId }}</span> <br />
-            <span class="text-secondary fw-light" style="font-size: 0.9rem"> {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ plan.hit }} </span>
-            <span v-if="plan.userId == user.id" class="float-md-end">
-              <button type="button" @click="$router.push({ name: 'planmodify', param: { articleno: articleno } })" class="btn btn-sm submit-btn me-2">글 수정</button>
-              <button type="button" @click="deleteArticle" class="btn btn-sm submit-btn">글 삭제</button>
+            <span class="text-secondary fw-light" style="font-size: 0.9rem">
+              {{ createdAt }}&nbsp;&nbsp;&nbsp;&nbsp;조회 : {{ plan.hit }}
+            </span>
+            <span class="float-md-end">
+              <button
+                v-if="plan.userId == user.id"
+                type="button"
+                @click="$router.push({ name: 'planmodify', param: { articleno: articleno } })"
+                class="btn btn-sm submit-btn me-2"
+              >
+                수정
+              </button>
+              <button
+                v-if="plan.userId == user.id"
+                type="button"
+                @click="deleteArticle"
+                class="btn btn-sm submit-btn me-2"
+              >
+                삭제
+              </button>
+              <button
+                type="button"
+                @click="$router.push({ name: 'planlist' })"
+                class="btn btn-sm submit-btn"
+              >
+                목록
+              </button>
             </span>
           </div>
         </div>
@@ -21,7 +56,10 @@
     </div>
 
     <div id="plan-container" class="row mb-3">
-      <div id="left-container" class="col-lg-4 col-md-6 col-sm-12 offset-lg-2 d-flex flex-column justify-content-center">
+      <div
+        id="left-container"
+        class="col-lg-4 col-md-6 col-sm-12 offset-lg-2 d-flex flex-column justify-content-center"
+      >
         <div class="d-flex mb-3">
           <h5 class="mx-4 mt-2"><b>여행 경로</b></h5>
           <!-- <button
@@ -39,27 +77,55 @@
         </div>
       </div>
 
-      <div id="right-container" class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center align-items-center">
+      <div
+        id="right-container"
+        class="col-lg-4 col-md-6 col-sm-12 d-flex justify-content-center align-items-center"
+      >
         <div id="plan-content-container" style="width: 85%">
           <div id="plan-title-container" class="mb-3">
             <label for="plan-title">계획 이름</label>
-            <input id="plan-title" type="text" readonly="readonly" :value="plan.title" class="form-control" />
+            <input
+              id="plan-title"
+              type="text"
+              readonly="readonly"
+              :value="plan.title"
+              class="form-control"
+            />
           </div>
           <div id="plan-date-container" class="mb-3">
             <div class="row">
               <div class="col-md-6">
                 <label for="plan-start-date">출발일</label>
-                <input id="plan-start-date" type="text" readonly="readonly" :value="plan.startDate" class="form-control" />
+                <input
+                  id="plan-start-date"
+                  type="text"
+                  readonly="readonly"
+                  :value="plan.startDate"
+                  class="form-control"
+                />
               </div>
               <div class="col-md-6">
                 <label for="plan-end-date">도착일</label>
-                <input id="plan-end-date" type="text" readonly="readonly" :value="plan.endDate" class="form-control" />
+                <input
+                  id="plan-end-date"
+                  type="text"
+                  readonly="readonly"
+                  :value="plan.endDate"
+                  class="form-control"
+                />
               </div>
             </div>
           </div>
           <div id="plan-desc-container">
             <label for="plan-description">계획 상세</label>
-            <input id="plan-description" type="text" readonly="readonly" :value="plan.description" class="form-control overflow-auto" style="height: 10em" />
+            <input
+              id="plan-description"
+              type="text"
+              readonly="readonly"
+              :value="plan.description"
+              class="form-control overflow-auto"
+              style="height: 10em"
+            />
           </div>
         </div>
       </div>
@@ -70,9 +136,15 @@
       <h5 class="col-lg-8 col-md-11"><b>타임라인</b></h5>
 
       <div id="timeline-content" class="col-lg-8 col-md-11 d-flex justify-content-evenly">
-        <div v-for="(place, index) in places" :key="index" style="width: 10rem" class="flex-fill d-flex justify-content-evenly">
+        <div
+          v-for="(place, index) in places"
+          :key="index"
+          style="width: 10rem"
+          class="flex-fill d-flex justify-content-evenly"
+        >
           <div>
-            <img class="place-img" :src="place.imageUrl" />
+            <img v-if="place.imageUrl" class="place-img" :src="place.imageUrl" />
+            <img v-else class="place-img" :src="require(`@/assets/img/noimage.png`)" />
             <div style="font-size: 0.9rem">
               <b>{{ place.name }}</b>
             </div>
@@ -149,7 +221,10 @@ export default {
   methods: {
     loadScript() {
       const script = document.createElement("script");
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing";
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services,clusterer,drawing";
       /* global kakao */ // eslint-disable-line no-unused-vars
       script.onload = () => {
         window.kakao.maps.load(this.loadMap);

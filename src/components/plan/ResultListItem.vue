@@ -3,7 +3,7 @@
     <div class="result-content py-1">
       <div class="d-flex">
         <div>
-          <img class="result-img" :src="this.image" />
+          <img id="result-img" class="result-img" :src="this.image" />
         </div>
         <div class="flex-grow-1">
           <div class="align-self-center">
@@ -11,7 +11,13 @@
               <b>{{ result.place_name }}</b>
             </div>
             <div style="font-size: 0.8rem">{{ result.address_name }}</div>
-            <button type="button" @click="clickDetailResult(result, $event)" class="btn btn-sm place-btn">자세히 보기</button>
+            <button
+              type="button"
+              @click="clickDetailResult(result, $event)"
+              class="btn btn-sm place-btn"
+            >
+              자세히 보기
+            </button>
           </div>
         </div>
       </div>
@@ -27,30 +33,35 @@ export default {
   props: {
     result: Object,
   },
-  data(){
+  data() {
     return {
-      image: `@/assets/img/noimage.png`,
-    }
+      image: require("@/assets/img/noimage.png"),
+    };
   },
-  mounted(){
+  mounted() {
     this.viewImage();
   },
   components: {},
   methods: {
-    viewImage(){
-      this.viewPlaceImg(this.result.place_name, 
-        ({data}) => {
+    viewImage() {
+      this.viewPlaceImg(this.result.place_name, ({ data }) => {
+        // console.log(data);
         this.image = data.documents[0].thumbnail_url;
-        console.log(this.image);
-      }
-      )
+        // console.log(this.image);
+      });
     },
-    async viewPlaceImg(keyword, success, fail){
-      await kakao.get(`/image?query=${keyword}&sort=accuracy&page=1&size=1`)
-      .then(success).catch(fail);
+    async viewPlaceImg(keyword, success) {
+      await kakao
+        .get(`/image?query=${keyword}&sort=accuracy&page=1&size=1`)
+        .then(success)
+        .catch(() => {
+          this.image = require(`@/assets/img/noimage.png`);
+        });
     },
     clickDetailResult(place) {
-      place.image_url = this.image;
+      if (this.image != require("@/assets/img/noimage.png")) {
+        place.image_url = this.image;
+      }
       this.$emit("makeCustomOverlay", place);
     },
   },
