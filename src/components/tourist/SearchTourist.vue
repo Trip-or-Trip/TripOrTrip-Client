@@ -5,21 +5,19 @@
         <div class="left-container col-lg-2 col-md-3">
           <div class="result-container">
             <div id="search-title-container" class="px-3 py-2 border-bottom">검색 결과</div>
-            <div
-              v-for="(result, index) in results"
-              :key="index"
-              @click="clickResult(result, $event)"
-            >
+            <div v-for="(result, index) in results" :key="index">
               <div class="d-flex mb-1">
                 <div class="icon flex-shrink-0 mx-2 mt-3">
                   <i class="result-icon bi bi-search"></i>
                 </div>
-                <div class="mt-3 mb-1 me-2">
-                  <div class="title" style="font-size: 1.1rem">{{ result.title }}</div>
-                  <p class="description" style="font-size: 0.9rem">
-                    {{ result.addr1 }} &nbsp;<span style="color: gray"
-                      >(우){{ result.zipcode }}</span
-                    >
+                <div class="mt-3 me-2">
+                  <div class="title" style="font-size: 1rem">
+                    <b>{{ result.title }}</b>
+                  </div>
+                  <p style="font-size: 0.9rem">
+                    {{ result.addr1 }} &nbsp;<span style="color: gray; font-size: 0.8rem">(우){{ result.zipcode }}</span
+                    ><br />
+                    <button type="button" @click="clickResult(result, $event)" class="btn btn-sm place-btn mt-1">자세히 보기</button>
                   </p>
                 </div>
               </div>
@@ -33,12 +31,7 @@
               <div class="col-4">
                 <!-- 지역 리스트 -->
                 <!-- <select id="search-area" v-model="selectedSido" @change="findGuGun" class="form-select me-2"> -->
-                <select
-                  id="search-area"
-                  v-model="selectedSido"
-                  @change="[findGuGun(), search()]"
-                  class="form-select"
-                >
+                <select id="search-area" v-model="selectedSido" @change="[findGuGun(), search()]" class="form-select">
                   <option value="0" disabled>검색 지역 선택</option>
                   <option v-for="sido in sidos" :key="sido.sidoCode" :value="sido.sidoCode">
                     {{ sido.sidoName }}
@@ -48,12 +41,7 @@
 
               <div class="col-4">
                 <!-- 구/군 리스트 -->
-                <select
-                  id="search-gugun-id"
-                  v-model="selectedGugun"
-                  @change="search"
-                  class="form-select"
-                >
+                <select id="search-gugun-id" v-model="selectedGugun" @change="search" class="form-select">
                   <option v-if="guguns == null" value="0">구/군</option>
                   <option v-for="gugun in guguns" :key="gugun.gugunCode" :value="gugun.gugunCode">
                     {{ gugun.gugunName }}
@@ -69,80 +57,31 @@
             <div class="content-type mt-3 text-center">
               <!-- 관광지 유형 리스트 -->
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="12"
-                  id="type-1"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="12" id="type-1" />
                 <label class="form-check-label" for="type-1">관광지</label>
               </div>
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="14"
-                  id="type-2"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="14" id="type-2" />
                 <label class="form-check-label" for="type-2">문화시설</label>
               </div>
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="15"
-                  id="type-3"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="15" id="type-3" />
                 <label class="form-check-label" for="type-3">축제공연행사</label>
               </div>
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="28"
-                  id="type-5"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="28" id="type-5" />
                 <label class="form-check-label" for="type-5">레포츠</label>
               </div>
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="32"
-                  id="type-6"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="32" id="type-6" />
                 <label class="form-check-label" for="type-6">숙박</label>
               </div>
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="38"
-                  id="type-7"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="38" id="type-7" />
                 <label class="form-check-label" for="type-7">쇼핑</label>
               </div>
               <div class="form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  v-model="selectedContents"
-                  @change="search"
-                  value="39"
-                  id="type-8"
-                />
+                <input class="form-check-input" type="checkbox" v-model="selectedContents" @change="search" value="39" id="type-8" />
                 <label class="form-check-label" for="type-8">음식점</label>
               </div>
             </div>
@@ -199,10 +138,7 @@ export default {
   methods: {
     loadScript() {
       const script = document.createElement("script");
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
-        process.env.VUE_APP_KAKAO_MAP_API_KEY +
-        "&libraries=services,clusterer,drawing&autoload=false";
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
       /* global kakao */ // eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.loadMap);
 
@@ -266,6 +202,7 @@ export default {
           <div class="info">
             <div class="title">
               ${place.title}
+              <div class="close" onclick="this.parentNode.parentNode.parentNode.remove()" title="닫기"></div>
             </div>
             <div class="body">
               <div class="img">
@@ -281,6 +218,7 @@ export default {
       }
 
       content += `<a href="https://map.kakao.com/link/to/${place.title},${latlng.Ma},${latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>
+                  <a href="https://search.naver.com/search.naver?where=view&sm=tab_jum&query=${place.title}" target="_blank" class="me-2 url-link" style="color: black; text-decoration: none;"<i class="tourist-icon bi bi-search me-1"></i>블로그 검색</a> 
               </div>
             </div>
           </div>
@@ -299,8 +237,7 @@ export default {
     },
 
     search() {
-      if (this.selectedSido == 0 || this.selectedGugun == 0 || this.selectedContents.length == 0)
-        return;
+      if (this.selectedSido == 0 || this.selectedGugun == 0 || this.selectedContents.length == 0) return;
       let contents = "";
       for (let i = 0; i < this.selectedContents.length - 1; i++) {
         contents += this.selectedContents[i] + ",";
@@ -311,11 +248,10 @@ export default {
         .get(`/tourist/${this.selectedSido}/${this.selectedGugun}/${contents}`)
         .then(({ data }) => {
           this.results = data;
-          console.log(data);
           this.makeMarker(data);
         })
-        .catch((response) => {
-          console.log(response);
+        .catch(() => {
+          alert("검색 중 문제가 발생했습니다. 다시 시도해 주세요.");
         });
     },
 
@@ -351,8 +287,7 @@ export default {
         else if (positions[i].contentTypeId == 28) imageSrc = require("@/assets/img/leisure.png");
         else if (positions[i].contentTypeId == 32) imageSrc = require("@/assets/img/hotel.png");
         else if (positions[i].contentTypeId == 38) imageSrc = require("@/assets/img/shop.png");
-        else if (positions[i].contentTypeId == 39)
-          imageSrc = require("@/assets/img/restaurant.png");
+        else if (positions[i].contentTypeId == 39) imageSrc = require("@/assets/img/restaurant.png");
         else imageSrc = require("@/assets/img/location.png");
 
         var imageSize = new window.kakao.maps.Size(35, 35); // 마커 이미지의 이미지 크기
@@ -380,74 +315,6 @@ export default {
 
       this.map.setCenter(positions[0].latlng);
     },
-
-    makeMapUrl(marker) {
-      console.log(marker);
-      console.log("makeMapUrl 호출");
-      let ps = new window.kakao.maps.services.Places(); // 장소 검색 객체 생성
-
-      let callback = (result, status) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          this.displayCustomOverlay(result[0].place_url, marker);
-        } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-          this.displayCustomOverlay("", marker);
-        } else {
-          alert("서버에 문제가 있습니다. 다시 시도해 주세요.");
-        }
-      };
-
-      ps.keywordSearch(marker.title, callback);
-    },
-
-    displayCustomOverlay(mapUrl, marker) {
-      let image = "";
-      if (marker.image !== "") {
-        image = marker.image;
-      } else {
-        image = require("@/assets/img/noimage.png");
-      }
-
-      let content = `
-        <div class="wrap">
-          <div class="info">
-            <div class="title">
-              ${marker.title}
-              <div class="close" @click="closeOverlay" title="닫기"></div>
-            </div>
-            <div class="body">
-              <div class="img">
-              <img src="${image}" width="73" height="70">
-            </div>
-            <div class="desc">
-              <div class="ellipsis mb-1">${marker.addr}</div>
-              <div class="jibun ellipsis">(우) ${marker.zipcode}</div>
-              <div class="mt-1">`;
-
-      if (mapUrl !== "") {
-        content += `<a href="${mapUrl}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-geo-alt me-1"></i>지도검색</a>`;
-      }
-
-      content += `<a href="https://map.kakao.com/link/to/${marker.title},${marker.latlng.Ma},${marker.latlng.La}" target="_blank" class="me-2" style="color: black; text-decoration: none;"><i class="tourist-icon bi bi-sign-turn-right me-1"></i>길찾기</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      `;
-
-      this.overlay = new window.kakao.maps.CustomOverlay({
-        content: content,
-        map: this.map,
-        position: marker.latlng,
-      });
-
-      this.overlay.setMap(this.map);
-    },
-
-    closeOverlay() {
-      console.log("닫기 함수 호출");
-      // btn.parentNode.parentNode.parentNode.remove();
-    },
   },
 };
 </script>
@@ -463,7 +330,6 @@ export default {
   text-align: left;
   overflow: hidden;
   font-size: 12px;
-  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
   line-height: 1.5;
 }
 .wrap * {
@@ -546,7 +412,7 @@ export default {
   color: #5085bb;
 }
 .left-container {
-  height: 80vh;
+  height: 77vh;
   padding-left: 3rem;
   overflow-y: auto;
   -ms-overflow-style: none; /* IE and Edge */
@@ -563,5 +429,14 @@ export default {
 }
 .result-icon {
   font-size: 1.4rem;
+}
+.place-btn {
+  font-size: 0.7rem;
+  width: 4.5rem;
+  height: 1.4rem;
+  background-color: #dee4e9;
+}
+.place-btn:hover {
+  background-color: #c9d1da;
 }
 </style>
