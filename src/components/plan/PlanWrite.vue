@@ -8,12 +8,7 @@
           <button type="button" @click="searchKeyword" class="btn submit-btn">검색</button>
         </div>
         <div id="result-container" class="flex-grow-1">
-          <result-list-item
-            v-for="(result, index) in results"
-            :key="index"
-            :result="result"
-            @makeCustomOverlay="displayCustomOverlay"
-          ></result-list-item>
+          <result-list-item v-for="(result, index) in results" :key="index" :result="result" @makeCustomOverlay="displayCustomOverlay"></result-list-item>
         </div>
       </div>
       <div id="center-container" class="col-lg-8 col-md-6">
@@ -22,18 +17,9 @@
       <div id="right-container" class="col-lg-2 col-md-3 p-2">
         <div class="text-center mb-2"><b>관광지를 내 계획에 추가하세요!</b></div>
         <draggable v-model="places">
-          <plan-list-item
-            v-for="(place, index) in places"
-            :key="index"
-            :place="place"
-            :index="index"
-            :total="places.length"
-            @removeItem="removePlanItem"
-          ></plan-list-item>
+          <plan-list-item v-for="(place, index) in places" :key="index" :place="place" :index="index" :total="places.length" @removeItem="removePlanItem"></plan-list-item>
         </draggable>
-        <div class="mt-1 me-1" style="float: right; color: gray; font-size: 0.9rem">
-          관광지 순서를 변경해 경로를 확인해 보세요!
-        </div>
+        <div class="mt-1 me-1" style="float: right; color: gray; font-size: 0.9rem">관광지 순서를 변경해 경로를 확인해 보세요!</div>
       </div>
     </div>
 
@@ -42,19 +28,9 @@
       <div class="plan-container">
         <div id="plan-detail" class="d-flex flex-column align-items-center rounded mx-auto">
           <label for="plan-title"><strong>계획 이름</strong></label>
-          <input
-            v-model="plan.title"
-            type="text"
-            id="plan-title"
-            placeholder="계획 이름"
-            class="plan-detail-content align-middle ms-2 mt-2 rounded"
-            style="width: 70%"
-          />
+          <input v-model="plan.title" type="text" id="plan-title" placeholder="계획 이름" class="plan-detail-content align-middle ms-2 mt-2 rounded" style="width: 70%" />
           <br />
-          <div
-            class="plan-detail-date d-flex flex-row justify-content-between mb-3"
-            style="width: 70%"
-          >
+          <div class="plan-detail-date d-flex flex-row justify-content-between mb-3" style="width: 70%">
             <label for="st-date"><strong>출발일</strong></label>
             <input
               v-model="plan.sDate"
@@ -75,14 +51,7 @@
             />
           </div>
           <label for="description"><strong>상세 계획</strong></label>
-          <textarea
-            v-model="plan.description"
-            id="description"
-            placeholder="상세 계획..."
-            class="plan-detail-content align-middle ms-2 mt-2 rounded"
-            style="width: 70%; height: 10em"
-          >
-          </textarea>
+          <textarea v-model="plan.description" id="description" placeholder="상세 계획..." class="plan-detail-content align-middle ms-2 mt-2 rounded" style="width: 70%; height: 10em"> </textarea>
           <br />
           <button @click="savePlan" class="btn submit-btn" style="width: 5em">
             <strong>저장</strong>
@@ -144,10 +113,7 @@ export default {
   methods: {
     loadScript() {
       const script = document.createElement("script");
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
-        process.env.VUE_APP_KAKAO_MAP_API_KEY +
-        "&libraries=services,clusterer,drawing&autoload=false";
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services,clusterer,drawing&autoload=false";
       /* global kakao */ // eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.loadMap);
 
@@ -434,10 +400,7 @@ export default {
     },
     removeMarker(lat, lng) {
       for (let i = 0; i < this.selectedMarkers.length; i++) {
-        if (
-          this.selectedMarkers[i].marker.getPosition().getLat().toFixed(13) === lat &&
-          this.selectedMarkers[i].marker.getPosition().getLng().toFixed(13) === lng
-        ) {
+        if (this.selectedMarkers[i].marker.getPosition().getLat().toFixed(13) === lat && this.selectedMarkers[i].marker.getPosition().getLng().toFixed(13) === lng) {
           this.selectedMarkers[i].marker.setMap(null);
         }
       }
