@@ -31,7 +31,7 @@
               <div style="border: 1px solid lightgray; border-radius: 0.5rem; height: 30rem">
                 <img :src="`/upload/hotplace/${hotplace.image}`" style="width: 100%; height: 20rem; object-fit: cover; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem" />
                 <div class="mt-3 ms-2">
-                  <img v-if="user.image" :src="`/upload/profile/${user.image}`" class="hotplace-profile-img me-2" />
+                  <img v-if="hotplace.userImage" :src="`/upload/profile/${hotplace.userImage}`" class="hotplace-profile-img me-2" />
                   <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-2" />
                   <span>{{ hotplace.userId }}</span>
                 </div>
@@ -53,7 +53,7 @@
           </div>
           <div class="row d-flex justify-content-center">
             <div v-if="boards.length" id="articles-container" class="align-self-center mb-2">
-              <b-table id="article-container" :items="boards" :fields="fields" sort-icon-right :per-page="perPage" :current-page="currentPage" @row-clicked="articleClick" class="mb-4"></b-table>
+              <b-table id="article-container" :items="boards" :fields="fields" sort-icon-right @row-clicked="articleClick" class="mb-4"></b-table>
               <!-- <b-pagination pills v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="article-container" align="center"></b-pagination> -->
             </div>
             <div v-else class="title-container text-center mt-5">
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div id="trip-container" data-aos="fade-up" data-aos-duration="1500" class="row p-5 mt-5 d-flex justify-content-center">
+      <div id="trip-container" data-aos="fade-up" data-aos-duration="2200" class="row p-5 mt-3 d-flex justify-content-center">
         <div id="trip-list" class="col-lg-9 col-md-10">
           <div>
             <h4><b>인기 여행 계획</b></h4>
