@@ -5,7 +5,8 @@
         <div id="main-container">
           <div id="info-message">
             <h1 id="title-header" class="mb-5">
-              <span>T</span><span>r</span><span>i</span><span>p</span> <span>o</span><span>r</span> <span>T</span><span>r</span><span>i</span><span>p</span><span>!</span>
+              <span>T</span><span>r</span><span>i</span><span>p</span> <span>o</span><span>r</span>
+              <span>T</span><span>r</span><span>i</span><span>p</span><span>!</span>
               <!-- <b>Trip or Trip!</b> -->
             </h1>
             <p style="font-size: 1.5rem">
@@ -21,7 +22,12 @@
         </div>
       </section>
 
-      <div id="hotplace-board-container" data-aos="fade-up" data-aos-duration="1500" class="row p-5 d-flex justify-content-center">
+      <div
+        id="hotplace-board-container"
+        data-aos="fade-up"
+        data-aos-duration="1500"
+        class="row p-5 d-flex justify-content-center"
+      >
         <div id="hotplace-list" class="col-lg-3 col-md-5 me-3">
           <div class="mb-2">
             <h4><b>핫플레이스</b></h4>
@@ -29,10 +35,27 @@
           <swiper class="swiper" :options="swiperOption">
             <swiper-slide v-for="(hotplace, index) in hotplaces" :key="index">
               <div style="border: 1px solid lightgray; border-radius: 0.5rem; height: 30rem">
-                <img :src="`/upload/hotplace/${hotplace.image}`" style="width: 100%; height: 20rem; object-fit: cover; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem" />
+                <img
+                  :src="`/upload/hotplace/${hotplace.image}`"
+                  style="
+                    width: 100%;
+                    height: 20rem;
+                    object-fit: cover;
+                    border-top-left-radius: 0.5rem;
+                    border-top-right-radius: 0.5rem;
+                  "
+                />
                 <div class="mt-3 ms-2">
-                  <img v-if="hotplace.userImage" :src="`/upload/profile/${hotplace.userImage}`" class="hotplace-profile-img me-2" />
-                  <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-2" />
+                  <img
+                    v-if="hotplace.userImage"
+                    :src="`/upload/profile/${hotplace.userImage}`"
+                    class="hotplace-profile-img me-2"
+                  />
+                  <img
+                    v-else
+                    :src="require('@/assets/img/user.png')"
+                    class="hotplace-profile-img me-2"
+                  />
                   <span>{{ hotplace.userId }}</span>
                 </div>
                 <div class="mt-3 ms-3">
@@ -53,7 +76,14 @@
           </div>
           <div class="row d-flex justify-content-center">
             <div v-if="boards.length" id="articles-container" class="align-self-center mb-2">
-              <b-table id="article-container" :items="boards" :fields="fields" sort-icon-right @row-clicked="articleClick" class="mb-4"></b-table>
+              <b-table
+                id="article-container"
+                :items="boards"
+                :fields="fields"
+                sort-icon-right
+                @row-clicked="articleClick"
+                class="mb-4"
+              ></b-table>
               <!-- <b-pagination pills v-model="currentPage" :total-rows="rows" :per-page="perPage" aria-controls="article-container" align="center"></b-pagination> -->
             </div>
             <div v-else class="title-container text-center mt-5">
@@ -63,19 +93,36 @@
         </div>
       </div>
 
-      <div id="trip-container" data-aos="fade-up" data-aos-duration="2200" class="row p-5 mt-3 d-flex justify-content-center">
+      <div
+        id="trip-container"
+        data-aos="fade-up"
+        data-aos-duration="2200"
+        class="row p-5 mt-3 d-flex justify-content-center"
+      >
         <div id="trip-list" class="col-lg-9 col-md-10">
           <div>
             <h4><b>인기 여행 계획</b></h4>
           </div>
           <div v-if="plans.plans && plans.plans.length">
             <div class="container">
-              <masonry :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }" :gutter="10" class="card-style">
+              <masonry
+                :cols="{ default: 4, 1600: 3, 1100: 2, 700: 1 }"
+                :gutter="10"
+                class="card-style"
+              >
                 <span class="col-4 p-3" v-for="(plan, index) in plans.plans" :key="plan.id">
                   <div class="p-2" style="border: 1px solid lightgray; border-radius: 0.5rem">
                     <div class="my-2 ms-2">
-                      <img v-if="plan.image" :src="`/upload/profile/${plan.image}`" class="hotplace-profile-img me-2" />
-                      <img v-else :src="require('@/assets/img/user.png')" class="hotplace-profile-img me-2" />
+                      <img
+                        v-if="plan.image"
+                        :src="`/upload/profile/${plan.image}`"
+                        class="hotplace-profile-img me-2"
+                      />
+                      <img
+                        v-else
+                        :src="require('@/assets/img/user.png')"
+                        class="hotplace-profile-img me-2"
+                      />
                       <span>{{ plan.userId }}</span>
                     </div>
                     <the-kakao-map :id="`map-` + index" :plans="plans" :idx="index"></the-kakao-map>
@@ -86,7 +133,9 @@
                       <!-- <div>{{ plan.description }}</div> -->
                     </div>
                     <div class="text-center mb-2">
-                      <button @click="planClick(plan, $event)" class="btn submit-btn">상세 보기</button>
+                      <button @click="planClick(plan, $event)" class="btn submit-btn">
+                        상세 보기
+                      </button>
                     </div>
                   </div>
                 </span>
@@ -121,6 +170,22 @@
           <h4>등록된 여행계획이 없습니다.</h4>
         </div>
       </div> -->
+
+      <!-- <div
+        id="places-board-container"
+        data-aos="fade-up"
+        data-aos-duration="2000"
+        class="row p-5 d-flex justify-content-center"
+      >
+        <div id="places-list" class="col-lg-10 col-md-10 me-3">
+          <div class="mb-2">
+            <h4><b>인기 여행 장소</b></h4>
+          </div>
+          <div class="mb-2">
+            <place-view v-for="(place, index) in places" :key="index" :places="places"></place-view>
+          </div>
+        </div>
+      </div> -->
     </main>
   </div>
 </template>
@@ -129,6 +194,7 @@
 import { mapGetters, mapState } from "vuex";
 import http from "@/util/http-common";
 import TheKakaoMap from "@/components/TheKakaoMap";
+// import PlaceView from "@/views/PlaceView";
 
 import Vue from "vue";
 import VueAwesomeSwiper from "vue-awesome-swiper";
@@ -144,6 +210,7 @@ export default {
     TheKakaoMap,
     Swiper,
     SwiperSlide,
+    // PlaceView,
     // HotplaceListItem,
     // MainHotplace,
   },
@@ -152,6 +219,7 @@ export default {
       token: "",
       hotplaces: [],
       plans: [],
+      places: [],
       boards: [],
       swiperOption: {
         slidesPerView: 1,
@@ -215,6 +283,9 @@ export default {
     http.get(`/plan/list/hot`).then(({ data }) => {
       this.plans = data;
     });
+    http.get(`/plan/list/place`).then(({ data }) => {
+      this.places = data;
+    });
     http.get(`/board/list/hot`).then(({ data }) => {
       this.boards = data;
     });
@@ -223,7 +294,10 @@ export default {
   methods: {
     loadScript() {
       const script = document.createElement("script");
-      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + process.env.VUE_APP_KAKAO_MAP_API_KEY + "&libraries=services&autoload=false";
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" +
+        process.env.VUE_APP_KAKAO_MAP_API_KEY +
+        "&libraries=services&autoload=false";
       /* global kakao */ //eslint-disable-line no-unused-vars
       script.onload = () => window.kakao.maps.load(this.loadMap);
       document.head.appendChild(script);
@@ -274,7 +348,8 @@ h3 {
   position: relative;
   width: 100%;
   height: 77vh;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("@/assets/img/background.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("@/assets/img/background.jpg");
   /* background-image: url('./assets/img/background.jpg'); */
   background-size: cover;
   opacity: 90%;
